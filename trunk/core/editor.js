@@ -44,13 +44,10 @@ var Editor = (function(){
 		selectView: function(doc){
 			return "defaultView";
 		},
-		backup: function(dirPath){
+		backup: function(dirPath, onbackup){
 			$.post(__.ws.backup, {d:dirPath}, function(doc, state, data){
 				var json = JSON.stringify(data);
-				if(json.archive)
-					alert("Backup done. Load '"+json.archive+"' file.");
-				if(json.error)
-					alert(json.error);
+				onbackup(json);
 			});
 		}
 	};
