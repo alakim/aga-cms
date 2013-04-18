@@ -1,0 +1,49 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Aga Demo Page</title>
+	<script type="text/javascript" src="core/lib/html.js"></script>
+	<script type="text/javascript" src="core/lib/jspath.js"></script>
+	<script type="text/javascript" src="core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="core/cdk.js"></script>
+	<script type="text/javascript" src="core/editor.js"></script>
+	<script type="text/javascript" src="core/defaultView.js"></script>
+	<link rel="stylesheet" type="text/css" href="core/defaultView.css"/>
+	
+	<script type="text/javascript">
+		function template(data){with(Html){
+			return markup(
+				h2("Received Data"),
+				apply(data, function(v, fld){
+					return div(span({style:"font-weight:bold;"}, fld), ": ", span(v));
+				})
+			);
+		}}
+		
+		function saveTest(){
+			var data = {
+				fio:"Иванов И.И.",
+				phone:"444-4444",
+				count:8,
+				address:{
+					state:"RF",
+					city:"Moscow"
+				},
+				scores:[2,3,"big"]
+			};
+			var path = "testData/doc2.json";
+			Editor.save(path, data, function(){Editor.display($("#out"), path, true)});
+		}
+		
+		function init(){
+			Editor.display($("#out"), "testData/doc1.json");
+		}
+		$(init);
+	</script>
+</head>
+<body>
+	<h1>Aga Demo Page</h1>
+	<input type="button" value="Save And Check" onclick="saveTest()"/>
+	<div id="out"></div>
+</body>
+</html>
