@@ -18,10 +18,15 @@
 		function doBackup(){
 			function template (res){with(Html){
 				return res.error?span({"class":"error"}, res.error)
-					:span("Download backup file "+res.archive);
+					:span(
+						"Download backup file ",
+						a({href:res.archive}, res.archive)
+					);
 			}}
 			Editor.backup("testData", function(res){
-				console.log(res);
+				res = $.parseJSON(res);
+				//$("#backupMessage").html(res.responseText);
+				res = $.parseJSON(res.responseText);
 				$("#backupMessage").html(template(res));
 			});
 		}
