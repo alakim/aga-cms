@@ -14,6 +14,9 @@
 	<script type="text/javascript" src="core/lib/jspath.js"></script>
 	<script type="text/javascript" src="core/cdk.js"></script>
 	<script type="text/javascript" src="core/editor.js"></script>
+	<script type="text/javascript" src="core/defaultView.js"></script>
+	<link rel="stylesheet" type="text/css" href="core/defaultView.css"/>
+	
 	<script type="text/javascript">
 		function doBackup(){
 			function template (res){with(Html){
@@ -32,7 +35,9 @@
 		}
 		
 		function displayDoc(path){
-			console.log("display "+path+"...");
+			//console.log("display "+path+"...");
+			
+			Editor.display($("#out"), "testData/"+path, path.match(/\.jpg$/i));
 		}
 		
 		$(function(){
@@ -49,14 +54,23 @@
 	<div id="backupMessage"></div>
 	
 	<h2>Files</h2>
+	<table border="1" width="100%" cellpadding="3" cellspacing="0">
+		<tr>
+			<td valign="top" width="180">
+				<?php
+					$files = scandir("testData");
+					foreach($files as $file){
+						if($file!="." && $file!=".." && $file!=".svn")
+							echo("<div class='fileLink'>{$file}</div>");
+					}
+				?>
+			</td>
+			<td valign="top">
+				<div id="out"></div>
+			</td>
+		</tr>
+	</table>
 	
-	<?php
-		$files = scandir("testData");
-		foreach($files as $file){
-			if($file!="." && $file!="..")
-				echo("<div class='fileLink'>{$file}</div>");
-		}
-	?>
 	
 </body>
 </html>
