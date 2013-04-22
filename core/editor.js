@@ -1,5 +1,5 @@
 var Editor = (function(){
-	var pwd = "abc";
+	var pwd = "abcdef";
 	
 	
 
@@ -19,16 +19,24 @@ var Editor = (function(){
 			save: "save.php",
 			backup: "archive.php"
 		},
+		docPath:null,
 		display: function(pnl, docPath, secure){
 			$.post(__.ws.load, {path:docPath}, function(doc, state, data){
 				var v = data.responseText;
 				if(secure) v = decode(pwd, v);
-				var jsData = $.parseJSON(v);
-				var view = __.selectView(jsData);
-				$(pnl)[view](jsData);
+				if(docPath.match(/\.txt$/i))
+					$(pnl).textView(v);
+				else{
+					//console.log(v);
+					var jsData = $.parseJSON(v);
+					var view = __.selectView(jsData);
+					__.docPath = docPath;
+					$(pnl)[view](jsData);
+				}
 			});
 		},
 		save: function(path, data, onsuccess, secure, onerror){
+			path = path || __.docPath;
 			secure = secure==null?true:false;
 			var json = JSON.stringify(data);
 			var v = secure?encode(pwd, json):json;
