@@ -24,13 +24,13 @@ var Editor = (function(){
 			$.post(__.ws.load, {path:docPath}, function(doc, state, data){
 				var v = data.responseText;
 				if(secure) v = decode(pwd, v);
+				__.docPath = docPath;
 				if(docPath.match(/\.txt$/i))
 					$(pnl).textView(v);
 				else{
 					//console.log(v);
 					var jsData = $.parseJSON(v);
 					var view = __.selectView(jsData);
-					__.docPath = docPath;
 					$(pnl)[view](jsData);
 				}
 			});
@@ -38,7 +38,8 @@ var Editor = (function(){
 		save: function(path, data, onsuccess, secure, onerror){
 			path = path || __.docPath;
 			secure = secure==null?true:false;
-			var json = JSON.stringify(data);
+			var textMode = path.match(/\.txt$/i);
+			var json = textMode?data:JSON.stringify(data);
 			var v = secure?encode(pwd, json):json;
 			$.post(__.ws.save, {path:path, data:v}, function(doc, state, data){
 				$.post(__.ws.load, {path:path}, function(doc, state, data){
