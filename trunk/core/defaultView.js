@@ -65,7 +65,12 @@
 			buildView(pnl, doc, !editMode);
 		});
 		$(".editPnl .btnSave").click(function(){
-			console.log("saved: ", doc);
+			//console.log("saved: ", doc);
+			Editor.save(null, doc, function(){
+				alert("Saved "+Editor.docPath);
+			}, false, function(){
+				alert("Error saving file "+Editor.docPath);
+			});
 		});
 		function fieldChange(){var _=$(this);
 			var path = _.attr("path");

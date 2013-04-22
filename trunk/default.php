@@ -14,6 +14,7 @@
 	<script type="text/javascript" src="core/lib/jspath.js"></script>
 	<script type="text/javascript" src="core/cdk.js"></script>
 	<script type="text/javascript" src="core/editor.js"></script>
+	<script type="text/javascript" src="core/textView.js"></script>
 	<script type="text/javascript" src="core/defaultView.js"></script>
 	<link rel="stylesheet" type="text/css" href="core/defaultView.css"/>
 	
