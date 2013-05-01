@@ -51,6 +51,9 @@
 				.click(function(){
 					displayDoc($(this).text());
 				});
+			$("#fldPassword").change(function(){
+				Editor.password = $(this).val();
+			});
 		});
 	</script>
 </head>
@@ -58,7 +61,7 @@
 	<h1>Aga</h1>
 	<input type="button" value="Backup" onclick="doBackup()"/>
 	<div id="backupMessage"></div>
-	
+	<div>Password: <input type="text" id="fldPassword"/></div>
 	<h2>Files</h2>
 	<table border="1" width="100%" cellpadding="3" cellspacing="0">
 		<tr>

@@ -10,7 +10,13 @@
 			return markup(
 				div({"class":"editPnl"},
 					input({type:"button", "class":"btnEdit", value:editMode?"View mode":"Edit mode"}),
-					editMode?input({type:"button", "class":"btnSave", value:"Save"}):null
+					editMode?markup(
+						input({type:"button", "class":"btnSave", value:"Save"}),
+						" file name:",
+						input({type:"text", "class":"fldFileName", value:Editor.docPath}),
+						" encode",
+						input({type:"checkbox", "class":"cbEncode"})
+					):null
 				),
 				editMode?div(
 					textarea({"class":"fldDoc", style:"width:550px; height:350px;"}, doc)
@@ -25,11 +31,15 @@
 			buildView(pnl, doc, !editMode);
 		});
 		$(".editPnl .btnSave").click(function(){
+			var filePath = $(".editPnl .fldFileName").val();
+			var encode = $(".editPnl .cbEncode")[0].checked;
+			// console.log(filePath, ", ", encode);
+			// return;
 			//console.log("saved: ", doc); return;
-			Editor.save(null, doc, function(){
-				alert("Saved "+Editor.docPath);
+			Editor.save(filePath, doc, function(){
+				alert("Saved "+filePath);
 			}, false, function(){
-				alert("Error saving file "+Editor.docPath);
+				alert("Error saving file "+filePath);
 			});
 		});
 		$("textarea.fldDoc").change(function(){
