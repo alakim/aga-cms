@@ -38,7 +38,7 @@
 			//console.log("saved: ", doc); return;
 			Editor.save(filePath, doc, function(){
 				alert("Saved "+filePath);
-			}, false, function(){
+			}, encode, function(){
 				alert("Error saving file "+filePath);
 			});
 		});

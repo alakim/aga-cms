@@ -24,6 +24,7 @@ var Editor = (function(){
 		display: function(pnl, docPath, secure){
 			$.post(__.ws.load, {path:docPath}, function(doc, state, data){
 				var v = data.responseText;
+				//console.log(secure, __.password);
 				if(secure && __.password) v = decode(__.password, v);
 				__.docPath = docPath;
 				if(docPath.match(/\.txt$/i))
@@ -38,7 +39,8 @@ var Editor = (function(){
 		},
 		save: function(path, data, onsuccess, secure, onerror){
 			path = path || __.docPath;
-			secure = secure==null?true:false;
+			secure = secure==null?false:secure;
+			//console.log(secure, __.password);
 			var textMode = path.match(/\.txt$/i);
 			var json = textMode?data:JSON.stringify(data);
 			var v = secure && __.password?encode(__.password, json):json;
