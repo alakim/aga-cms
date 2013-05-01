@@ -2,6 +2,9 @@
 	
 	function toHtml(str){
 		return str
+			.replace(/&/ig, "&amp;")
+			.replace(/</ig, "&lt;")
+			.replace(/>/ig, "&gt;")
 			.replace(/\n/ig, Html.br())
 			.replace(/\t/ig, "&nbsp;&nbsp;&nbsp;&nbsp;");
 	}
