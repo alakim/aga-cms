@@ -18,7 +18,12 @@
 	<script type="text/javascript" src="core/defaultView.js"></script>
 	<link rel="stylesheet" type="text/css" href="core/defaultView.css"/>
 	
+	<?php
+		$dataDir = "testData";
+	?>
 	<script type="text/javascript">
+		var dataDir = "<?php echo($dataDir);?>";
+
 		function doBackup(){
 			function template (res){with(Html){
 				return res.error?span({"class":"error"}, res.error)
@@ -27,7 +32,7 @@
 						a({href:res.archive}, res.archive)
 					);
 			}}
-			Editor.backup("testData", function(res){
+			Editor.backup(dataDir, function(res){
 				res = $.parseJSON(res);
 				//$("#backupMessage").html(res.responseText);
 				res = $.parseJSON(res.responseText);
@@ -38,7 +43,7 @@
 		function displayDoc(path){
 			//console.log("display "+path+"...");
 			
-			Editor.display($("#out"), "testData/"+path, path.match(/\.jpg$/i));
+			Editor.display($("#out"), dataDir+"/"+path, path.match(/\.jpg$/i));
 		}
 		
 		$(function(){
@@ -59,7 +64,7 @@
 		<tr>
 			<td valign="top" width="180">
 				<?php
-					$files = scandir("testData");
+					$files = scandir($dataDir);
 					foreach($files as $file){
 						if($file!="." && $file!=".." && $file!=".svn")
 							echo("<div class='fileLink'>{$file}</div>");
