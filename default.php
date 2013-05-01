@@ -62,7 +62,7 @@
 	<h1>Aga</h1>
 	<input type="button" value="Backup" onclick="doBackup()"/>
 	<div id="backupMessage"></div>
-	<div>Password: <input type="text" id="fldPassword"/> <input type="checkbox" id="cbSecure"/></div>
+	<div>Password: <input type="password" id="fldPassword"/> <input type="checkbox" id="cbSecure"/></div>
 	<h2>Files</h2>
 	<table border="1" width="100%" cellpadding="3" cellspacing="0">
 		<tr>
