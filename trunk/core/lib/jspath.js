@@ -1,5 +1,5 @@
 var JsPath = {
-	version:"2.1.334"
+	version:"4.1.539"
 };
 
 (function(){
@@ -28,6 +28,29 @@ var JsPath = {
 	}
 	function arrayMode(step){return typeof(step)=="number" || step.match(/^#(\d+)/);}
 	
+	function pathToString(path){
+		var sPath = getSteps(path);
+		return sPath instanceof Array? sPath.join("/")
+			:sPath.toString();
+	}
+	
+	function pathMatch(p1, p2){
+		p1 = getSteps(p1);
+		p2 = getSteps(p2);
+		for(var i=0; i<p1.length && i<p2.length; i++){
+			if(p1[i]=="*") continue;
+			if(p2[i]=="*") continue;
+			if(p1[i]!=p2[i]) return false;
+		}
+		return true;
+	}
+	
+	var handlers = {
+		onchange:[],
+		onmove:[],
+		onremove:[]
+	};
+	
 	extend(JsPath, {
 		set: function(obj, path, val){
 			if(path==null) throw "Path is null";
@@ -52,6 +75,10 @@ var JsPath = {
 						o = o[s];
 					}
 				}
+			});
+			each(handlers.onchange, function(hnd){
+				if(pathMatch(path, hnd.path))
+					hnd.handler(obj, path, val);
 			});
 			return obj;
 		},
@@ -85,7 +112,22 @@ var JsPath = {
 				}
 				set(obj, collPath, newC);
 			}
+			each(handlers.onremove, function(hnd){
+				if(pathMatch(path, hnd.path))
+					hnd.handler(obj, path);
+			});
 		}},
+		
+		push: function(obj, path, val){
+			var arr = JsPath.get(obj, path);
+			if(!(arr instanceof Array)){
+				arr = [];
+				JsPath.set(obj, path, arr);
+			}
+			arr.push(val);
+		},
+		
+		remove: function(obj, path){JsPath.delItem(obj, path);},
 		
 		move: function(obj, path, up){with(JsPath){
 			var elPath = getSteps(path);
@@ -99,12 +141,41 @@ var JsPath = {
 				var el = coll[idx];
 				coll.splice(idx,1);
 				coll.splice(up?idx-1:idx+1, 0, el);
+				
+				each(handlers.onmove, function(hnd){
+					if(pathMatch(path, hnd.path))
+						hnd.handler(obj, path, up);
+				});
 			}
 			else
 				throw "Moving object attribute is meaningless";
 		}},
 		
 		moveUp: function(obj, path){JsPath.move(obj, path, true);},
-		moveDown: function(obj, path){JsPath.move(obj, path, false);}
+		moveDown: function(obj, path){JsPath.move(obj, path, false);},
+		onchange:{
+			bind: function(path, handler){
+				handlers.onchange.push({path:pathToString(path), handler:handler});
+				return handlers.onchange.length - 1;
+			},
+			reset: function(){handlers.onchange = [];},
+			unbind: function(idx){handlers.onchange.splice(idx, 1);}
+		},
+		onmove:{
+			bind: function(path, handler){
+				handlers.onmove.push({path:pathToString(path), handler:handler});
+				return handlers.onmove.length - 1;
+			},
+			reset: function(){handlers.onmove = [];},
+			unbind: function(idx){handlers.onmove.splice(idx, 1);}
+		},
+		onremove:{
+			bind: function(path, handler){
+				handlers.onremove.push({path:pathToString(path), handler:handler});
+				return handlers.onremove.length - 1;
+			},
+			reset: function(){handlers.onremove = [];},
+			unbind: function(idx){handlers.onremove.splice(idx, 1);}
+		}
 	});
 })();

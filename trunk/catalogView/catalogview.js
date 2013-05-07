@@ -54,13 +54,15 @@
 			var path = "items/#"+itmIdx;
 			var itm = JsPath.get(doc, path);
 			return div(
+				h3("Images:"),
 				apply(itm.images, function(image, idx){
 					var imgPath = path+"/images/#"+idx;
 					return div(
 						"Ref: ", input({type:"text", "class":"propertyField", path:imgPath+"/ref"}),
 						"Title: ", input({type:"text", "class":"propertyField", path:imgPath+"/title"})
 					)
-				})
+				}),
+				div(span({path:path}, span({"class":"ui-icon ui-icon-plusthick btAddImgRef", title:"Add Image Ref"})))
 			);
 		}},
 		imageList: function(itm){with(H){
@@ -141,6 +143,11 @@
 						}
 					]
 				});
+			$("#catViewItemDialog .btAddImgRef").parent().button().click(function(){var _=$(this);
+				var path = _.attr("path");
+				var itm = JsPath.get(doc, path);
+				JsPath.push(doc, path+"/images", {});
+			});
 			$("#catViewItemDialog .propertyField").each(function(i, fld){fld=$(fld);
 				var path = fld.attr("path");
 				fld.val(JsPath.get(doc, path));
