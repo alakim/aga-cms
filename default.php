@@ -43,7 +43,7 @@
 		function displayDoc(path){
 			//console.log("display "+path+"...");
 			var secure = $("#cbSecure")[0].checked;
-			Editor.display($("#out"), dataDir+"/"+path, path.match(/\.jpg$/i));
+			//Editor.display($("#out"), dataDir+"/"+path, path.match(/\.jpg$/i));
 			Editor.display($("#out"), dataDir+"/"+path, secure);
 		}
 		
