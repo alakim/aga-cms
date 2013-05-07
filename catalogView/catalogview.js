@@ -50,25 +50,24 @@
 				itm.images?templates.imageList(itm):null
 			);
 		}},
-		imageListEditor: function(doc, itmIdx){with(H){
-			var path = "items/#"+itmIdx;
-			var itm = JsPath.get(doc, path);
-			return div(
+		imageListEditor: function(doc, itmPath){with(H){
+			var itm = JsPath.get(doc, itmPath);
+			return div({"class":"imageListEditor"},
 				h3("Images:"),
 				apply(itm.images, function(image, idx){
-					var imgPath = path+"/images/#"+idx;
+					var imgPath = itmPath+"/images/#"+idx;
 					return div(
 						"Ref: ", input({type:"text", "class":"propertyField", path:imgPath+"/ref"}),
 						"Title: ", input({type:"text", "class":"propertyField", path:imgPath+"/title"})
 					)
 				}),
-				div(span({path:path}, span({"class":"ui-icon ui-icon-plusthick btAddImgRef", title:"Add Image Ref"})))
+				div(span({path:itmPath}, span({"class":"ui-icon ui-icon-plusthick btAddImgRef", title:"Add Image Ref"})))
 			);
 		}},
 		imageList: function(itm){with(H){
 			return div({"class":"imageList"},
 				apply(itm.images, function(image, idx){
-					return a({href:image.ref},
+					return a({href:image.ref, target:"_blank"},
 						img({src:image.ref, title:image.title, border:0})
 					);
 				})
@@ -89,7 +88,7 @@
 				div("Tags: ", input({type:"text", "class":"propertyField", path:path+"/tags"})),
 				div("Description: ", textarea({"class":"propertyField", path:path+"/description"})),
 				div("Ref: ", input({type:"text", "class":"propertyField", path:path+"/ref"})),
-				templates.imageListEditor(doc, idx)
+				div(templates.imageListEditor(doc, path))
 			);
 		}}
 	};
@@ -147,6 +146,7 @@
 				var path = _.attr("path");
 				var itm = JsPath.get(doc, path);
 				JsPath.push(doc, path+"/images", {});
+				$("#catViewItemDialog .imageListEditor").parent().html(templates.imageListEditor(doc, path));
 			});
 			$("#catViewItemDialog .propertyField").each(function(i, fld){fld=$(fld);
 				var path = fld.attr("path");
