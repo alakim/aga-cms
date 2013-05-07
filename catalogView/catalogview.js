@@ -1,11 +1,26 @@
 (function($,H){
+	var selectedTags = {};
+	
+	function checkTags(tags){
+		for(var i=0; i<tags.length; i++){
+			if(selectedTags[tags[i]]) return true;
+		}
+		for(var k in selectedTags){
+			if(selectedTags[k]) return false;
+		}
+		return true;
+	}
+	
 	var templates = {
 		main: function(doc, editMode){with(H){
 			return markup(
 			div({"class":"catalogView"},
 				ul({"class":"tagList"},
 					apply(doc.tags, function(tag){
-						return li(a({href:"#"+tag}, tag));
+						return li(
+							selectedTags[tag]?{"class":"selected"}:null,
+							a({href:"#"+tag}, tag)
+						);
 					})
 				),
 				div({"class":"itemList"},
@@ -21,6 +36,7 @@
 			var tags = itm.tags;
 			if(typeof(tags)=="string")
 				tags = tags.split(";");
+			if(!checkTags(tags)) return;
 			return div({id:"itm_"+idx, "class":"item"+(idx%2?" odd":"")},
 				editMode?span({"class":"btEditItem ui-icon ui-icon-pencil", style:"float:left;"}):null,
 				h2(itm.name),
@@ -78,6 +94,13 @@
 	
 	function buildView(pnl, doc, editMode){
 		pnl.html(templates.main(doc, editMode));
+		
+		$(".catalogView .tagList a").click(function(){var _=$(this);
+			var tag = _.attr("href").replace("#","");
+			selectedTags[tag] = !selectedTags[tag]==true;
+			buildView(pnl, doc, editMode);
+		});
+		
 		$(".item .btEditItem").button().click(function(){var _=$(this);
 			var idx = parseInt(_.parent().attr("id").replace("itm_", ""));
 			$("#catViewItemDialog")
