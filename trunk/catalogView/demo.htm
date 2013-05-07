@@ -27,10 +27,21 @@
 		$(function(){
 			$("#viewPanel").catalogView(doc);
 		});
+		
+		var editMode = false;
+		
+		function toggleMode(){
+			editMode = !editMode;
+			$("#btToggleMode").val(editMode?"View Mode":"Edit Mode");
+			$("#viewPanel").catalogView(doc, editMode);
+		}
 	</script>
 </head>
 <body>
 	<h1>CatalogView Demo Page</h1>
+	<div>
+		<input type="button" id="btToggleMode" value="Edit Mode" onclick="toggleMode()"/>
+	</div>
 	<div id="viewPanel"></div>
 </body>
 </html>

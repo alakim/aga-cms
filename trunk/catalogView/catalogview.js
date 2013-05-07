@@ -1,6 +1,6 @@
 (function($,H){
 	var templates = {
-		main: function(doc){with(H){
+		main: function(doc, editMode){with(H){
 			return div({"class":"catalogView"},
 				ul({"class":"tagList"},
 					apply(doc.tags, function(tag){
@@ -9,17 +9,18 @@
 				),
 				div({"class":"itemList"},
 					apply(doc.items, function(itm, idx){
-						return templates.item(itm, idx);
+						return templates.item(itm, idx, editMode);
 					})
 				)
 			);
 		}},
-		item: function(itm, idx){with(H){
+		item: function(itm, idx, editMode){with(H){
 			var tags = itm.tags;
 			if(typeof(tags)=="string")
 				tags = tags.split(";");
-			return div({"class":"item"+(idx%2?" odd":"")},
+			return div({id:"itm_"+idx, "class":"item"+(idx%2?" odd":"")},
 				h2(itm.name),
+				editMode?input({type:"button", value:"edit", "class":"btEditItem", style:"float:right;"}):null,
 				div({"class":"tagList"},
 					apply(tags, function(t){
 						return span(t);
@@ -31,13 +32,17 @@
 		}}
 	};
 	
-	function buildView(pnl, doc){
-		pnl.html(templates.main(doc));
+	function buildView(pnl, doc, editMode){
+		pnl.html(templates.main(doc, editMode));
+		$(".item .btEditItem").click(function(){var _=$(this);
+			var idx = parseInt(_.parent().attr("id").replace("itm_", ""));
+			alert(idx+" selected");
+		});
 	}
 	
-	$.fn.catalogView = function(doc){
+	$.fn.catalogView = function(doc, editMode){
 		$(this).each(function(i, pnl){
-			buildView($(pnl), doc);
+			buildView($(pnl), doc, editMode);
 		});
 	};
 })(jQuery, Html);
