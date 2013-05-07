@@ -22,15 +22,38 @@
 			if(typeof(tags)=="string")
 				tags = tags.split(";");
 			return div({id:"itm_"+idx, "class":"item"+(idx%2?" odd":"")},
+				editMode?span({"class":"btEditItem ui-icon ui-icon-pencil", style:"float:left;"}):null,
 				h2(itm.name),
-				editMode?input({type:"button", value:"edit", "class":"btEditItem", style:"float:right;"}):null,
 				div({"class":"tagList"},
 					apply(tags, function(t){
 						return span(t);
 					})
 				),
 				itm.description?templates.itemDescription(itm):null,
-				itm.ref?p(a({href:itm.ref}, itm.ref.replace(/^http:\/\//, ""))):null
+				itm.ref?p(a({href:itm.ref}, itm.ref.replace(/^http:\/\//, ""))):null,
+				itm.images?templates.imageList(itm):null
+			);
+		}},
+		imageListEditor: function(doc, itmIdx){with(H){
+			var path = "items/#"+itmIdx;
+			var itm = JsPath.get(doc, path);
+			return div(
+				apply(itm.images, function(image, idx){
+					var imgPath = path+"/images/#"+idx;
+					return div(
+						"Ref: ", input({type:"text", "class":"propertyField", path:imgPath+"/ref"}),
+						"Title: ", input({type:"text", "class":"propertyField", path:imgPath+"/title"})
+					)
+				})
+			);
+		}},
+		imageList: function(itm){with(H){
+			return div({"class":"imageList"},
+				apply(itm.images, function(image, idx){
+					return a({href:image.ref},
+						img({src:image.ref, title:image.title, border:0})
+					);
+				})
 			);
 		}},
 		itemDescription: function(itm){with(H){
@@ -46,16 +69,17 @@
 			return div(
 				div("Name: ", input({type:"text", "class":"propertyField", path:path+"/name"})),
 				div("Tags: ", input({type:"text", "class":"propertyField", path:path+"/tags"})),
-				div("Description: ", textarea({"class":"propertyField", path:path+"/description"}))
+				div("Description: ", textarea({"class":"propertyField", path:path+"/description"})),
+				div("Ref: ", input({type:"text", "class":"propertyField", path:path+"/ref"})),
+				templates.imageListEditor(doc, idx)
 			);
 		}}
 	};
 	
 	function buildView(pnl, doc, editMode){
 		pnl.html(templates.main(doc, editMode));
-		$(".item .btEditItem").click(function(){var _=$(this);
+		$(".item .btEditItem").button().click(function(){var _=$(this);
 			var idx = parseInt(_.parent().attr("id").replace("itm_", ""));
-			//alert(idx+" selected");
 			$("#catViewItemDialog")
 				.html(templates.itemDialog(doc, idx))
 				.dialog({
