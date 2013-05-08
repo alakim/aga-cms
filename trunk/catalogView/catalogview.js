@@ -11,6 +11,20 @@
 		return true;
 	}
 	
+	function fillFields(pnl, doc){
+		$(pnl).find(".propertyField").each(function(i, fld){fld=$(fld);
+			var propPath = fld.attr("path");
+			fld.val(JsPath.get(doc, propPath));
+		});
+	}
+	
+	function saveFields(pnl, doc){
+		$(pnl).find(".propertyField").each(function(i,fld){fld=$(fld);
+			var propPath = fld.attr("path"), val = fld.val();
+			JsPath.set(doc, propPath, val);
+		});
+	}
+	
 	function updateTags(doc){
 		var tags = {};
 		$.each(doc.items, function(i, itm){
@@ -24,6 +38,7 @@
 	
 	var imageListEditor = {
 		build: function(pnl, doc, path){
+		
 			function template(doc, itmPath){with(H){
 				var itm = JsPath.get(doc, itmPath);
 				return div({"class":"imageListEditor"},
@@ -46,7 +61,10 @@
 				JsPath.push(doc, path+"/images", {});
 				$("#catViewItemDialog .imageListEditor").parent().html(templates.imageListEditor(doc, path));
 			});
-
+			
+			fillFields(editor, doc);
+			
+			$(pnl).html(editor);
 		}
 	};
 	
@@ -77,10 +95,7 @@
 						text: "Ok",
 						click: function() {var _=$(this);
 							_.dialog( "close" );
-							_.find(".propertyField").each(function(i,fld){fld=$(fld);
-								var propPath = fld.attr("path"), val = fld.val();
-								JsPath.set(doc, propPath, val);
-							});
+							saveFields(_, doc);
 							updateTags(doc);
 							catView.build(catViewPnl, doc, editMode);
 						}
@@ -93,10 +108,7 @@
 					}
 				]
 			});
-			dlg.find(".propertyField").each(function(i, fld){fld=$(fld);
-				var propPath = fld.attr("path");
-				fld.val(JsPath.get(doc, propPath));
-			});
+			fillFields(dlg, doc);
 			
 			imageListEditor.build(dlg.find(".imageListEditor"), doc, path);
 			
