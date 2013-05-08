@@ -1,6 +1,6 @@
 (function($, H){
 	var listView = {
-		build: function(pnl, initPath, upPath){pnl=$(pnl);
+		build: function(pnl, initPath, upPath, onFileSelect){pnl=$(pnl);
 			function template(data, path){with(H){
 				return ul({"class":"listView"},
 					upPath?li({"class":"dir", path:upPath}, ".."):null,
@@ -17,6 +17,8 @@
 				);
 			}}
 			
+			pnl.html(H.img({src:"core/wait.gif"}));
+			
 			$.post("ls.php", {path:initPath}, function(res){
 				var jsData = $.parseJSON(res);
 				var view = $(template(jsData, initPath));
@@ -24,22 +26,19 @@
 					var path = _.attr("path");
 					//console.log(path);
 					if(_.hasClass("dir"))
-						listView.build(pnl, path, initPath);
+						listView.build(pnl, path, initPath, onFileSelect);
 					else if(_.hasClass("file"))
-						listView.onFileSelect(path);
+						onFileSelect(path);
 				});
 				pnl.html(view);
 			});
-		},
-		onFileSelect: function(path){
-			console.log(path);
 		}
 	};
 
 	
-	$.fn.fileManager = function(initPath){
+	$.fn.fileManager = function(initPath, onFileSelect){
 		$(this).each(function(i, el){
-			listView.build(el, initPath);
+			listView.build(el, initPath, null, onFileSelect);
 		});
 	};
 })(jQuery, Html);
