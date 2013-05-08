@@ -35,29 +35,22 @@
 			}}
 			Editor.backup(dataDir, function(res){
 				res = $.parseJSON(res);
-				//$("#backupMessage").html(res.responseText);
 				res = $.parseJSON(res.responseText);
 				$("#backupMessage").html(template(res));
 			});
 		}
 		
 		function displayDoc(path){
-			//console.log("display "+path+"...");
 			var secure = $("#cbSecure")[0].checked;
-			//Editor.display($("#out"), dataDir+"/"+path, path.match(/\.jpg$/i));
-			Editor.display($("#out"), dataDir+"/"+path, secure);
+			Editor.display($("#out"), path, secure);
 		}
 		
 		$(function(){
-			$(".fileLink")
-				.click(function(){
-					displayDoc($(this).text());
-				});
 			$("#fldPassword").change(function(){
 				Editor.password = $(this).val();
 			});
 			
-			$("#fileManager").fileManager("/home/u372483460/public_html/aga-trunk/");
+			$("#fileManager").fileManager("/home/u372483460/public_html/aga-trunk/testData/", displayDoc);
 		});
 	</script>
 </head>
@@ -70,13 +63,7 @@
 	<table border="1" width="100%" cellpadding="3" cellspacing="0">
 		<tr>
 			<td valign="top" width="180">
-				<?php
-					$files = scandir($dataDir);
-					foreach($files as $file){
-						if($file!="." && $file!=".." && $file!=".svn")
-							echo("<div class='fileLink'>{$file}</div>");
-					}
-				?>
+				<div id="fileManager"></div>
 			</td>
 			<td valign="top">
 				<div id="out"></div>
@@ -84,7 +71,6 @@
 		</tr>
 	</table>
 	
-	<div id="fileManager"></div>
 	
 	
 </body>
