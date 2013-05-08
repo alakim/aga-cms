@@ -22,6 +22,7 @@ var Editor = (function(){
 		password:null,
 		docPath:null,
 		display: function(pnl, docPath, secure){
+			$(pnl).html(Html.img({src:"core/wait.gif"}));
 			$.post(__.ws.load, {path:docPath}, function(doc, state, data){
 				var v = data.responseText;
 				//console.log(secure, __.password);
