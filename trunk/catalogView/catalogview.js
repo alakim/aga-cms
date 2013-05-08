@@ -11,6 +11,17 @@
 		return true;
 	}
 	
+	function updateTags(doc){
+		var tags = {};
+		$.each(doc.items, function(i, itm){
+			var itmTags = itm.tags;
+			if(typeof(itmTags)=="string") itmTags = itmTags.split(";");
+			$.each(itmTags, function(j, t){tags[t] = true;});
+		});
+		doc.tags = [];
+		for(var k in tags) doc.tags.push(k);
+	}
+	
 	function fillFields(pnl, doc){
 		$(pnl).find(".propertyField").each(function(i, fld){fld=$(fld);
 			var propPath = fld.attr("path");
@@ -25,40 +36,36 @@
 		});
 	}
 	
-	function updateTags(doc){
-		var tags = {};
-		$.each(doc.items, function(i, itm){
-			var itmTags = itm.tags;
-			if(typeof(itmTags)=="string") itmTags = itmTags.split(";");
-			$.each(itmTags, function(j, t){tags[t] = true;});
-		});
-		doc.tags = [];
-		for(var k in tags) doc.tags.push(k);
-	}
-	
 	function imageListEditor(pnl, doc, path){
-	
-		function template(doc, itmPath){with(H){
+		
+		function tableTemplate(doc, itmPath){with(H){
 			var itm = JsPath.get(doc, itmPath);
 			return div({"class":"imageListEditor"},
 				h3("Images:"),
 				apply(itm.images, function(image, idx){
-					var imgPath = itmPath+"/images/#"+idx;
-					return div(
-						"Ref: ", input({type:"text", "class":"propertyField", path:imgPath+"/ref"}),
-						"Title: ", input({type:"text", "class":"propertyField", path:imgPath+"/title"})
-					)
+					return rowTemplate(itmPath, idx);
 				}),
 				div(span({path:itmPath}, span({"class":"ui-icon ui-icon-plusthick btAddImgRef", title:"Add Image Ref"})))
 			);
 		}}
 		
-		var editor = $(template(doc, path));
-		editor.find(".btAddImgRef").parent().button().click(function(){var _=$(this);
+		function rowTemplate(itmPath, imgIdx){with(H){
+			var imgPath = itmPath+"/images/#"+(imgIdx==null?"*":imgIdx);
+			return div(
+				"Ref: ", input({type:"text", "class":"propertyField", path:imgPath+"/ref"}),
+				"Title: ", input({type:"text", "class":"propertyField", path:imgPath+"/title"})
+			)
+		}}
+		
+		var editor = $(tableTemplate(doc, path));
+		
+		editor.find(".btAddImgRef").parent(). button().click(function(){var _=$(this);
 			var path = _.attr("path");
 			var itm = JsPath.get(doc, path);
-			JsPath.push(doc, path+"/images", {});
-			$("#catViewItemDialog .imageListEditor").parent().html(templates.imageListEditor(doc, path));
+
+			_.parent().before(
+				rowTemplate(path)
+			);
 		});
 		
 		fillFields(editor, doc);
