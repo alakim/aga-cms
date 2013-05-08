@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="core/editor.js"></script>
 	<script type="text/javascript" src="core/textView.js"></script>
 	<script type="text/javascript" src="core/defaultView.js"></script>
+	<script type="text/javascript" src="core/fileman.js"></script>
 	<link rel="stylesheet" type="text/css" href="core/defaultView.css"/>
 	
 	<?php
@@ -55,6 +56,8 @@
 			$("#fldPassword").change(function(){
 				Editor.password = $(this).val();
 			});
+			
+			$("#fileManager").fileManager("/home/u372483460/public_html/aga-trunk/");
 		});
 	</script>
 </head>
@@ -80,6 +83,8 @@
 			</td>
 		</tr>
 	</table>
+	
+	<div id="fileManager"></div>
 	
 	
 </body>
