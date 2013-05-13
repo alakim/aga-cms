@@ -15,6 +15,9 @@
 		var templates = {
 			main: function(doc){with(H){
 				return markup(
+					div(
+						input({type:"button", "class":"btToggleMode", value:"Edit Mode"})
+					),
 					div({"class":"catalogView"},
 						ul({"class":"tagList"},
 							apply(doc.tags, function(tag){
@@ -70,6 +73,9 @@
 		
 		var view = $(templates.main(doc));
 		pnl.html(view);
+		view.find(".btToggleMode").click(function(){
+			alert("toggle");
+		});
 		
 		view.find(".tagList a").click(function(){var _=$(this);
 			var tag = _.attr("href").replace("#","");
@@ -93,12 +99,16 @@
 		pnl.html(template(doc));
 	}
 	
-	$.fn.simpleCatalogView = function(doc, editMode){
+	$.fn.simpleCatalogView = function(json){
+		var doc;
+		try{doc = $.parseJSON(json);}
+		catch(e){alert("Error parsing JSON");}
+		
 		$(this).each(function(i, pnl){
-			if(editMode){
-				editView($(pnl), doc);
-			}
-			else
+			// if(editMode){
+				// editView($(pnl), doc);
+			// }
+			// else
 				catView($(pnl), doc);
 		});
 	};
