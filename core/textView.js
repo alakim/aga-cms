@@ -18,7 +18,7 @@
 						" file name:",
 						input({type:"text", "class":"fldFileName", value:Editor.docPath}),
 						" encode",
-						input({type:"checkbox", "class":"cbEncode"})
+						input({type:"checkbox", "class":"cbEncode"}, Editor.secure?{checked:true}:null)
 					):null
 				),
 				editMode?div(

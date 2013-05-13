@@ -21,11 +21,13 @@ var Editor = (function(){
 		},
 		password:null,
 		docPath:null,
+		secure: false,
 		display: function(pnl, docPath, secure){
 			$(pnl).html(Html.img({src:"core/wait.gif"}));
 			$.post(__.ws.load, {path:docPath}, function(doc, state, data){
 				var v = data.responseText;
 				//console.log(secure, __.password);
+				__.secure = secure && __.password;
 				if(secure && __.password) v = decode(__.password, v);
 				__.docPath = docPath;
 				if(docPath.match(/\.txt$/i))
