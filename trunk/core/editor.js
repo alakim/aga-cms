@@ -30,14 +30,10 @@ var Editor = (function(){
 				__.secure = secure && __.password;
 				if(secure && __.password) v = decode(__.password, v);
 				__.docPath = docPath;
-				if(docPath.match(/\.txt$/i))
-					$(pnl).textView(v);
-				else{
-					//console.log(v);
-					var jsData = $.parseJSON(v);
-					var view = __.selectView(jsData);
-					$(pnl)[view](jsData);
-				}
+ 
+				//console.log(v);
+				var view = __.selectView(docPath, v);
+				$(pnl)[view](v);
 			});
 		},
 		save: function(path, data, onsuccess, secure, onerror){
@@ -56,7 +52,9 @@ var Editor = (function(){
 				});
 			});
 		},
-		selectView: function(doc){
+		selectView: function(path, json){
+			if(path.match(/\.txt$/i))
+				return "textView";
 			return "defaultView";
 		},
 		backup: function(dirPath, onbackup){
