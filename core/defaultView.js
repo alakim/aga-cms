@@ -102,7 +102,10 @@
 		});
 	}
 	
-	$.fn.defaultView = function(doc){
+	$.fn.defaultView = function(json){
+		var doc;
+		try{doc = $.parseJSON(json);}
+		catch(e){alert("Error parsing JSON");}
 		$(this).each(function(i, pnl){
 			buildView($(pnl), doc, false);
 		});
