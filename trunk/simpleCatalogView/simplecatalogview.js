@@ -11,9 +11,9 @@
 		return true;
 	}
 	
-	function catView(pnl, doc, editMode){
+	function catView(pnl, doc){
 		var templates = {
-			main: function(doc, editMode){with(H){
+			main: function(doc){with(H){
 				return markup(
 					div({"class":"catalogView"},
 						ul({"class":"tagList"},
@@ -26,20 +26,19 @@
 						),
 						div({"class":"itemList"},
 							apply(doc.items, function(itm, idx){
-								return templates.item(itm, idx, editMode);
+								return templates.item(itm, idx);
 							})
 						)
 					),
 					div({id:"catViewItemDialog"})
 				);
 			}},
-			item: function(itm, idx, editMode){with(H){
+			item: function(itm, idx){with(H){
 				var tags = itm.tags;
 				if(typeof(tags)=="string")
 					tags = tags.split(";");
 				if(!checkTags(tags)) return;
 				return div({id:"itm_"+idx, "class":"item"+(idx%2?" odd":"")},
-					editMode?span({"class":"btEditItem ui-icon ui-icon-pencil", style:"float:left;"}):null,
 					h2(itm.name),
 					div({"class":"tagList"},
 						apply(tags, function(t){
@@ -69,13 +68,13 @@
 			}}
 		};
 		
-		var view = $(templates.main(doc, editMode));
+		var view = $(templates.main(doc));
 		pnl.html(view);
 		
 		view.find(".tagList a").click(function(){var _=$(this);
 			var tag = _.attr("href").replace("#","");
 			selectedTags[tag] = !selectedTags[tag]==true;
-			catView(pnl, doc, editMode);
+			catView(pnl, doc);
 		});
 		
 		view.find(".btEditItem").button().click(function(){var _=$(this);
@@ -84,9 +83,23 @@
 		});
 	}
 	
+	function editView(pnl, doc){
+		function template(doc){with(H){
+			return markup(
+				textarea({style:style({width:600, height:300})} )
+			);
+		}}
+		
+		pnl.html(template(doc));
+	}
+	
 	$.fn.simpleCatalogView = function(doc, editMode){
 		$(this).each(function(i, pnl){
-			catView($(pnl), doc, editMode);
+			if(editMode){
+				editView($(pnl), doc);
+			}
+			else
+				catView($(pnl), doc);
 		});
 	};
 })(jQuery, Html);
