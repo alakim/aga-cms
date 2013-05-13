@@ -11,6 +11,23 @@
 		return true;
 	}
 	
+	function collectTags(doc){
+		var tags = {};
+		$.each(doc.items, function(i, itm){
+			var itags = itm.tags;
+			if(typeof(itags)=="string")
+				itags = itags.split(";");
+			$.each(itags, function(j, tg){
+				tags[tg] = true;
+			});
+		});
+		var res = [];
+		for(var k in tags){
+			res.push(k);
+		}
+		return res;
+	}
+	
 	function catView(pnl, doc){
 		var templates = {
 			main: function(doc){with(H){
@@ -20,7 +37,7 @@
 					),
 					div({"class":"catalogView"},
 						ul({"class":"tagList"},
-							apply(doc.tags, function(tag){
+							apply(collectTags(doc), function(tag){
 								return li(
 									selectedTags[tag]?{"class":"selected"}:null,
 									a({href:"#"+tag}, tag)
