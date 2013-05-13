@@ -28,7 +28,7 @@
 		return res;
 	}
 	
-	function catView(pnl, doc){
+	function catView(pnl, doc, json){
 		var templates = {
 			main: function(doc){with(H){
 				return markup(
@@ -91,29 +91,31 @@
 		var view = $(templates.main(doc));
 		pnl.html(view);
 		view.find(".btToggleMode").click(function(){
-			alert("toggle");
+			editView(pnl, doc, json);
 		});
 		
 		view.find(".tagList a").click(function(){var _=$(this);
 			var tag = _.attr("href").replace("#","");
 			selectedTags[tag] = !selectedTags[tag]==true;
-			catView(pnl, doc);
+			catView(pnl, doc, json);
 		});
 		
-		view.find(".btEditItem").button().click(function(){var _=$(this);
-			var idx = parseInt(_.parent().attr("id").replace("itm_", ""));
-			itemDialog(doc, idx, pnl);
-		});
+		
 	}
 	
-	function editView(pnl, doc){
-		function template(doc){with(H){
+	function editView(pnl, doc, jsdoc){
+		function template(){with(H){
 			return markup(
-				textarea({style:style({width:600, height:300})} )
+				div(input({type:"button", "class":"btToggleMode", value:"View Mode"})),
+				textarea({style:style({width:600, height:300})}, jsdoc)
 			);
 		}}
 		
-		pnl.html(template(doc));
+		var view = $(template());
+		pnl.html(view);
+		view.find(".btToggleMode").click(function(){
+			catView(pnl, doc, jsdoc);
+		});
 	}
 	
 	$.fn.simpleCatalogView = function(json){
@@ -122,11 +124,7 @@
 		catch(e){alert("Error parsing JSON");}
 		
 		$(this).each(function(i, pnl){
-			// if(editMode){
-				// editView($(pnl), doc);
-			// }
-			// else
-				catView($(pnl), doc);
+				catView($(pnl), doc, json);
 		});
 	};
 })(jQuery, Html);
