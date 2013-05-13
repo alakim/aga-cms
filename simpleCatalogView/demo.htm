@@ -1,7 +1,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
-	<title>CatalogView Demo Page</title>
+	<title>Simple CatalogView Demo Page</title>
 	<script type="text/javascript" src="../core/lib/html.js"></script>
 	<script type="text/javascript" src="../core/lib/jspath.js"></script>
 	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
@@ -21,7 +21,6 @@
 	
 	<script type="text/javascript">
 		var doc = {
-			tags:["space", "stars", "photo", "book"],
 			items:[
 				{name:"Regul", tags:"stars;space", description:"Регул - ярчайшая звезда в созвездии Льва.\nКроме того, она располагается ближе всех к эклиптике среди звезд первой величины."},
 				{name:"Фотография Луны", tags:"photo", ref:"http://www.myphoto.com/moon"}
@@ -29,24 +28,12 @@
 		};
 		
 		$(function(){
-			$("#btToggleMode").button();
-			$("#viewPanel").simpleCatalogView(doc);
+			$("#viewPanel").simpleCatalogView(JSON.stringify(doc));
 		});
-		
-		var editMode = false;
-		
-		function toggleMode(){
-			editMode = !editMode;
-			$("#btToggleMode").val(editMode?"View Mode":"Edit Mode");
-			$("#viewPanel").simpleCatalogView(doc, editMode);
-		}
 	</script>
 </head>
 <body>
-	<h1>CatalogView Demo Page</h1>
-	<div>
-		<input type="button" id="btToggleMode" value="Edit Mode" onclick="toggleMode()"/>
-	</div>
+	<h1>Simple CatalogView Demo Page</h1>
 	<div id="viewPanel"></div>
 </body>
 </html>
