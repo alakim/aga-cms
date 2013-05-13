@@ -1,0 +1,52 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>CatalogView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="simplecatalogview.js"></script>
+	<link rel="stylesheet" type="text/css" href="simplecatalogview.css"/>
+	
+	<script type="text/javascript">
+		var doc = {
+			tags:["space", "stars", "photo", "book"],
+			items:[
+				{name:"Regul", tags:"stars;space", description:"Регул - ярчайшая звезда в созвездии Льва.\nКроме того, она располагается ближе всех к эклиптике среди звезд первой величины."},
+				{name:"Фотография Луны", tags:"photo", ref:"http://www.myphoto.com/moon"}
+			]
+		};
+		
+		$(function(){
+			$("#btToggleMode").button();
+			$("#viewPanel").simpleCatalogView(doc);
+		});
+		
+		var editMode = false;
+		
+		function toggleMode(){
+			editMode = !editMode;
+			$("#btToggleMode").val(editMode?"View Mode":"Edit Mode");
+			$("#viewPanel").simpleCatalogView(doc, editMode);
+		}
+	</script>
+</head>
+<body>
+	<h1>CatalogView Demo Page</h1>
+	<div>
+		<input type="button" id="btToggleMode" value="Edit Mode" onclick="toggleMode()"/>
+	</div>
+	<div id="viewPanel"></div>
+</body>
+</html>
