@@ -107,7 +107,14 @@
 		function template(){with(H){
 			return markup(
 				div(input({type:"button", "class":"btToggleMode", value:"View Mode"})),
-				textarea({style:style({width:600, height:300})}, jsdoc)
+				div(
+					input({type:"button", "class":"btnSave", value:"Save"}),
+					" file name:",
+					input({type:"text", "class":"fldFileName", value:Editor.docPath}),
+					" encode",
+					input({type:"checkbox", "class":"cbEncode"}, Editor.secure?{checked:true}:null)
+				),
+				textarea({"class":"fldJsonDoc", style:style({width:600, height:300})}, jsdoc)
 			);
 		}}
 		
@@ -116,6 +123,17 @@
 		view.find(".btToggleMode").click(function(){
 			catView(pnl, doc, jsdoc);
 		});
+		pnl.find(".btnSave").click(function(){
+			var filePath = pnl.find(".fldFileName").val();
+			var encode = pnl.find(".cbEncode")[0].checked;
+			var jsDoc = pnl.find(".fldJsonDoc").val();
+			Editor.save(filePath, jsDoc, function(){
+				alert("Saved "+filePath);
+			}, encode, function(){
+				alert("Error saving file "+filePath);
+			});
+		});
+
 	}
 	
 	$.fn.simpleCatalogView = function(json){
