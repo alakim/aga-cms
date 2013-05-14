@@ -131,7 +131,7 @@
 				alert("Saved "+filePath);
 			}, encode, function(){
 				alert("Error saving file "+filePath);
-			});
+			}, true);
 		});
 
 	}
