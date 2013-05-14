@@ -137,6 +137,7 @@
 	}
 	
 	$.fn.simpleCatalogView = function(json){
+		selectedTags = {};
 		var doc;
 		try{doc = $.parseJSON(json);}
 		catch(e){alert("Error parsing JSON");}
