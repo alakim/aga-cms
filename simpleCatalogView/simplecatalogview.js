@@ -25,6 +25,7 @@
 		for(var k in tags){
 			res.push(k);
 		}
+		res = res.sort();
 		return res;
 	}
 	
@@ -36,12 +37,12 @@
 						input({type:"button", "class":"btToggleMode", value:"Edit Mode"})
 					),
 					div({"class":"catalogView"},
-						ul({"class":"tagList"},
+						div({"class":"tagList"},
 							apply(collectTags(doc), function(tag){
-								return li(
+								return markup(span(
 									selectedTags[tag]?{"class":"selected"}:null,
 									a({href:"#"+tag}, tag)
-								);
+								), " ");
 							})
 						),
 						div({"class":"itemList"},
