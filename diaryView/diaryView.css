@@ -4,3 +4,6 @@
 .tagList .selected{
 	background-color: yellow;
 }
+.section{
+	margin-left: 20px;
+}
