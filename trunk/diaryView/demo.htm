@@ -1,0 +1,37 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Simple DiaryView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="diaryView.js"></script>
+	<link rel="stylesheet" type="text/css" href="diaryView.css"/>
+	
+	<script type="text/javascript">
+		var diary = [
+			{t:"201305141700", tags:"plans;development;work", txt:"Написание ТЗ на разработку diaryView."},
+			{t:"201305151000", tags:"test;development;work", txt:"Начало разработки diaryView."}
+		];
+		
+		$(function(){
+			$("#viewPanel").diaryView(JSON.stringify(diary));
+		});
+	</script>
+</head>
+<body>
+	<h1>Simple DiaryView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
