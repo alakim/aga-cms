@@ -2,22 +2,36 @@
 	
 	function buildView(el, jsDoc){
 		var tags = [];
+		var selectedTags = {};
+		
+		function checkTags(tList){
+			for(var i=0; i<tList.length; i++){
+				if(selectedTags[tList[i]]) return true;
+			}
+			return noTagsSelected();
+		}
+		function noTagsSelected(){
+			for(var k in selectedTags){
+				if(selectedTags[k]) return false;
+			}
+			return true;
+		}
 		
 		function template(doc){with(H){
 			return div(
 				div({"class":"tagList"},
 					apply(tags, function(tg){
 						return markup(" ",
-							a({href:"#"}, tg)
+							a({href:"#"}, selectedTags[tg]?{"class":"selected"}:null, tg)
 						);
 					})
 				),
 				apply(doc, function(itm){
-					return div(
+					return checkTags(itm.tags)?div(
 						itm.t, ": ",
 						span({style:"font-style:italic;"}, "[", itm.tags.join(","), "] "),
 						itm.txt
-					);
+					):null;
 				})
 			);
 		}}
@@ -43,12 +57,18 @@
 		catch(e){alert("JSON parsing error!"); return;}
 		
 		prepareData(doc);
-		var pnl = $(template(doc));
-		el.html(pnl);
-		pnl.find(".tagList a").click(function(){var _=$(this);
-			var tag = _.text();
-			alert(tag + " selected!");
-		});
+		selectedTags = {};
+		
+		function updateView(){
+			var pnl = $(template(doc));
+			el.html(pnl);
+			pnl.find(".tagList a").click(function(){var _=$(this);
+				var tag = _.text();
+				selectedTags[tag] = !selectedTags[tag];
+				updateView();
+			});
+		}
+		updateView();
 	}
 	
 	$.fn.diaryView = function(jsDoc){

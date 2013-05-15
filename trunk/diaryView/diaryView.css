@@ -1,3 +1,6 @@
 .tagList{
 	margin: 5px;
 }
+.tagList .selected{
+	background-color: yellow;
+}
