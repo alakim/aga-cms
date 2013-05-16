@@ -1,7 +1,13 @@
 (function($,H){
 	
 	function buildView(el, jsDoc){
+		var doc = $.parseJSON(jsDoc);
+		var tagDict = {};
+		collectTags(doc);
 		var tags = [];
+		for(var k in tagDict) tags.push(k);
+		tags.sort();
+		
 		var selectedTags = {};
 		
 		function checkTags(tList){
@@ -17,75 +23,80 @@
 			return true;
 		}
 		
+		function collectTags(nd){
+			if(nd instanceof Array){
+				$.each(nd, function(i, itm){
+					itm.tags = itm.tags.split(";");
+					$.each(itm.tags, function(j, t){
+						tagDict[t] = true;
+					});
+				})
+			}
+			else{
+				for(var k in nd) collectTags(nd[k]);
+			}
+		}
+		
 		var templates = {
-			main: function(doc){with(H){
+			tagList: function(doc){with(H){
+				return div({"class":"tagList"},
+					apply(tags, function(t){
+						return a({href:"#"}, selectedTags[t]?{"class":"selected"}:null, t);
+					}, " ")
+				);
+			}},
+			main:function(doc){with(H){
 				return div(
-					div({"class":"tagList"},
-						apply(tags, function(tg){
-							return markup(" ",
-								a({href:"#"}, selectedTags[tg]?{"class":"selected"}:null, tg)
-							);
-						})
-					),
-					apply(doc, function(itm){
-						return checkTags(itm.tags)?div(
-							templates.time(itm.t), ": ",
-							span({style:"font-style:italic;"}, "[", itm.tags.join(","), "] "),
-							itm.txt
-						):null;
+					templates.tagList(doc),
+					apply(doc, function(y, yNr){
+						return templates.year(y, yNr);
 					})
 				);
 			}},
-			time: function(t){with(H){
-				return span(
-					t.date, ".", t.month, ".", t.year,
-					" ",
-					t.time
+			year: function(y, yNr){with(H){
+				return div(
+					h2(yNr),
+					div({"class":"year"},
+						apply(y, function(m, mNr){
+							return templates.month(m, mNr, yNr);
+						})
+					)
+				);
+			}},
+			month: function(m, mNr, yNr){with(H){
+				if(mNr<10)mNr = "0"+mNr;
+				return div({"class":"section"},
+					h3(yNr, ".", mNr),
+					div({"class":"month"},
+						apply(m, function(d, dNr){
+							return templates.day(d, dNr, mNr, yNr);
+						})
+					)
+				);
+			}},
+			day: function(d, dNr, mNr, yNr){with(H){
+				if(dNr<10)dNr = "0"+dNr;
+				return div({"class":"section"},
+					h4(yNr, ".", mNr, ".", dNr),
+					div({"class":"day"},
+						apply(d, function(evt){
+							if(!checkTags(evt.tags)) return;
+							return div({"class":"section"},
+								evt.t?span({"class":"time"}, evt.t, " "):null, 
+								evt.txt
+							);
+						})
+					)
 				);
 			}}
 		};
 		
-		function prepareData(doc){
-			tagDict = {};
-			$.each(doc, function(i, itm){
-				if(typeof(itm.tags)=="string")
-					itm.tags = itm.tags.split(";");
-				$.each(itm.tags, function(j, tg){
-					tagDict[tg] = true;
-				});
-				
-				var dateMt = itm.t.match(/(\d\d\d\d)(\d\d)(\d\d)((\d\d)(\d\d))?/);
-				if(!dateMt) alert("Date parsing error "+itm.t);
-				itm.t = {
-					year:dateMt[1],
-					month:dateMt[2],
-					date:dateMt[3]
-				};
-				if(dateMt[4]) itm.t.time = dateMt[5]+":"+dateMt[6];
+		function hideEmptySections(pnl){
+			pnl.find(".day").each(function(i, d){d=$(d);
+				if(!d.text().length)
+					d.parent().html("");
 			});
-			
-			tags = [];
-			for(var k in tagDict)
-				tags.push(k);
-			tags = tags.sort();
-			
-			//buildYears(doc);
 		}
-		
-		// function buildYears(doc){
-			// doc.years = {};
-			// function getYear(y){
-				// if(!doc.years[y]) doc.years[y] = {year:y, months:[]};
-				// return doc.years[y];
-			// }
-		// }
-		
-		var doc;
-		try{doc = $.parseJSON(jsDoc);}
-		catch(e){alert("JSON parsing error!"); return;}
-		
-		prepareData(doc);
-		selectedTags = {};
 		
 		function updateView(){
 			var pnl = $(templates.main(doc));
@@ -95,6 +106,7 @@
 				selectedTags[tag] = !selectedTags[tag];
 				updateView();
 			});
+			hideEmptySections(pnl);
 		}
 		updateView();
 	}

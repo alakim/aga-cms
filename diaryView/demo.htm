@@ -16,17 +16,11 @@
 	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
 	
 	
-	<script type="text/javascript" src="diaryView2.js"></script>
+	<script type="text/javascript" src="diaryView.js"></script>
 	<link rel="stylesheet" type="text/css" href="diaryView.css"/>
 	
 	<script type="text/javascript">
-		var diary = [
-			{t:"20130514", tags:"events", txt:"Событие на весь день"},
-			{t:"201305141700", tags:"plans;development;work", txt:"Написание ТЗ на разработку diaryView."},
-			{t:"201305151000", tags:"test;development;work", txt:"Начало разработки diaryView."}
-		];
-		
-		var diary2 = {
+		var diary = {
 			2013:{
 				5:{
 					14:[
@@ -41,7 +35,7 @@
 		};
 		
 		$(function(){
-			$("#viewPanel").diaryView(JSON.stringify(diary2));
+			$("#viewPanel").diaryView(JSON.stringify(diary));
 		});
 	</script>
 </head>
