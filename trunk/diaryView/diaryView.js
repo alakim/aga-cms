@@ -47,6 +47,16 @@
 			}},
 			main:function(doc){with(H){
 				return div(
+					div({"class":"buttonsPnl"},
+						input({type:"button", "class":"btEdit", value:"Edit View"})
+					),
+					div({"class":"contentPnl"},
+						templates.content(doc)
+					)
+				);
+			}},
+			content:function(doc){with(H){
+				return div(
 					templates.tagList(doc),
 					apply(doc, function(y, yNr){
 						return templates.year(y, yNr);
@@ -81,8 +91,15 @@
 					div({"class":"day"},
 						apply(d, function(evt){
 							if(!checkTags(evt.tags)) return;
-							return div({"class":"section"},
+							return div({"class":"section event"},
 								evt.t?span({"class":"time"}, evt.t, " "):null, 
+								span({"class":"tagList"},
+									"[",
+									apply(evt.tags, function(eTg){
+										return span(eTg);
+									}, ", "),
+									"] "
+								),
 								evt.txt
 							);
 						})
@@ -91,24 +108,35 @@
 			}}
 		};
 		
-		function hideEmptySections(pnl){
+		function hideEmptySections(pnl){pnl=$(pnl);
 			pnl.find(".day").each(function(i, d){d=$(d);
 				if(!d.text().length)
 					d.parent().html("");
 			});
 		}
 		
-		function updateView(){
+		function buildPanels(){
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
-			pnl.find(".tagList a").click(function(){var _=$(this);
+			pnl.find(".buttonsPnl btEdit").click(function(){
+				
+			});
+			updateView(pnl);
+		}
+		
+		function updateView(pnl){
+			var contPnl = $(templates.content(doc));
+			pnl.find(".contentPnl").html(contPnl);
+			hideEmptySections(contPnl);
+			contPnl.find(".tagList a").click(function(){var _=$(this);
 				var tag = _.text();
 				selectedTags[tag] = !selectedTags[tag];
-				updateView();
+				//console.log(selectedTags);
+				updateView(pnl);
 			});
-			hideEmptySections(pnl);
 		}
-		updateView();
+		
+		buildPanels();
 	}
 	
 	$.fn.diaryView = function(jsDoc){
