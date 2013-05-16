@@ -118,8 +118,9 @@
 		function buildPanels(){
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
-			pnl.find(".buttonsPnl btEdit").click(function(){
-				
+			pnl.find(".buttonsPnl .btEdit").click(function(){
+				console.log(jsDoc);
+				pnl.find(".contentPnl").textEditor(formatJson(doc));
 			});
 			updateView(pnl);
 		}
@@ -137,6 +138,37 @@
 		}
 		
 		buildPanels();
+	}
+	
+	function formatJson(doc){
+		function getIndent(level){
+			if(!level) return "";
+			var ind = [];
+			for(var i=0; i<level; i++) ind.push("\t");
+			return ind.join("");
+		}
+		
+		function formatDay(day, level){
+			var indent = getIndent(level-1);
+			var js = [];
+			for(var i=0; i<day.length; i++){var evt = day[i];
+				js.push(indent+"\t"+JSON.stringify(evt))
+			}
+			return "[\n"+js.join(",\n")+"\n"+indent+"]";
+		}
+		
+		function formatSection(sect, level){
+			level = level || 0;
+			if(sect instanceof Array) return formatDay(sect, level+1);
+			var indent = getIndent(level);
+			var js = [];
+			for(var k in sect){
+				js.push(indent+"\t\""+k+"\":"+formatSection(sect[k], level+1));
+			}
+			js = js.join(",\n");
+			return "{\n"+js+"\n"+indent+"}"
+		}
+		return formatSection(doc);
 	}
 	
 	$.fn.diaryView = function(jsDoc){
