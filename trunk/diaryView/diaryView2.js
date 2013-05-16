@@ -8,6 +8,21 @@
 		for(var k in tagDict) tags.push(k);
 		tags.sort();
 		
+		var selectedTags = {};
+		
+		function checkTags(tList){
+			for(var i=0; i<tList.length; i++){
+				if(selectedTags[tList[i]]) return true;
+			}
+			return noTagsSelected();
+		}
+		function noTagsSelected(){
+			for(var k in selectedTags){
+				if(selectedTags[k]) return false;
+			}
+			return true;
+		}
+		
 		function collectTags(nd){
 			if(nd instanceof Array){
 				$.each(nd, function(i, itm){
@@ -26,7 +41,7 @@
 			tagList: function(doc){with(H){
 				return div({"class":"tagList"},
 					apply(tags, function(t){
-						return a({href:"#"}, t);
+						return a({href:"#"}, selectedTags[t]?{"class":"selected"}:null, t);
 					}, " ")
 				);
 			}},
@@ -41,7 +56,7 @@
 			year: function(y, yNr){with(H){
 				return div(
 					h2(yNr),
-					div(
+					div({"class":"year"},
 						apply(y, function(m, mNr){
 							return templates.month(m, mNr, yNr);
 						})
@@ -52,7 +67,7 @@
 				if(mNr<10)mNr = "0"+mNr;
 				return div({"class":"section"},
 					h3(yNr, ".", mNr),
-					div(
+					div({"class":"month"},
 						apply(m, function(d, dNr){
 							return templates.day(d, dNr, mNr, yNr);
 						})
@@ -63,9 +78,11 @@
 				if(dNr<10)dNr = "0"+dNr;
 				return div({"class":"section"},
 					h4(yNr, ".", mNr, ".", dNr),
-					div(
+					div({"class":"day"},
 						apply(d, function(evt){
+							if(!checkTags(evt.tags)) return;
 							return div({"class":"section"},
+								evt.t?span({"class":"time"}, evt.t, " "):null, 
 								evt.txt
 							);
 						})
@@ -73,6 +90,13 @@
 				);
 			}}
 		};
+		
+		function hideEmptySections(pnl){
+			pnl.find(".day").each(function(i, d){d=$(d);
+				if(!d.text().length)
+					d.parent().html("");
+			});
+		}
 		
 		function updateView(){
 			var pnl = $(templates.main(doc));
@@ -82,6 +106,7 @@
 				selectedTags[tag] = !selectedTags[tag];
 				updateView();
 			});
+			hideEmptySections(pnl);
 		}
 		updateView();
 	}
