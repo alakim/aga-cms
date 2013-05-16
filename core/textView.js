@@ -1,10 +1,22 @@
 (function($,H){
 	
 	function toHtml(str){
-		return str
+		str = str
 			.replace(/&/ig, "&amp;")
 			.replace(/</ig, "&lt;")
-			.replace(/>/ig, "&gt;")
+			.replace(/>/ig, "&gt;");
+			
+		str = str.split("\n");
+		for(var i=0; i<str.length; i++){var ln = str[i];
+			var mt = ln.match(/^( *)/);
+			if(mt){
+				var indent = mt[1];
+				indent = indent.replace(/ /g, "&nbsp;");
+				str[i] = str[i].replace(/^ */, indent);
+			}
+		}
+		str = str.join("\n");
+		return str
 			.replace(/\n/ig, Html.br())
 			.replace(/\t/ig, "&nbsp;&nbsp;&nbsp;&nbsp;");
 	}
