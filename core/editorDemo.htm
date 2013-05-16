@@ -1,0 +1,38 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Editor Demo Page</title>
+	<script type="text/javascript" src="lib/html.js"></script>
+	<script type="text/javascript" src="lib/jspath.js"></script>
+	<script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="cdk.js"></script>
+	<script type="text/javascript" src="editor.js"></script>
+	
+	<script type="text/javascript" src="textView.js"></script>
+	<script type="text/javascript" src="textEditor.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	
+	<script type="text/javascript">
+		var doc = [
+			"Небольшой текст",
+			"Абзац",
+			"   Абзац с отступом пробелами",
+			"		Абзац с отступом табуляциями"
+		].join("\n");
+		
+		$(function(){
+			$("#viewPanel").textView(doc);
+		});
+	</script>
+</head>
+<body>
+	<h1>Editor Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>

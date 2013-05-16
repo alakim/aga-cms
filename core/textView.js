@@ -22,45 +22,24 @@
 	}
 	var templates = {
 		main: function(doc, editMode){with(Html){
-			return markup(
+			return div(
 				div({"class":"editPnl"},
-					input({type:"button", "class":"btnEdit", value:editMode?"View mode":"Edit mode"}),
-					editMode?markup(
-						input({type:"button", "class":"btnSave", value:"Save"}),
-						" file name:",
-						input({type:"text", "class":"fldFileName", value:Editor.docPath}),
-						" encode",
-						input({type:"checkbox", "class":"cbEncode"}, Editor.secure?{checked:true}:null)
-					):null
+					input({type:"button", "class":"btnEdit", value:editMode?"View mode":"Edit mode"})
 				),
-				editMode?div(
-					textarea({"class":"fldDoc", style:"width:550px; height:350px;"}, doc)
-				):div(toHtml(doc))
+				div({"class":"contentPnl"}, editMode?"":toHtml(doc))
 			);
 		}}
 	};
 
 	function buildView(pnl, doc, editMode){
-		pnl.html(templates.main(doc, editMode));
+		var view = $(templates.main(doc, editMode));
+		pnl.html(view);
 		$(".editPnl .btnEdit").click(function(){
 			buildView(pnl, doc, !editMode);
 		});
-		$(".editPnl .btnSave").click(function(){
-			var filePath = $(".editPnl .fldFileName").val();
-			var encode = $(".editPnl .cbEncode")[0].checked;
-			// console.log(filePath, ", ", encode);
-			// return;
-			//console.log("saved: ", doc); return;
-			Editor.save(filePath, doc, function(){
-				alert("Saved "+filePath);
-			}, encode, function(){
-				alert("Error saving file "+filePath);
-			});
-		});
-		$("textarea.fldDoc").change(function(){
-			doc = $(this).val();
-		});
-		
+		if(editMode){
+			view.find(".contentPnl").textEditor(doc, function(v){doc = v;});
+		}
 	}
 	
 	$.fn.textView = function(doc){
