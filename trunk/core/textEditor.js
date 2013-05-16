@@ -3,7 +3,7 @@
 	function buildEditor(pnl, doc, onchange){
 		function template(){with(H){
 			return div(
-				div(
+				div({"class":"buttonsPnl"},
 					input({type:"button", "class":"btnSave", value:"Save"}),
 					" file name:",
 					input({type:"text", "class":"fldFileName", value:Editor.docPath}),
@@ -19,9 +19,10 @@
 		pnl.html(editPnl);
 		
 		editPnl.find(".btnSave").click(function(){
-			var filePath = $(".editPnl .fldFileName").val();
-			var encode = $(".editPnl .cbEncode")[0].checked;
-			Editor.save(filePath, doc, function(){
+			var filePath = editPnl.find(".buttonsPnl .fldFileName").val();
+			var encode = editPnl.find(".buttonsPnl .cbEncode")[0].checked;
+			var v = editPnl.find("textarea.fldDoc").val();
+			Editor.save(filePath, v, function(){
 				alert("Saved "+filePath);
 			}, encode, function(){
 				alert("Error saving file "+filePath);
