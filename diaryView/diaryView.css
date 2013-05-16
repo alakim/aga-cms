@@ -10,3 +10,7 @@
 .section .time{
 	font-weight: bold;
 }
+.event .tagList{
+	margin: 0;
+	font-style: italic;
+}
