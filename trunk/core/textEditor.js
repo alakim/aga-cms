@@ -26,7 +26,7 @@
 				alert("Saved "+filePath);
 			}, encode, function(){
 				alert("Error saving file "+filePath);
-			});
+			}, true);
 		});
 		editPnl.find("textarea.fldDoc").change(function(){
 			var v = $(this).val();
