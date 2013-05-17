@@ -142,7 +142,10 @@
 		function formatDay(day, indent){
 			var js = [];
 			for(var i=0; i<day.length; i++){var evt = day[i];
-				js.push(indent+"\t"+JSON.stringify(evt))
+				var dd = {};
+				$.extend(dd, evt);
+				dd.tags = dd.tags.join(";");
+				js.push(indent+"\t"+JSON.stringify(dd))
 			}
 			return "[\n"+js.join(",\n")+"\n"+indent+"]";
 		}
