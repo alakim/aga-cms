@@ -75,7 +75,9 @@
 			}},
 			year: function(y, yNr){with(H){
 				return div(
-					h2(yNr),
+					h2(yNr, 
+						editMode?span(" ", span({"class":"yearEditBtn"}, "[edit]")):null
+					),
 					div({"class":"year"},
 						apply(y, function(m, mNr){
 							return templates.month(m, mNr, yNr);
@@ -126,6 +128,7 @@
 		}
 		
 		function buildPanels(){
+			el.html("");
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
 			pnl.find(".buttonsPnl .btEditText").click(function(){
@@ -136,9 +139,15 @@
 				buildView(pnl.find(".contentPnl").parent(), doc, true);
 			});
 			
-			pnl.find(".editorButtonsPnl .btnSave").click(function(){
-				alert(1);
-			});
+			if(true || editMode){
+				pnl.find(".editorButtonsPnl .btnSave").click(function(){
+					alert(1);
+				});
+				console.log(pnl.find(".yearEditBtn"));
+				pnl.find(".yearEditBtn").css({cursor:"pointer"}).click(function(){
+					alert(2);
+				});
+			}
 			
 			updateView(pnl);
 		}
