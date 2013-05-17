@@ -48,7 +48,8 @@
 			main:function(doc){with(H){
 				return div(
 					div({"class":"buttonsPnl"},
-						input({type:"button", "class":"btEdit", value:"Edit View"})
+						input({type:"button", "class":"btEdit", value:"Editor"}), " ",
+						input({type:"button", "class":"btEditText", value:"Text Editor"})
 					),
 					div({"class":"contentPnl"},
 						templates.content(doc)
@@ -118,8 +119,11 @@
 		function buildPanels(){
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
-			pnl.find(".buttonsPnl .btEdit").click(function(){
+			pnl.find(".buttonsPnl .btEditText").click(function(){
 				pnl.find(".contentPnl").textEditor(formatJson(doc));
+			});
+			pnl.find(".buttonsPnl .btEdit").click(function(){
+				buildEditor(pnl.find(".contentPnl"), doc);
 			});
 			updateView(pnl);
 		}
@@ -161,6 +165,17 @@
 			return "{\n"+js+"\n"+indent+"}"
 		}
 		return formatSection(doc);
+	}
+	
+	function buildEditor(pnl, doc){
+		function template(){with(H){
+			return div(
+				"*** EDITOR ***"
+			);
+		}}
+		
+		var editor = $(template());
+		pnl.html(editor);
 	}
 	
 	$.fn.diaryView = function(jsDoc){
