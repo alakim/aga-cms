@@ -1,7 +1,8 @@
 (function($,H){
 	
-	function buildView(el, jsDoc){
-		var doc = $.parseJSON(jsDoc);
+	function buildView(el, doc, editMode){
+		if(typeof(doc)=="string")
+			doc = $.parseJSON(doc);
 		var tagDict = {};
 		collectTags(doc);
 		var tags = [];
@@ -26,7 +27,8 @@
 		function collectTags(nd){
 			if(nd instanceof Array){
 				$.each(nd, function(i, itm){
-					itm.tags = itm.tags.split(";");
+					if(typeof(itm.tags)=="string")
+						itm.tags = itm.tags.split(";");
 					$.each(itm.tags, function(j, t){
 						tagDict[t] = true;
 					});
@@ -51,6 +53,13 @@
 						input({type:"button", "class":"btEdit", value:"Editor"}), " ",
 						input({type:"button", "class":"btEditText", value:"Text Editor"})
 					),
+					editMode?div({"class":"editorButtonsPnl"},
+						input({type:"button", "class":"btnSave", value:"Save"}),
+						" file name:",
+						input({type:"text", "class":"fldFileName", value:Editor.docPath}),
+						" encode",
+						input({type:"checkbox", "class":"cbEncode"}, Editor.secure?{checked:true}:null)
+					):null,
 					div({"class":"contentPnl"},
 						templates.content(doc)
 					)
@@ -120,11 +129,17 @@
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
 			pnl.find(".buttonsPnl .btEditText").click(function(){
+				pnl.find(".editorButtonsPnl").remove();
 				pnl.find(".contentPnl").textEditor(formatJson(doc));
 			});
 			pnl.find(".buttonsPnl .btEdit").click(function(){
-				buildEditor(pnl.find(".contentPnl"), doc);
+				buildView(pnl.find(".contentPnl").parent(), doc, true);
 			});
+			
+			pnl.find(".editorButtonsPnl .btnSave").click(function(){
+				alert(1);
+			});
+			
 			updateView(pnl);
 		}
 		
@@ -165,17 +180,6 @@
 			return "{\n"+js+"\n"+indent+"}"
 		}
 		return formatSection(doc);
-	}
-	
-	function buildEditor(pnl, doc){
-		function template(){with(H){
-			return div(
-				"*** EDITOR ***"
-			);
-		}}
-		
-		var editor = $(template());
-		pnl.html(editor);
 	}
 	
 	$.fn.diaryView = function(jsDoc){
