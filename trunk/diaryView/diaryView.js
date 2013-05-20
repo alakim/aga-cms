@@ -1,8 +1,7 @@
 (function($,H){
 	
-	function buildView(el, doc, editMode){
-		if(typeof(doc)=="string")
-			doc = $.parseJSON(doc);
+	function buildView(el, jsDoc){
+		var doc = $.parseJSON(jsDoc);
 		var tagDict = {};
 		collectTags(doc);
 		var tags = [];
@@ -12,6 +11,7 @@
 		var selectedTags = {};
 		
 		function checkTags(tList){
+			if(!tList) return noTagsSelected();
 			for(var i=0; i<tList.length; i++){
 				if(selectedTags[tList[i]]) return true;
 			}
@@ -27,8 +27,8 @@
 		function collectTags(nd){
 			if(nd instanceof Array){
 				$.each(nd, function(i, itm){
-					if(typeof(itm.tags)=="string")
-						itm.tags = itm.tags.split(";");
+					if(!itm.tags) return;
+					itm.tags = itm.tags.split(";");
 					$.each(itm.tags, function(j, t){
 						tagDict[t] = true;
 					});
@@ -50,16 +50,8 @@
 			main:function(doc){with(H){
 				return div(
 					div({"class":"buttonsPnl"},
-						input({type:"button", "class":"btEdit", value:"Editor"}), " ",
-						input({type:"button", "class":"btEditText", value:"Text Editor"})
+						input({type:"button", "class":"btEdit", value:"Edit View"})
 					),
-					editMode?div({"class":"editorButtonsPnl"},
-						input({type:"button", "class":"btnSave", value:"Save"}),
-						" file name:",
-						input({type:"text", "class":"fldFileName", value:Editor.docPath}),
-						" encode",
-						input({type:"checkbox", "class":"cbEncode"}, Editor.secure?{checked:true}:null)
-					):null,
 					div({"class":"contentPnl"},
 						templates.content(doc)
 					)
@@ -75,9 +67,7 @@
 			}},
 			year: function(y, yNr){with(H){
 				return div(
-					h2(yNr, 
-						editMode?span(" ", span({"class":"yearEditBtn"}, "[edit]")):null
-					),
+					h2(yNr),
 					div({"class":"year"},
 						apply(y, function(m, mNr){
 							return templates.month(m, mNr, yNr);
@@ -105,13 +95,13 @@
 							if(!checkTags(evt.tags)) return;
 							return div({"class":"section event"},
 								evt.t?span({"class":"time"}, evt.t, " "):null, 
-								span({"class":"tagList"},
+								evt.tags?span({"class":"tagList"},
 									"[",
 									apply(evt.tags, function(eTg){
 										return span(eTg);
 									}, ", "),
 									"] "
-								),
+								):null,
 								evt.txt
 							);
 						})
@@ -128,27 +118,11 @@
 		}
 		
 		function buildPanels(){
-			el.html("");
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
-			pnl.find(".buttonsPnl .btEditText").click(function(){
-				pnl.find(".editorButtonsPnl").remove();
+			pnl.find(".buttonsPnl .btEdit").click(function(){
 				pnl.find(".contentPnl").textEditor(formatJson(doc));
 			});
-			pnl.find(".buttonsPnl .btEdit").click(function(){
-				buildView(pnl.find(".contentPnl").parent(), doc, true);
-			});
-			
-			if(true || editMode){
-				pnl.find(".editorButtonsPnl .btnSave").click(function(){
-					alert(1);
-				});
-				console.log(pnl.find(".yearEditBtn"));
-				pnl.find(".yearEditBtn").css({cursor:"pointer"}).click(function(){
-					alert(2);
-				});
-			}
-			
 			updateView(pnl);
 		}
 		
@@ -172,7 +146,7 @@
 			for(var i=0; i<day.length; i++){var evt = day[i];
 				var dd = {};
 				$.extend(dd, evt);
-				dd.tags = dd.tags.join(";");
+				if(dd.tags) dd.tags = dd.tags.join(";");
 				js.push(indent+"\t"+JSON.stringify(dd))
 			}
 			return "[\n"+js.join(",\n")+"\n"+indent+"]";
