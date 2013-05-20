@@ -1,4 +1,13 @@
 (function($,H){
+	var getWeekDay = (function(){
+		var days = "Âñ,Ïí,Âò,Ñð,×ò,Ïò,Ñá".split(",");
+		return function(y,m,d){
+			y = parseInt(y, 10);
+			m = parseInt(m, 10);
+			d = parseInt(d, 10);
+			return days[new Date(y, m-1, d).getDay()];
+		}
+	})();
 	
 	function buildView(el, jsDoc){
 		var doc = $.parseJSON(jsDoc);
@@ -89,7 +98,10 @@
 			day: function(d, dNr, mNr, yNr){with(H){
 				if(dNr<10)dNr = "0"+dNr;
 				return div({"class":"section"},
-					h4(yNr, ".", mNr, ".", dNr),
+					h4(
+						templates.weekDay(yNr, mNr, dNr), " ",
+						[dNr, mNr, yNr].join(".")
+					),
 					div({"class":"day"},
 						apply(d, function(evt){
 							if(!checkTags(evt.tags)) return;
@@ -107,6 +119,9 @@
 						})
 					)
 				);
+			}},
+			weekDay: function(y,m,d){with(H){
+				return getWeekDay(y,m,d);
 			}}
 		};
 		
