@@ -9,6 +9,23 @@
 		}
 	})();
 	
+	function getSortedKeys(o){
+		var keys = [];
+		for(var k in o){
+			keys.push(parseInt(k, 10));
+		}
+		keys = keys.sort(function(x, y){return x>y?1:x<y?-1:0;});
+		for(var i=0; i<keys.length; i++)
+			keys[i] = keys[i].toString();
+		return keys;
+	}
+	
+	function sortByTime(d){
+		return d.sort(function(x, y){
+			return x.t>y.t?1:x.t<y.t?-1:0;
+		});
+	}
+	
 	function formatTime(h, m){
 		if(typeof(h)=="string") h = parseInt(h);
 		if(typeof(m)=="string") m = parseInt(m);
@@ -92,32 +109,35 @@
 				);
 			}},
 			content:function(doc){with(H){
+				var years = getSortedKeys(doc);
 				return div(
 					templates.tagList(doc),
-					apply(doc, function(y, yNr){
-						return templates.year(y, yNr);
+					apply(years, function(yNr){
+						return templates.year(doc[yNr], yNr);
 					})
 				);
 			}},
 			year: function(y, yNr){with(H){
+				var months = getSortedKeys(y);
 				return div(
 					h2(yNr),
 					div({"class":"year"},
-						times(12, function(mNr){
-							var m = y[mNr.toString()];
+						apply(months, function(mNr){
+							var m = y[mNr];
 							return m?templates.month(m, mNr, yNr):null;
 						})
 					)
 				);
 			}},
 			month: function(m, mNr, yNr){with(H){
+				var days = getSortedKeys(m);
 				if(mNr<10)mNr = "0"+mNr;
 				return div({"class":"section"},
 					h3(yNr, ".", mNr),
 					div({"class":"month"},
-						times(31, function(dNr){
-							var d = m[dNr.toString()];
-							return m?templates.day(d, dNr, mNr, yNr):null;
+						apply(days, function(dNr){
+							var d = m[dNr];
+							return d?templates.day(d, dNr, mNr, yNr):null;
 						})
 					)
 				);
@@ -130,7 +150,7 @@
 						[dNr, mNr, yNr].join(".")
 					),
 					div({"class":"day"},
-						apply(d, function(evt){
+						apply(sortByTime(d), function(evt){
 							if(!checkTags(evt.tags)) return;
 							return div({"class":"section event"},
 								evt.t?span({"class":"time"}, evt.t, " "):null, 
@@ -192,9 +212,7 @@
 					if(tags.length) itm.tags = tags.split(";");
 					
 					var path = [year, month, day].join("/")+"/#*";
-					//console.log(path);
 					JsPath.set(doc, path, itm);
-					//console.log(doc);
 				}
 				pnl.find(".pnlAdd .fldTags").val("");
 				pnl.find(".pnlAdd .fldTxt").val("");
