@@ -66,7 +66,7 @@
 			}},
 			main:function(doc){with(H){
 				var addDlgWidth = 600,
-					timeFldWidth = (addDlgWidth-10)/4;
+					timeFldWidth = (addDlgWidth-200)/4;
 				return div(
 					div({"class":"buttonsPnl"},
 						input({type:"button", "class":"btEdit", value:"Edit View"}),
@@ -77,6 +77,8 @@
 						input({type:"text", "class":"fldMonth", style:style({width:timeFldWidth})}), ".",
 						input({type:"text", "class":"fldDay", style:style({width:timeFldWidth})}), ":",
 						input({type:"text", "class":"fldTime", style:style({width:timeFldWidth})}),
+						input({type:"button", "class":"btNow", value:"Now"}),
+						
 						div(input({type:"text", "class":"fldTags", style:style({width:addDlgWidth})})),
 						div(textarea({"class":"fldTxt", style:style({width:addDlgWidth, height:200})})),
 						div(
@@ -101,8 +103,9 @@
 				return div(
 					h2(yNr),
 					div({"class":"year"},
-						apply(y, function(m, mNr){
-							return templates.month(m, mNr, yNr);
+						times(12, function(mNr){
+							var m = y[mNr.toString()];
+							return m?templates.month(m, mNr, yNr):null;
 						})
 					)
 				);
@@ -112,8 +115,9 @@
 				return div({"class":"section"},
 					h3(yNr, ".", mNr),
 					div({"class":"month"},
-						apply(m, function(d, dNr){
-							return templates.day(d, dNr, mNr, yNr);
+						times(31, function(dNr){
+							var d = m[dNr.toString()];
+							return m?templates.day(d, dNr, mNr, yNr):null;
 						})
 					)
 				);
@@ -156,6 +160,13 @@
 		}
 		
 		function buildPanels(){
+			function setNow(){
+				pnl.find(".pnlAdd .fldYear").val(1900+today.getYear());
+				pnl.find(".pnlAdd .fldMonth").val(today.getMonth()+1);
+				pnl.find(".pnlAdd .fldDay").val(today.getDate());
+				pnl.find(".pnlAdd .fldTime").val(formatTime(today.getHours(), today.getMinutes()));
+			}
+			
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
 			pnl.find(".buttonsPnl .btEdit").click(function(){
@@ -164,11 +175,9 @@
 			pnl.find(".buttonsPnl .btAddItem").click(function(){
 				pnl.find(".pnlAdd").slideDown();
 			});
+			pnl.find(".pnlAdd .btNow").click(setNow);
 			var today = new Date();
-			pnl.find(".pnlAdd .fldYear").val(1900+today.getYear());
-			pnl.find(".pnlAdd .fldMonth").val(today.getMonth()+1);
-			pnl.find(".pnlAdd .fldDay").val(today.getDate());
-			pnl.find(".pnlAdd .fldTime").val(formatTime(today.getHours(), today.getMinutes()));
+			setNow();
 			pnl.find(".pnlAdd .btCancel").click(function(){pnl.find(".pnlAdd").slideUp();});
 			pnl.find(".pnlAdd .btOK").click(function(){
 				var year = pnl.find(".pnlAdd .fldYear").val();
