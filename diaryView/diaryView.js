@@ -9,6 +9,14 @@
 		}
 	})();
 	
+	function formatTime(h, m){
+		if(typeof(h)=="string") h = parseInt(h);
+		if(typeof(m)=="string") m = parseInt(m);
+		if(h<10) h = "0"+h;
+		if(m<10) m = "0"+m;
+		return [h,m].join(":");
+	}
+	
 	function buildView(el, jsDoc){
 		var doc = $.parseJSON(jsDoc);
 		var tagDict = {};
@@ -57,9 +65,24 @@
 				);
 			}},
 			main:function(doc){with(H){
+				var addDlgWidth = 600,
+					timeFldWidth = (addDlgWidth-10)/4;
 				return div(
 					div({"class":"buttonsPnl"},
-						input({type:"button", "class":"btEdit", value:"Edit View"})
+						input({type:"button", "class":"btEdit", value:"Edit View"}),
+						input({type:"button", "class":"btAddItem", value:"Add Item"})
+					),
+					div({"class":"pnlAdd", style:"display:none;"},
+						input({type:"text", "class":"fldYear", style:style({width:timeFldWidth})}), ".",
+						input({type:"text", "class":"fldMonth", style:style({width:timeFldWidth})}), ".",
+						input({type:"text", "class":"fldDay", style:style({width:timeFldWidth})}), ":",
+						input({type:"text", "class":"fldTime", style:style({width:timeFldWidth})}),
+						div(input({type:"text", "class":"fldTags", style:style({width:addDlgWidth})})),
+						div(textarea({"class":"fldTxt", style:style({width:addDlgWidth, height:200})})),
+						div(
+							input({type:"button", "class":"btOK", value:"OK"}),
+							input({type:"button", "class":"btCancel", value:"Cancel"})
+						)
 					),
 					div({"class":"contentPnl"},
 						templates.content(doc)
@@ -137,6 +160,37 @@
 			el.html(pnl);
 			pnl.find(".buttonsPnl .btEdit").click(function(){
 				pnl.find(".contentPnl").textEditor(formatJson(doc));
+			});
+			pnl.find(".buttonsPnl .btAddItem").click(function(){
+				pnl.find(".pnlAdd").slideDown();
+			});
+			var today = new Date();
+			pnl.find(".pnlAdd .fldYear").val(1900+today.getYear());
+			pnl.find(".pnlAdd .fldMonth").val(today.getMonth()+1);
+			pnl.find(".pnlAdd .fldDay").val(today.getDate());
+			pnl.find(".pnlAdd .fldTime").val(formatTime(today.getHours(), today.getMinutes()));
+			pnl.find(".pnlAdd .btCancel").click(function(){pnl.find(".pnlAdd").slideUp();});
+			pnl.find(".pnlAdd .btOK").click(function(){
+				var year = pnl.find(".pnlAdd .fldYear").val();
+				var month = pnl.find(".pnlAdd .fldMonth").val();
+				var day = pnl.find(".pnlAdd .fldDay").val();
+				var time = pnl.find(".pnlAdd .fldTime").val();
+				var tags = pnl.find(".pnlAdd .fldTags").val();
+				var txt = pnl.find(".pnlAdd .fldTxt").val();
+				if(txt.length){
+					var itm = {txt:txt};
+					if(time.length) itm.t = time;
+					if(tags.length) itm.tags = tags.split(";");
+					
+					var path = [year, month, day].join("/")+"/#*";
+					//console.log(path);
+					JsPath.set(doc, path, itm);
+					//console.log(doc);
+				}
+				pnl.find(".pnlAdd .fldTags").val("");
+				pnl.find(".pnlAdd .fldTxt").val("");
+				updateView(pnl);
+				pnl.find(".pnlAdd").slideUp();
 			});
 			updateView(pnl);
 		}
