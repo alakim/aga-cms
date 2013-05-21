@@ -189,8 +189,15 @@
 			
 			var pnl = $(templates.main(doc));
 			el.html(pnl);
-			pnl.find(".buttonsPnl .btEdit").click(function(){
-				pnl.find(".contentPnl").textEditor(formatJson(doc));
+			pnl.find(".buttonsPnl .btEdit").click(function(){var _=$(this);
+				if(pnl.find(".fldDoc").length){
+					_.attr({value:"Edit view"});
+					updateView(pnl);
+				}
+				else{
+					_.attr({value:"View mode"});
+					pnl.find(".contentPnl").textEditor(formatJson(doc));
+				}
 			});
 			pnl.find(".buttonsPnl .btAddItem").click(function(){
 				pnl.find(".pnlAdd").slideDown();
