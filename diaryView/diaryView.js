@@ -207,9 +207,10 @@
 				var tags = pnl.find(".pnlAdd .fldTags").val();
 				var txt = pnl.find(".pnlAdd .fldTxt").val();
 				if(txt.length){
-					var itm = {txt:txt};
+					var itm = {};
 					if(time.length) itm.t = time;
 					if(tags.length) itm.tags = tags.split(";");
+					itm.txt = txt;
 					
 					var path = [year, month, day].join("/")+"/#*";
 					JsPath.set(doc, path, itm);
@@ -239,6 +240,7 @@
 	function formatJson(doc){
 		function formatDay(day, indent){
 			var js = [];
+			day = sortByTime(day);
 			for(var i=0; i<day.length; i++){var evt = day[i];
 				var dd = {};
 				$.extend(dd, evt);
@@ -252,9 +254,10 @@
 			indent = indent || "";
 			if(sect instanceof Array) return formatDay(sect, indent);
 			var js = [];
-			for(var k in sect){
+			var keys = getSortedKeys(sect);
+			$.each(keys, function(i, k){
 				js.push(indent+"\t\""+k+"\":"+formatSection(sect[k], indent+"\t"));
-			}
+			});
 			js = js.join(",\n");
 			return "{\n"+js+"\n"+indent+"}"
 		}
