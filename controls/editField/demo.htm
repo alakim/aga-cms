@@ -1,0 +1,59 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>EditField Demo Page</title>
+	<script type="text/javascript" src="../../core/lib/html.js"></script>
+	<script type="text/javascript" src="../../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../../core/cdk.js"></script>
+	<script type="text/javascript" src="../../core/editor.js"></script>
+	<script type="text/javascript" src="../../core/textEditor.js"></script>
+	<script type="text/javascript" src="../../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../../styles.css"/>
+	
+	<script type="text/javascript" src="../../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="editField.js"></script>
+	<link rel="stylesheet" type="text/css" href="editField.css"/>
+	
+	<script type="text/javascript">
+		var doc = {
+			items: [
+				{name:"item 1", tags:"test;editor;module"},
+				{name:"item 2", tags:"editor;view;module"},
+				{name:"item 3", tags:"test;editor;module"},
+				{name:"item 4", tags:"module;manual"},
+				{name:"item 5", tags:"test;development;library"},
+				{name:"item 6", tags:"manual;editor;library"}
+			]
+		};
+		
+		function displayDoc(doc){
+			function template(){with(Html){
+				return div(
+					apply(doc.items, function(itm, i){
+						return div(
+							span({"class":"attrField", path:"items/#"+i+"/name"}, itm.name)
+						);
+					})
+				);
+			}}
+			
+			$("#viewPanel").html(template());
+			$("#viewPanel .attrField").editField(doc);
+		}
+		
+		$(function(){
+			displayDoc(doc);
+		});
+	</script>
+</head>
+<body>
+	<h1>EditField Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
