@@ -1,0 +1,10 @@
+.tagList .tag{
+	cursor: pointer;
+	color: #00a;
+}
+.tagList .tag.highlight{
+	text-decoration: underline;
+}
+.tagList .tag.selected{
+	background-color: #ff0;
+}
