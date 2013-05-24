@@ -1,4 +1,6 @@
 (function($,H){
+	var reverseMode = false;
+	
 	var getWeekDay = (function(){
 		var days = "Âñ,Ïí,Âò,Ñð,×ò,Ïò,Ñá".split(",");
 		return function(y,m,d){
@@ -9,20 +11,20 @@
 		}
 	})();
 	
-	function getSortedKeys(o){
+	function getSortedKeys(o, reverse){
 		var keys = [];
 		for(var k in o){
 			keys.push(parseInt(k, 10));
 		}
-		keys = keys.sort(function(x, y){return x>y?1:x<y?-1:0;});
+		keys = keys.sort(function(x, y){return (x>y?1:x<y?-1:0)*(reverse?-1:1);});
 		for(var i=0; i<keys.length; i++)
 			keys[i] = keys[i].toString();
 		return keys;
 	}
 	
-	function sortByTime(d){
+	function sortByTime(d, reverse){
 		return d.sort(function(x, y){
-			return x.t>y.t?1:x.t<y.t?-1:0;
+			return (x.t>y.t?1:x.t<y.t?-1:0)*(reverse?-1:1);
 		});
 	}
 	
@@ -81,13 +83,14 @@
 					}, " ")
 				);
 			}},
-			main:function(doc){with(H){
+			main:function(doc, reverse){with(H){
 				var addDlgWidth = 600,
 					timeFldWidth = (addDlgWidth-200)/4;
 				return div(
 					div({"class":"buttonsPnl"},
 						input({type:"button", "class":"btEdit", value:"Edit View"}),
-						input({type:"button", "class":"btAddItem", value:"Add Item"})
+						input({type:"button", "class":"btAddItem", value:"Add Item"}),
+						" reverse:", input($.extend({type:"checkbox", "class":"cbReverse"}, reverseMode?{checked:true}:{}))
 					),
 					div({"class":"pnlAdd", style:"display:none;"},
 						input({type:"text", "class":"fldYear", style:style({width:timeFldWidth})}), ".",
@@ -104,45 +107,45 @@
 						)
 					),
 					div({"class":"contentPnl"},
-						templates.content(doc)
+						templates.content(doc, reverse)
 					)
 				);
 			}},
-			content:function(doc){with(H){
-				var years = getSortedKeys(doc);
+			content:function(doc, reverse){with(H){
+				var years = getSortedKeys(doc, reverse);
 				return div(
 					templates.tagList(doc),
 					apply(years, function(yNr){
-						return templates.year(doc[yNr], yNr);
+						return templates.year(doc[yNr], yNr, reverse);
 					})
 				);
 			}},
-			year: function(y, yNr){with(H){
-				var months = getSortedKeys(y);
+			year: function(y, yNr, reverse){with(H){
+				var months = getSortedKeys(y, reverse);
 				return div(
 					h2(yNr),
 					div({"class":"year"},
 						apply(months, function(mNr){
 							var m = y[mNr];
-							return m?templates.month(m, mNr, yNr):null;
+							return m?templates.month(m, mNr, yNr, reverse):null;
 						})
 					)
 				);
 			}},
-			month: function(m, mNr, yNr){with(H){
-				var days = getSortedKeys(m);
+			month: function(m, mNr, yNr, reverse){with(H){
+				var days = getSortedKeys(m, reverse);
 				if(mNr<10)mNr = "0"+mNr;
 				return div({"class":"section"},
 					h3(yNr, ".", mNr),
 					div({"class":"month"},
 						apply(days, function(dNr){
 							var d = m[dNr];
-							return d?templates.day(d, dNr, mNr, yNr):null;
+							return d?templates.day(d, dNr, mNr, yNr, reverse):null;
 						})
 					)
 				);
 			}},
-			day: function(d, dNr, mNr, yNr){with(H){
+			day: function(d, dNr, mNr, yNr, reverse){with(H){
 				if(dNr<10)dNr = "0"+dNr;
 				return div({"class":"section"},
 					h4(
@@ -187,7 +190,7 @@
 				pnl.find(".pnlAdd .fldTime").val(formatTime(today.getHours(), today.getMinutes()));
 			}
 			
-			var pnl = $(templates.main(doc));
+			var pnl = $(templates.main(doc, reverseMode));
 			el.html(pnl);
 			pnl.find(".buttonsPnl .btEdit").click(function(){var _=$(this);
 				if(pnl.find(".fldDoc").length){
@@ -201,6 +204,11 @@
 			});
 			pnl.find(".buttonsPnl .btAddItem").click(function(){
 				pnl.find(".pnlAdd").slideDown();
+			});
+			pnl.find(".buttonsPnl .cbReverse").change(function(){var _=$(this);
+				var rev = this.checked;
+				reverseMode = rev;
+				updateView(pnl);
 			});
 			pnl.find(".pnlAdd .btNow").click(setNow);
 			var today = new Date();
@@ -231,7 +239,7 @@
 		}
 		
 		function updateView(pnl){
-			var contPnl = $(templates.content(doc));
+			var contPnl = $(templates.content(doc, reverseMode));
 			pnl.find(".contentPnl").html(contPnl);
 			hideEmptySections(contPnl);
 			contPnl.find(".tagList a").click(function(){var _=$(this);
