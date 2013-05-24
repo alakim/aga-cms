@@ -45,6 +45,10 @@
 		
 		function template(){with(H){
 			return div({"class":"lcatView"},
+				div({"class":"buttonsPnl"},
+					input({type:"button", "class":"btEdit", value:"Edit View"}),
+					input({type:"button", "class":"btAddItem", value:"Add Item"})
+				),
 				div({"class":"tagsPanel"}),
 				div({"class":"viewPanel"})
 			);
@@ -52,6 +56,18 @@
 		
 		var view = $(template());
 		pnl.html(view);
+		
+		pnl.find(".buttonsPnl .btEdit").click(function(){var _=$(this);
+			if(pnl.find(".fldDoc").length){
+				_.attr({value:"Edit view"});
+				updateView(pnl);
+			}
+			else{
+				_.attr({value:"View mode"});
+				pnl.find(".viewPanel").textEditor(formatJson(doc));
+			}
+		});
+
 		
 		updateView(view, doc);
 		
@@ -66,9 +82,9 @@
 		$.each(doc.items, function(i, itm){
 			var line = [];
 			line.push("\t{");
-			line.push("\"url\":\""+itm.url+"\",");
-			line.push("\"label\":\""+itm.label+"\"");
-			if(itm.dsc) line.push(",\"dsc\":\""+itm.dsc+"\"");
+			line.push("\"url\":\""+JSON.stringify(itm.url)+"\",");
+			line.push("\"label\":\""+JSON.stringify(itm.label)+"\"");
+			if(itm.dsc) line.push(",\"dsc\":\""+JSON.stringify(itm.dsc)+"\"");
 			if(itm.tags.length) line.push(",\"tags\":\""+itm.tags.join(";")+"\"");
 			line.push("}");
 			
