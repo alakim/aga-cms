@@ -75,7 +75,7 @@
 		pnl.find(".buttonsPnl .btEdit").click(function(){var _=$(this);
 			if(pnl.find(".fldDoc").length){
 				_.attr({value:"Edit view"});
-				updateView(pnl);
+				updateView(pnl, doc);
 			}
 			else{
 				_.attr({value:"View mode"});
