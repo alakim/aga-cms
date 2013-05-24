@@ -7,6 +7,9 @@
 		});
 	}
 	
+	function normalizeString(str){
+		return str.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
+	}
 	
 	function updateView(pnl, doc, selectedTags){
 		selectedTags = selectedTags || [];
@@ -49,6 +52,18 @@
 					input({type:"button", "class":"btEdit", value:"Edit View"}),
 					input({type:"button", "class":"btAddItem", value:"Add Item"})
 				),
+				div({"class":"pnlAdd", style:"display:none;"},
+					div("tags: ", input({type:"text", "class":"fldTags", style:"width:250px;"})),
+					div(
+						" url: ", input({type:"text", "class":"fldUrl", style:"width:250px;"}),
+						" label: ", input({type:"text", "class":"fldLabel", style:"width:250px;"})
+					),
+					div(" description: ", input({type:"text", "class":"fldDsc", style:"width:700px;"})),
+					div(
+						input({type:"button", "class":"btOK", value:"OK"}),
+						input({type:"button", "class":"btCancel", value:"Cancel"})
+					)
+				),
 				div({"class":"tagsPanel"}),
 				div({"class":"viewPanel"})
 			);
@@ -67,7 +82,28 @@
 				pnl.find(".viewPanel").textEditor(formatJson(doc));
 			}
 		});
+		pnl.find(".buttonsPnl .btAddItem").click(function(){var _=$(this);
+			pnl.find(".pnlAdd").slideDown();
+		});
+		pnl.find(".pnlAdd .btCancel").click(function(){pnl.find(".pnlAdd").slideUp();});
 
+		pnl.find(".pnlAdd .btOK").click(function(){
+			var tags = normalizeString(pnl.find(".pnlAdd .fldTags").val());
+			var url = normalizeString(pnl.find(".pnlAdd .fldUrl").val());
+			var label = normalizeString(pnl.find(".pnlAdd .fldLabel").val());
+			var dsc = normalizeString(pnl.find(".pnlAdd .fldDsc").val());
+			
+			var itm = {url:url, label:label};
+			if(tags.length) itm.tags = tags.split(";").sort();
+			if(dsc.length) itm.dsc = dsc;
+			doc.items.push(itm);
+			
+			updateView(pnl, doc);
+			pnl.find(".pnlAdd").slideUp();
+		});
+
+		
+		
 		
 		updateView(view, doc);
 		
