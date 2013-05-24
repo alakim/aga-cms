@@ -118,9 +118,9 @@
 		$.each(doc.items, function(i, itm){
 			var line = [];
 			line.push("\t{");
-			line.push("\"url\":\""+JSON.stringify(itm.url)+"\",");
-			line.push("\"label\":\""+JSON.stringify(itm.label)+"\"");
-			if(itm.dsc) line.push(",\"dsc\":\""+JSON.stringify(itm.dsc)+"\"");
+			line.push("\"url\":"+JSON.stringify(itm.url)+",");
+			line.push("\"label\":"+JSON.stringify(itm.label));
+			if(itm.dsc) line.push(",\"dsc\":"+JSON.stringify(itm.dsc));
 			if(itm.tags.length) line.push(",\"tags\":\""+itm.tags.join(";")+"\"");
 			line.push("}");
 			
