@@ -61,7 +61,22 @@
 	}
 	
 	function formatJson(doc){
-		
+		var jsCode = ["{\"items\":["];
+		var itmLines = [];
+		$.each(doc.items, function(i, itm){
+			var line = [];
+			line.push("\t{");
+			line.push("\"url\":\""+itm.url+"\",");
+			line.push("\"label\":\""+itm.label+"\"");
+			if(itm.dsc) line.push(",\"dsc\":\""+itm.dsc+"\"");
+			if(itm.tags.length) line.push(",\"tags\":\""+itm.tags.join(";")+"\"");
+			line.push("}");
+			
+			itmLines.push(line.join(""));
+		});
+		jsCode.push(itmLines.join(",\n"));
+		jsCode.push("]}");
+		return jsCode.join("\n");
 	}
 	
 	$.fn.lcatView = function(jsDoc){
