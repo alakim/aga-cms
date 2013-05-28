@@ -51,13 +51,13 @@
 					apply(tList, function(tag){
 						return span({"class":"tag"}, tag);
 					}, " & ", true),
-					")[", selItems.length,"]"
+					")[", selItems.length, "/", items.length,"]"
 				), " ",
 				span({"class":"sub"},
 					apply(subRef.list, function(t){
 						return selectedTags[t]?null:span(
 							span({"class":"tag"}, t),
-							"[", reference.reference[t].length,"]"
+							"[", subRef.reference[t].length, "/", reference.reference[t].length,"]"
 						);
 					}, ", ", true)
 				)
