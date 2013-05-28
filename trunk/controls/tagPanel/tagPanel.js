@@ -70,7 +70,7 @@
 			.mouseout(function(){$(this).removeClass("highlight")})
 			.click(function(){var _=$(this);
 				var tag = _.text();
-				clickTag(_, pnl, items, selectedTags, reference, getItemTags, onselect);
+				clickTag(_, pnl, items, selectedTags, reference, getItemTags, false, onselect);
 				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
 			});
 	}
@@ -94,13 +94,14 @@
 			.mouseout(function(){$(this).removeClass("highlight")})
 			.click(function(){var _=$(this);
 				var tag = _.text();
-				clickTag(_, pnl, items, selectedTags, reference, getItemTags, onselect);
-				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
+				clickTag(_, pnl, items, selectedTags, reference, getItemTags, true, onselect);
+				_.parent().find(".tag").removeClass("selected");
+				_.addClass("selected");
 			});
 
 	}
 	
-	function clickTag(label, pnl, items, selectedTags, reference, getItemTags, onselect){
+	function clickTag(label, pnl, items, selectedTags, reference, getItemTags, setAsRoot, onselect){
 		function getSelectedTagsList(){
 			var res = [];
 			for(var k in selectedTags){
@@ -111,8 +112,9 @@
 			return res;
 		}
 		var tag = $(label).text();
+		if(setAsRoot) selectedTags = {};
 		selectedTags[tag] = selectedTags[tag]?false:true;
-		var tList = getSelectedTagsList();
+		var tList = setAsRoot?[tag]:getSelectedTagsList();
 		displaySubcloud(pnl, items, selectedTags, tList, reference, getItemTags, onselect);
 		onselect(tList);
 	}
