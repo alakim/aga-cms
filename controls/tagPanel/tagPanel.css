@@ -1,3 +1,7 @@
+.tagList {
+	margin: 5px;
+	padding: 5px;
+}
 .tagList .tag{
 	cursor: pointer;
 	color: #00a;
@@ -7,4 +11,12 @@
 }
 .tagList .tag.selected{
 	background-color: #ff0;
+}
+.tagList .subcloud{
+	margin-top: 5px;
+	padding-top: 5px;
+	border-top: 1px solid #ccc;
+}
+.tagList .subcloud .selected{
+	background-color: #cce;
 }

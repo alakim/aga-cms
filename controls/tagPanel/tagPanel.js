@@ -1,21 +1,38 @@
 (function($,H){
-	function collectTags(items, getItemTags){
-		var tagDict = {};
+	
+	function buildReference(items, getItemTags){
+		var ref = {};
+		function addRef(tag, itm){
+			if(!ref[tag]) ref[tag] = [];
+			ref[tag].push(itm);
+		}
 		$.each(items, function(i, itm){
-			var tags = getItemTags(itm);
-			$.each(tags, function(i, t){
-				tagDict[t] = true;
+			$.each(getItemTags(itm), function(i, t){
+				addRef(t, itm);
 			});
 		});
-		var res = [];
-		for(var k in tagDict)
-			res.push(k);
-		res = res.sort();
-		return res;
+		var tagList = [];
+		for(var k in ref) tagList.push(k);
+		tagList = tagList.sort();
+		return {reference: ref, list: tagList};
+	}
+	
+	function displaySubcloud(pnl, items, selectedTags){
+		function template(){with(H){
+			return markup(
+				span({"class":"selected"},
+					apply(selectedTags, function(v, tag){
+						return v?span(tag):null;
+					}, " & ", true)
+				)
+			);
+		}}
+		
+		pnl.find(".subcloud").html(template());
 	}
 
 	function buildPanel(pnl, items, onselect, getItemTags){
-		var tags = collectTags(items, getItemTags);
+		var reference = buildReference(items, getItemTags);
 		var selectedTags = {};
 		
 		function getSelectedTagsList(){
@@ -30,9 +47,10 @@
 		
 		function template(){with(H){
 			return div({"class":"tagList"},
-				apply(tags, function(t){
+				apply(reference.list, function(t){
 					return span({"class":"tag"}, t);
-				}, ", ")
+				}, ", "),
+				div({"class":"subcloud"})
 			);
 		}}
 		
@@ -43,8 +61,8 @@
 			.click(function(){var _=$(this);
 				var tag = _.text();
 				selectedTags[tag] = selectedTags[tag]?false:true;
-				if(selectedTags[tag]) _.addClass("selected");
-				else _.removeClass("selected");
+				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
+				displaySubcloud(pnl, items, selectedTags);
 				onselect(getSelectedTagsList());
 			});
 	}
