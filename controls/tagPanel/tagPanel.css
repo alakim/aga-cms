@@ -17,6 +17,6 @@
 	padding-top: 5px;
 	border-top: 1px solid #ccc;
 }
-.tagList .subcloud .selected{
+.tagList .subcloud .selectedTags{
 	background-color: #cce;
 }

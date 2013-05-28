@@ -41,23 +41,24 @@
 		return res.sort();
 	}
 	
-	function displaySubcloud(pnl, items, selectedTags, reference, getItemTags, onselect){
-		var selItems = getSelectedItems(selectedTags, reference);
+	function displaySubcloud(pnl, items, selectedTags, tList, reference, getItemTags, onselect){
+		var selItems = getSelectedItems(tList, reference);
 		var subTags = getSubTags(items, selItems, getItemTags);
 		
 		function template(){with(H){
 			return markup(
-				span({"class":"selected"},
+				span({"class":"selectedTags"},
 					"(",
-					apply(selectedTags, function(tag){
+					apply(tList, function(tag){
 						return span({"class":"tag"}, tag);
 					}, " & ", true),
 					")[", selItems.length,"]"
 				), " ",
 				span({"class":"sub"},
 					apply(subTags, function(t){
-						return span({"class":"tag"}, 
-							t, "[", reference.reference[t].length,"]"
+						return span(
+							span({"class":"tag"}, t),
+							"[", reference.reference[t].length,"]"
 						);
 					}, ", ")
 				)
@@ -66,8 +67,16 @@
 		
 		var subcloud = [];
 		
-		pnl.find(".subcloud").html(selectedTags.length?template():"");
-		buildTagRefs(pnl.find(".subcloud"), items, selectedTags, reference, getItemTags, onselect);
+		pnl.find(".subcloud").html(tList.length?template():"");
+		//buildTagRefs(pnl.find(".subcloud"), items, selectedTags, reference, getItemTags, onselect);
+		pnl.find(".subcloud .tag")
+			.mouseover(function(){$(this).addClass("highlight")})
+			.mouseout(function(){$(this).removeClass("highlight")})
+			.click(function(){var _=$(this);
+				var tag = _.text();
+				clickTag(_, pnl, items, selectedTags, reference, getItemTags, onselect);
+				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
+			});
 	}
 
 	function buildPanel(pnl, items, onselect, getItemTags){
@@ -84,10 +93,19 @@
 		}}
 		
 		pnl.html(template());
-		buildTagRefs(pnl, items, selectedTags, reference, getItemTags, onselect);
+		//buildTagRefs(pnl, items, selectedTags, reference, getItemTags, onselect);
+		pnl.find(".tag")
+			.mouseover(function(){$(this).addClass("highlight")})
+			.mouseout(function(){$(this).removeClass("highlight")})
+			.click(function(){var _=$(this);
+				var tag = _.text();
+				clickTag(_, pnl, items, selectedTags, reference, getItemTags, onselect);
+				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
+			});
+
 	}
 	
-	function buildTagRefs(pnl, items, selectedTags, reference, getItemTags, onselect){
+	function clickTag(label, pnl, items, selectedTags, reference, getItemTags, onselect){
 		function getSelectedTagsList(){
 			var res = [];
 			for(var k in selectedTags){
@@ -97,19 +115,29 @@
 			}
 			return res;
 		}
-		
-		pnl.find(".tag")
-			.mouseover(function(){$(this).addClass("highlight")})
-			.mouseout(function(){$(this).removeClass("highlight")})
-			.click(function(){var _=$(this);
-				var tag = _.text();
-				selectedTags[tag] = selectedTags[tag]?false:true;
-				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
-				var tList = getSelectedTagsList();
-				displaySubcloud(pnl, items, tList, reference, getItemTags, onselect);
-				onselect(tList);
-			});
+		var tag = $(label).text();
+		selectedTags[tag] = selectedTags[tag]?false:true;
+		var tList = getSelectedTagsList();
+		displaySubcloud(pnl, items, selectedTags, tList, reference, getItemTags, onselect);
+		onselect(tList);
 	}
+	
+	// function buildTagRefs(pnl, items, selectedTags, reference, getItemTags, onselect){
+	// 	
+	// 	pnl.find(".tag")
+	// 		.mouseover(function(){$(this).addClass("highlight")})
+	// 		.mouseout(function(){$(this).removeClass("highlight")})
+	// 		.click(function(){var _=$(this);
+	// 			var tag = _.text();
+	// 			// selectedTags[tag] = selectedTags[tag]?false:true;
+	// 			// if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
+	// 			// var tList = getSelectedTagsList();
+	// 			// displaySubcloud(pnl, items, tList, reference, getItemTags, onselect);
+	// 			// onselect(tList);
+	// 			clickTag(_, pnl, items, selectedTags, reference, getItemTags, onselect);
+	// 			if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
+	// 		});
+	// }
 	
 	
 	$.fn.tagPanel = function(items, onselect, getItemTags){
