@@ -56,11 +56,11 @@
 				), " ",
 				span({"class":"sub"},
 					apply(subTags, function(t){
-						return span(
+						return selectedTags[t]?null:span(
 							span({"class":"tag"}, t),
 							"[", reference.reference[t].length,"]"
 						);
-					}, ", ")
+					}, ", ", true)
 				)
 			);
 		}}
