@@ -19,8 +19,7 @@
 	
 	function getSelectedItems(selectedTags, reference){
 		var dict = {};
-		$.each(selectedTags, function(t, v){
-			if(!v) return;
+		$.each(selectedTags, function(i, t){
 			$.each(reference.reference[t], function(j, idx){
 				dict[idx] = true;
 			});
@@ -30,43 +29,50 @@
 		return res;
 	}
 	
-	function displaySubcloud(pnl, items, selectedTags, reference){
+	function getSubTags(items, selItems, getItemTags){
+		var dict = {};
+		$.each(selItems, function(i, idx){
+			$.each(getItemTags(items[idx]), function(j, t){
+				dict[t] = true;
+			});
+		});
+		var res = [];
+		for(var k in dict) res.push(k);
+		return res.sort();
+	}
+	
+	function displaySubcloud(pnl, items, selectedTags, reference, getItemTags, onselect){
 		var selItems = getSelectedItems(selectedTags, reference);
+		var subTags = getSubTags(items, selItems, getItemTags);
 		
 		function template(){with(H){
 			return markup(
 				span({"class":"selected"},
 					"(",
-					apply(selectedTags, function(v, tag){
-						return v?span(tag):null;
+					apply(selectedTags, function(tag){
+						return span({"class":"tag"}, tag);
 					}, " & ", true),
 					")[", selItems.length,"]"
-				),
+				), " ",
 				span({"class":"sub"},
-					apply(subcloud, function(t){
-					})
+					apply(subTags, function(t){
+						return span({"class":"tag"}, 
+							t, "[", reference.reference[t].length,"]"
+						);
+					}, ", ")
 				)
 			);
 		}}
 		
 		var subcloud = [];
 		
-		pnl.find(".subcloud").html(template());
+		pnl.find(".subcloud").html(selectedTags.length?template():"");
+		buildTagRefs(pnl.find(".subcloud"), items, selectedTags, reference, getItemTags, onselect);
 	}
 
 	function buildPanel(pnl, items, onselect, getItemTags){
 		var reference = buildReference(items, getItemTags);
 		var selectedTags = {};
-		
-		function getSelectedTagsList(){
-			var res = [];
-			for(var k in selectedTags){
-				if(selectedTags[k]){
-					res.push(k);
-				}
-			}
-			return res;
-		}
 		
 		function template(){with(H){
 			return div({"class":"tagList"},
@@ -78,6 +84,20 @@
 		}}
 		
 		pnl.html(template());
+		buildTagRefs(pnl, items, selectedTags, reference, getItemTags, onselect);
+	}
+	
+	function buildTagRefs(pnl, items, selectedTags, reference, getItemTags, onselect){
+		function getSelectedTagsList(){
+			var res = [];
+			for(var k in selectedTags){
+				if(selectedTags[k]){
+					res.push(k);
+				}
+			}
+			return res;
+		}
+		
 		pnl.find(".tag")
 			.mouseover(function(){$(this).addClass("highlight")})
 			.mouseout(function(){$(this).removeClass("highlight")})
@@ -85,10 +105,12 @@
 				var tag = _.text();
 				selectedTags[tag] = selectedTags[tag]?false:true;
 				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
-				displaySubcloud(pnl, items, selectedTags, reference);
-				onselect(getSelectedTagsList());
+				var tList = getSelectedTagsList();
+				displaySubcloud(pnl, items, tList, reference, getItemTags, onselect);
+				onselect(tList);
 			});
 	}
+	
 	
 	$.fn.tagPanel = function(items, onselect, getItemTags){
 		getItemTags = getItemTags || function(itm){return typeof(itm.tags)=="string"?itm.tags.split(";"):itm.tags;};
