@@ -27,32 +27,18 @@
 	}
 	
 	function getSelectedItems(selectedTags, reference){
-		var andLogic = true;
-		if(andLogic){
-			var dict = {};
-			$.each(selectedTags, function(i, t){
-				$.each(reference.reference[t], function(j, idx){
-					if(!dict[idx]) dict[idx] = 1;
-					else dict[idx]+=1;
-				});
+		var dict = {};
+		$.each(selectedTags, function(i, t){
+			$.each(reference.reference[t], function(j, idx){
+				if(!dict[idx]) dict[idx] = 1;
+				else dict[idx]+=1;
 			});
-			var res = [];
-			for(var k in dict){
-				if(dict[k]==selectedTags.length) res.push(k);
-			}
-			return res;
+		});
+		var res = [];
+		for(var k in dict){
+			if(dict[k]==selectedTags.length) res.push(k);
 		}
-		else{
-			var dict = {};
-			$.each(selectedTags, function(i, t){
-				$.each(reference.reference[t], function(j, idx){
-					dict[idx] = true;
-				});
-			});
-			var res = [];
-			for(var idx in dict) res.push(parseInt(idx));
-			return res;
-		}
+		return res;
 	}
 	
 	function displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect){
