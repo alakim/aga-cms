@@ -31,26 +31,24 @@
 		];
 		
 		$(function(){
-			function log(){
-				var args = [];
-				for(var i=0; i<arguments.length; i++)
-					args.push(arguments[i]);
+			$("#viewPanel").tagPanel(items, function(selectedTags, selectedItems){
 				function template(){with(Html){
 					return div(
-						apply(args, function(a){
-							return span(a);
-						})
+						p("Selected Tags: ", selectedTags.length?selectedTags.join(";"):" NO TAGS SELECTED"),
+						p("Selected Items: ", selectedItems.join(",")),
+						div(
+							apply(selectedItems, function(idx){
+								var itm = items[idx]
+								return div(
+									span({style:"font-style:italic"}, "[", itm.tags, "] "),
+									itm.name
+								);
+							})
+						)
 					);
 				}}
+				
 				$("#out").html(template());
-			}
-			
-			$("#viewPanel").tagPanel(items, function(selectedTags){
-				if(!selectedTags.length){
-					log("NO TAGS SELECTED");
-					return;
-				}
-				log("SELECTED TAGS: ", selectedTags.join(";"));
 			});
 		});
 	</script>

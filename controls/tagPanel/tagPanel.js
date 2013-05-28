@@ -8,14 +8,14 @@
 		}
 		if(selItems){
 			$.each(selItems, function(i, idx){
-				$.each(getItemTags(items[idx]), function(i, t){
-					addRef(t, i);
+				$.each(getItemTags(items[idx]), function(j, t){
+					addRef(t, idx);
 				});
 			});
 		}
 		else {
 			$.each(items, function(i, itm){
-				$.each(getItemTags(itm), function(i, t){
+				$.each(getItemTags(itm), function(j, t){
 					addRef(t, i);
 				});
 			});
@@ -38,8 +38,7 @@
 		return res;
 	}
 	
-	function displaySubcloud(pnl, items, selectedTags, tList, reference, getItemTags, onselect){
-		var selItems = getSelectedItems(tList, reference);
+	function displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect){
 		var subRef = buildReference(items, getItemTags, selItems);
 		
 		function template(){with(H){
@@ -115,8 +114,9 @@
 		if(setAsRoot) selectedTags = {};
 		selectedTags[tag] = selectedTags[tag]?false:true;
 		var tList = setAsRoot?[tag]:getSelectedTagsList();
-		displaySubcloud(pnl, items, selectedTags, tList, reference, getItemTags, onselect);
-		onselect(tList);
+		var selItems = getSelectedItems(tList, reference);
+		displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect);
+		onselect(tList, selItems);
 	}
 	
 	
