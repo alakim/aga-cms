@@ -51,7 +51,11 @@
 			});
 		});
 		var res = [];
-		for(var t in dict) if(!selectedTags[t]) res.push(t);
+		for(var t in dict){
+			if(
+				reference.reference[t].length>selItems.length // т.е. кроме показанных элементов есть еще элементы с этим тегом вне этой выборки
+			)res.push(t);
+		}
 		return res.sort(function(x,y){
 			var lx = reference.reference[x].length, ly = reference.reference[y].length;
 			return lx>ly?1:lx<ly?-1:0;
