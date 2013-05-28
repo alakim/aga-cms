@@ -43,6 +43,11 @@
 	
 	function displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect){
 		var subRef = buildReference(items, getItemTags, selItems);
+		var subList = subRef.list.sort(function(x, y){
+			var lx = subRef.reference[x].length,
+				ly = subRef.reference[y].length;
+			return lx>ly?-1:lx<ly?1:0;
+		});
 		
 		function template(){with(H){
 			return markup(
@@ -54,7 +59,7 @@
 					")[", selItems.length, "/", items.length,"]"
 				), " ",
 				span({"class":"sub"},
-					apply(subRef.list, function(t){
+					apply(subList, function(t){
 						return selectedTags[t]?null:span(
 							span({"class":"tag"}, t),
 							"[", subRef.reference[t].length, "/", reference.reference[t].length,"]"
