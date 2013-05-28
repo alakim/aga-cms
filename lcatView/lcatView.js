@@ -11,23 +11,12 @@
 		return str.replace(/^\s+/, "").replace(/\s+$/, "").replace(/\s+/g, " ");
 	}
 	
-	function updateView(pnl, doc, selectedTags){
-		selectedTags = selectedTags || [];
-		var tagDict = {};
-		$.each(selectedTags, function(i, tag){tagDict[tag] = true;});
-		
-		function checkTags(itm){
-			if(!selectedTags.length) return true;
-			for(var i=0; i<itm.tags.length; i++){
-				if(tagDict[itm.tags[i]]) return true;
-			}
-			return false;
-		}
-		
+	function updateView(pnl, doc, selectedItems){
 		function template(){with(H){
 			return table(
-				apply(doc.items, function(itm){
-					return checkTags(itm)?tr(
+				apply(selectedItems, function(idx){
+					var itm = doc.items[idx];
+					return tr(
 						td(
 							apply(itm.tags, function(tag){
 								return span(tag);
@@ -35,7 +24,7 @@
 						),
 						td(a({href:itm.url}, itm.label)),
 						td(itm.dsc)
-					):null;
+					);
 				})
 			);
 		}}
@@ -107,8 +96,8 @@
 		
 		updateView(view, doc);
 		
-		view.find(".tagsPanel").tagPanel(doc.items, function(selectedTags){
-			updateView(pnl, doc, selectedTags);
+		view.find(".tagsPanel").tagPanel(doc.items, function(selectedTags, selectedItems){
+			updateView(pnl, doc, selectedItems);
 		});
 	}
 	
