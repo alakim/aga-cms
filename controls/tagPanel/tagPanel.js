@@ -41,6 +41,23 @@
 		return res;
 	}
 	
+	function getSuperTags(selectedTags, items, selItems, getItemTags, reference){
+		var dict = {};
+		$.each(selItems, function(i, idx){
+			var itm = items[idx];
+			var tags = getItemTags(itm);
+			$.each(tags, function(j, t){
+				dict[t] = true;
+			});
+		});
+		var res = [];
+		for(var t in dict) if(!selectedTags[t]) res.push(t);
+		return res.sort(function(x,y){
+			var lx = reference.reference[x].length, ly = reference.reference[y].length;
+			return lx>ly?1:lx<ly?-1:0;
+		});
+	}
+	
 	function displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect){
 		var subRef = buildReference(items, getItemTags, selItems);
 		var subList = subRef.list.sort(function(x, y){
@@ -50,7 +67,15 @@
 		});
 		
 		function template(){with(H){
+			var superTags = getSuperTags(selectedTags, items, selItems, getItemTags, reference);
 			return markup(
+				span(
+					apply(superTags, function(t){
+						return span(
+							span({"class":"tag super"}, t), "[", reference.reference[t].length,"]"
+						);
+					}, ", ")
+				), " ",
 				span({"class":"selectedTags"},
 					"(",
 					apply(tList, function(tag){
@@ -77,7 +102,7 @@
 			.mouseout(function(){$(this).removeClass("highlight")})
 			.click(function(){var _=$(this);
 				var tag = _.text();
-				clickTag(_, pnl, items, selectedTags, reference, getItemTags, false, onselect);
+				clickTag(_, pnl, items, selectedTags, reference, getItemTags, _.hasClass("super"), onselect);
 				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
 			});
 	}
