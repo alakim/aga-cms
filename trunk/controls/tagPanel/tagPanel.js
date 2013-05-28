@@ -2,13 +2,13 @@
 	
 	function buildReference(items, getItemTags){
 		var ref = {};
-		function addRef(tag, itm){
+		function addRef(tag, idx){
 			if(!ref[tag]) ref[tag] = [];
-			ref[tag].push(itm);
+			ref[tag].push(idx);
 		}
 		$.each(items, function(i, itm){
 			$.each(getItemTags(itm), function(i, t){
-				addRef(t, itm);
+				addRef(t, i);
 			});
 		});
 		var tagList = [];
@@ -17,16 +17,39 @@
 		return {reference: ref, list: tagList};
 	}
 	
-	function displaySubcloud(pnl, items, selectedTags){
+	function getSelectedItems(selectedTags, reference){
+		var dict = {};
+		$.each(selectedTags, function(t, v){
+			if(!v) return;
+			$.each(reference.reference[t], function(j, idx){
+				dict[idx] = true;
+			});
+		});
+		var res = [];
+		for(var idx in dict) res.push(parseInt(idx));
+		return res;
+	}
+	
+	function displaySubcloud(pnl, items, selectedTags, reference){
+		var selItems = getSelectedItems(selectedTags, reference);
+		
 		function template(){with(H){
 			return markup(
 				span({"class":"selected"},
+					"(",
 					apply(selectedTags, function(v, tag){
 						return v?span(tag):null;
-					}, " & ", true)
+					}, " & ", true),
+					")[", selItems.length,"]"
+				),
+				span({"class":"sub"},
+					apply(subcloud, function(t){
+					})
 				)
 			);
 		}}
+		
+		var subcloud = [];
 		
 		pnl.find(".subcloud").html(template());
 	}
@@ -62,7 +85,7 @@
 				var tag = _.text();
 				selectedTags[tag] = selectedTags[tag]?false:true;
 				if(selectedTags[tag]) _.addClass("selected"); else _.removeClass("selected");
-				displaySubcloud(pnl, items, selectedTags);
+				displaySubcloud(pnl, items, selectedTags, reference);
 				onselect(getSelectedTagsList());
 			});
 	}
