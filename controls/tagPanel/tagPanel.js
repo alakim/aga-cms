@@ -26,42 +26,6 @@
 		return {reference: ref, list: tagList};
 	}
 	
-	function getSelectedItems(selectedTags, reference){
-		var dict = {};
-		$.each(selectedTags, function(i, t){
-			$.each(reference.reference[t], function(j, idx){
-				if(!dict[idx]) dict[idx] = 1;
-				else dict[idx]+=1;
-			});
-		});
-		var res = [];
-		for(var k in dict){
-			if(dict[k]==selectedTags.length) res.push(k);
-		}
-		return res;
-	}
-	
-	function getSuperTags(selectedTags, items, selItems, getItemTags, reference){
-		var dict = {};
-		$.each(selItems, function(i, idx){
-			var itm = items[idx];
-			var tags = getItemTags(itm);
-			$.each(tags, function(j, t){
-				dict[t] = true;
-			});
-		});
-		var res = [];
-		for(var t in dict){
-			if(
-				reference.reference[t].length>selItems.length // т.е. кроме показанных элементов есть еще элементы с этим тегом вне этой выборки
-			)res.push(t);
-		}
-		return res.sort(function(x,y){
-			var lx = reference.reference[x].length, ly = reference.reference[y].length;
-			return lx>ly?1:lx<ly?-1:0;
-		});
-	}
-	
 	function displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect){
 		var subRef = buildReference(items, getItemTags, selItems);
 		var subList = subRef.list.sort(function(x, y){
@@ -69,6 +33,27 @@
 				ly = subRef.reference[y].length;
 			return lx>ly?-1:lx<ly?1:0;
 		});
+		
+		function getSuperTags(){
+			var dict = {};
+			$.each(selItems, function(i, idx){
+				var itm = items[idx];
+				var tags = getItemTags(itm);
+				$.each(tags, function(j, t){
+					dict[t] = true;
+				});
+			});
+			var res = [];
+			for(var t in dict){
+				if(
+					reference.reference[t].length>selItems.length // т.е. кроме показанных элементов есть еще элементы с этим тегом вне этой выборки
+				)res.push(t);
+			}
+			return res.sort(function(x,y){
+				var lx = reference.reference[x].length, ly = reference.reference[y].length;
+				return lx>ly?1:lx<ly?-1:0;
+			});
+		}
 		
 		function template(){with(H){
 			var superTags = getSuperTags(selectedTags, items, selItems, getItemTags, reference);
@@ -138,6 +123,20 @@
 	}
 	
 	function clickTag(label, pnl, items, selectedTags, reference, getItemTags, setAsRoot, onselect){
+		function getSelectedItems(selectedTags){
+			var dict = {};
+			$.each(selectedTags, function(i, t){
+				$.each(reference.reference[t], function(j, idx){
+					if(!dict[idx]) dict[idx] = 1;
+					else dict[idx]+=1;
+				});
+			});
+			var res = [];
+			for(var k in dict){
+				if(dict[k]==selectedTags.length) res.push(k);
+			}
+			return res;
+		}
 		function getSelectedTagsList(){
 			var res = [];
 			for(var k in selectedTags){
@@ -151,7 +150,7 @@
 		if(setAsRoot) selectedTags = {};
 		selectedTags[tag] = selectedTags[tag]?false:true;
 		var tList = setAsRoot?[tag]:getSelectedTagsList();
-		var selItems = getSelectedItems(tList, reference);
+		var selItems = getSelectedItems(tList);
 		displaySubcloud(pnl, items, selItems, selectedTags, tList, reference, getItemTags, onselect);
 		onselect(tList, selItems);
 	}
