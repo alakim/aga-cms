@@ -46,7 +46,7 @@
 			var res = [];
 			for(var t in dict){
 				if(
-					reference.reference[t].length>selItems.length // т.е. кроме показанных элементов есть еще элементы с этим тегом вне этой выборки
+					reference.reference[t].length>subRef.reference[t].length // т.е. кроме показанных элементов есть еще элементы с этим тегом вне этой выборки
 				)res.push(t);
 			}
 			return res.sort(function(x,y){
@@ -76,7 +76,10 @@
 					apply(subList, function(t){
 						return selectedTags[t]?null:span(
 							span({"class":"tag"}, t),
-							"[", subRef.reference[t].length, "/", reference.reference[t].length,"]"
+							"[",
+							subRef.reference[t].length, 
+							subRef.reference[t].length!=reference.reference[t].length?markup("/", reference.reference[t].length):null,
+							"]"
 						);
 					}, ", ", true)
 				)
