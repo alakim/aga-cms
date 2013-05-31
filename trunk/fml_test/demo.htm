@@ -15,6 +15,7 @@
 	</style>
 	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/fml.js"></script>
 	<script type="text/javascript">
 		var code = [
 			"doc(",
@@ -58,25 +59,11 @@
 			}
 		};
 		
-		function fml(code, includes){
-			var includes = includes?includes.split(";"):[];
-			var fcode = [];
-			$.each(includes, function(i, inc){
-				fcode.push(["with(", inc, "){"].join(""));
-			});
-			fcode = fcode.concat(["return ", code]);
-			for(var i=0; i<includes.length; i++)
-				fcode.push("}");
-			fcode = fcode.join("");
-			
-			$("#fcode").html(fcode);
-			var f = new Function(fcode);
-			return f();
-		}
-		
 		function template(){with(Html){
+			var F = FML.parse(code, "docType;docMarkup");
+			$("#fcode").html(F.toString());
 			return div(
-				fml(code, "docType;docMarkup")
+				F()
 			);
 		}}
 		
