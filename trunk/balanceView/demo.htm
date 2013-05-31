@@ -1,0 +1,44 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>BalanceView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="balanceview.js"></script>
+	<link rel="stylesheet" type="text/css" href="balanceview.css"/>
+	
+	<script type="text/javascript">
+		var doc = {
+			items:[
+				{date:"2013-03-16T17:30", amount:19000, notes:"Зарплата", calcSum:true},
+				{date:"2013-03-30T15:00", amount:9000, notes:"Пол-аванса"},
+				{date:"2013-03-30T15:00", amount:9000, notes:"Пол-аванса"},
+				{date:"2013-04-16T17:30", amount:11000, notes:"Зарплата"},
+				{date:"2013-04-16T17:30", amount:8000, notes:"Зарплата", calcSum:true},
+				{date:"2013-05-30T15:00", amount:9000, notes:"Пол-аванса"}
+			]
+		};
+		
+		$(function(){
+			$("#viewPanel").balanceView(JSON.stringify(doc));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>BalanceView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
