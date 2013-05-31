@@ -30,7 +30,7 @@
 		});
 		editPnl.find("textarea.fldDoc").change(function(){
 			var v = $(this).val();
-			onchange(v);
+			if(onchange) onchange(v);
 		});
 
 	}
