@@ -1,0 +1,97 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>FML Test Page</title>
+	<style type="text/css">
+		body{
+			font-family: Verdana, Arial, Sans-serif;
+		}
+		#out, #fcode{
+			border: 1px solid #ccc;
+			margin: 3px;
+			padding: 5px;
+			width: 500px;
+		}
+	</style>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript">
+		var code = [
+			"doc(",
+			"\tp(\"Simple paragraph\"),",
+			"\tp(strong(\"Bold\"), \" paragraph\"),",
+			"\tp(\"Simple paragraph\"),",
+			"\tp(\"Simple paragraph\"),",
+			"\tp(\"Simple paragraph\")",
+			")"
+		].join("\n");
+		
+		function toHtml(str){
+			return str.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\n", "<br>")
+				.replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+		}
+
+		var docType = {
+			doc: function(){
+				var a = [];
+				for(var i=0; i<arguments.length; i++)
+					a.push(arguments[i]);
+				return Html.div(a.join(""));
+			},
+			p: function(){
+				var a = [];
+				for(var i=0; i<arguments.length; i++)
+					a.push(arguments[i]);
+				return Html.p(a.join(""));
+			}
+		};
+		
+		var docMarkup = {
+			strong: function(){
+				var a = [];
+				for(var i=0; i<arguments.length; i++)
+					a.push(arguments[i]);
+				return Html.span({style:"font-weight:bold;"}, a.join(""));
+			}
+		};
+		
+		function fml(code, includes){
+			var includes = includes?includes.split(";"):[];
+			var fcode = [];
+			$.each(includes, function(i, inc){
+				fcode.push(["with(", inc, "){"].join(""));
+			});
+			fcode = fcode.concat(["return ", code]);
+			for(var i=0; i<includes.length; i++)
+				fcode.push("}");
+			fcode = fcode.join("");
+			
+			$("#fcode").html(fcode);
+			var f = new Function(fcode);
+			return f();
+		}
+		
+		function template(){with(Html){
+			return div(
+				fml(code, "docType;docMarkup")
+			);
+		}}
+		
+		$(function(){
+			$("#out").html(template());
+		});
+	</script>
+</head>
+<body>
+	<h1>FML Test Page</h1>
+	<p>FML - библиотека для формирования разметки в функциональном стиле.</p>
+	<h2>Source code:</h2>
+	<pre id="fcode"></pre>
+	
+	<h2>Result:</h2>
+	<div id="out"></div>
+</body>
+</html>
