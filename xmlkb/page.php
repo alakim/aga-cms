@@ -15,6 +15,7 @@
 	}
 
 	if($page)
-		echo(xml2html("../data/xmlkb/".$page.".xml", "defs/article.xslt"));
+		//echo(xml2html("../data/xmlkb/".$page.".xml", "defs/article.xslt"));
+		echo(xml2html("../data/xmlkb/".$page, "defs/article.xslt"));
 
 ?>
