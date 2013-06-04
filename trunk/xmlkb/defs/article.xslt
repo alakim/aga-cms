@@ -30,7 +30,7 @@
 	</xsl:template>
 	
 	<xsl:template name="toc">
-		<ul>
+		<ul class="toc">
 			<xsl:apply-templates select="section" mode="toc"/>
 		</ul>
 	</xsl:template>
