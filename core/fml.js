@@ -11,6 +11,7 @@ var FML = (function(){
 			for(var i=0; i<includes.length; i++)
 				fcode.push("}");
 			fcode = fcode.join("");
+			console.log(fcode);
 			return new Function(args, fcode);
 		}
 	};
