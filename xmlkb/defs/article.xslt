@@ -10,8 +10,19 @@
 			<head>
 				<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 				<link rel="stylesheet" type="text/css" href="styles.css"/>
+				<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+				<script type="text/javascript">
+					$(function(){
+						var dir = document.location.search.match(/\?p=(.+)\/[^\.]+\.xml$/)[1];
+						$("img").each(function(i, img){img=$(img);
+							var src = img.attr("src");
+							$(img).attr({src:  "../data/xmlkb"+dir+"/"+src});
+						});
+					});
+				</script>
 			</head>
 			<body>
+				<h1><xsl:value-of select="section[1]/@title"/></h1>
 				<xsl:call-template name="toc"/>
 				<xsl:apply-templates select="section" />
 			</body>
@@ -34,8 +45,10 @@
 	
 	<xsl:template match="section">
 		<a name="{generate-id()}"></a>
-		<xsl:variable name="level">h<xsl:value-of select="count(ancestor::section)+1"/></xsl:variable>
-		<xsl:element name="{$level}"><xsl:value-of select="@title"/></xsl:element>
+		<xsl:if test="count(ancestor::section)>0">
+			<xsl:variable name="level">h<xsl:value-of select="count(ancestor::section)+1"/></xsl:variable>
+			<xsl:element name="{$level}"><xsl:value-of select="@title"/></xsl:element>
+		</xsl:if>
 		<xsl:apply-templates />
 
 		<!-- xsl:apply-templates select="section"/-->
