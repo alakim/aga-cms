@@ -57,8 +57,8 @@ var Editor = (function(){
 				return "textView";
 			return "defaultView";
 		},
-		backup: function(dirPath, onbackup){
-			$.post(__.ws.backup, {d:dirPath}, function(doc, state, data){
+		backup: function(name, dirPath, onbackup){
+			$.post(__.ws.backup, {d:dirPath, n:name}, function(doc, state, data){
 				var json = JSON.stringify(data);
 				onbackup(json);
 			});
