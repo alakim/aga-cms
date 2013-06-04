@@ -2,9 +2,12 @@
 	var listView = {
 		build: function(pnl, initPath, onFileSelect){pnl=$(pnl);
 		
+			var initPath;
+		
 			function template(data, path, basePath){with(H){
+				var bp = basePath?basePath.replace(/[^\/]+\/?$/i, ""):null;
 				return ul({"class":"listView"},
-					basePath?li({"class":"dir", path:basePath}, ".."):null,
+					basePath&&path!=initPath?li({"class":"dir", path:basePath, basePath:bp}, ".."):null,
 					apply(data.items, function(itm){
 						if(!itm) return;
 						if(!itm.dir) return;
@@ -19,6 +22,7 @@
 			}}
 			
 			function navigate(path, basePath){
+				if(!basePath) initPath = path;
 				pnl.html(H.img({src:"core/wait.gif"}));
 				
 				$.post("ls.php", {path:path}, function(res){
