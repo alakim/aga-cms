@@ -1,8 +1,9 @@
 <?php 
+	$name = $_REQUEST["n"];
 	$dirPath = $_REQUEST["d"];
 	
 	$date = new DateTime();
-	$archName = "backup/backup_".$date->format("YmdHis").".zip";
+	$archName = "backup/".$name."_".$date->format("YmdHis").".zip";
 	
 	
 	
