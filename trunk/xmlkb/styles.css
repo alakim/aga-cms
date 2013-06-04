@@ -119,6 +119,7 @@ p.tocmenu{
 	padding:0px;
 	margin-top:0px;
 	margin-bottom:10px;
+	cursor: pointer;
 }
 p.tocmenu a:link{
 	color:white;

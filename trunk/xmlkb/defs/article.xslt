@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:bs="http://www.bicyclesoft.com/xPublish">
 	<xsl:output method="html" version="1.0" encoding="utf-8" indent="yes"/>
 	
@@ -18,18 +18,39 @@
 							var src = img.attr("src");
 							$(img).attr({src:  "../data/xmlkb"+dir+"/"+src});
 						});
+						$(".tocmenu").click(function(){
+							document.location="#toc";
+						});
 					});
 				</script>
 			</head>
 			<body>
 				<h1><xsl:value-of select="section[1]/@title"/></h1>
 				<xsl:call-template name="toc"/>
-				<xsl:apply-templates select="section" />
+				<!--xsl:apply-templates select="section" /-->
+				<xsl:apply-templates select="*[local-name()!='book' and local-name()!='website' and local-name()!='webArticle']"/>
+				<xsl:if test="book|webArticle">
+					<h2>
+						<a name="books">Литература</a>
+					</h2>
+					<!--p class="tocmenu" onclick="window.navigate('#toc')" style="cursor:hand;" title="К оглавлению">&#160;</p-->
+					<p class="tocmenu" onclick="window.location='#toc'" title="К оглавлению">&#160;</p>
+					<xsl:apply-templates select="book|webArticle"/>
+				</xsl:if>
+				<xsl:if test="website">
+					<h2>
+						<a name="websites">Веб-ресурсы</a>
+					</h2>
+					<!--p class="tocmenu" onclick="window.navigate('#toc')" style="cursor:hand;" title="К оглавлению">&#160;</p-->
+					<p class="tocmenu" onclick="window.location='#toc'" title="К оглавлению">&#160;</p>
+					<xsl:apply-templates select="website"/>
+				</xsl:if>
 			</body>
 		</html>
 	</xsl:template>
 	
 	<xsl:template name="toc">
+		<a name="toc"></a>
 		<ul class="toc">
 			<xsl:apply-templates select="section" mode="toc"/>
 		</ul>
@@ -44,16 +65,51 @@
 	</xsl:template>
 	
 	<xsl:template match="section">
+		<xsl:variable name="indent">
+			<xsl:value-of select="(count(ancestor::section)-1)*$indent_per_section"/>
+		</xsl:variable>
 		<a name="{generate-id()}"></a>
 		<xsl:if test="count(ancestor::section)>0">
 			<xsl:variable name="level">h<xsl:value-of select="count(ancestor::section)+1"/></xsl:variable>
-			<xsl:element name="{$level}"><xsl:value-of select="@title"/></xsl:element>
+			<xsl:element name="{$level}">
+				<xsl:attribute name="style">margin-left:<xsl:value-of select="$indent"/>;</xsl:attribute>
+				<xsl:value-of select="@title"/>
+			</xsl:element>
+			<xsl:if test="not(ancestor::section[@viewmode='table'])">
+				<xsl:call-template name="tocmenu"/>
+			</xsl:if>
+
 		</xsl:if>
 		<xsl:apply-templates />
 
 		<!-- xsl:apply-templates select="section"/-->
 	</xsl:template>
+
+	<xsl:template name="tocmenu">
+		<!--p class="tocmenu" onclick="window.navigate('#toc')" style="cursor:hand;" title="К оглавлению">&#160;-->
+		<p class="tocmenu" onclick="window.location='#toc'" title="К оглавлению">
+			<a>
+				<xsl:attribute name="href">#<xsl:value-of select="substring-after(generate-id(parent::section), $standard-Id-label)"/></xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="parent::section/@title"/></xsl:attribute>
+				<xsl:text disable-output-escaping="yes">&amp;#x25B2;</xsl:text> <xsl:value-of select="parent::section/@title"/>
+			</a>
+			<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text><xsl:apply-templates select="section" mode="tocmenu"/>
+		</p>
+	</xsl:template>
 	
+	<xsl:template match="section" mode="tocmenu">
+		<nobr>
+			<a>
+				<xsl:attribute name="href">#<xsl:value-of select="substring-after(generate-id(), $standard-Id-label)"/></xsl:attribute>
+				<xsl:attribute name="title"><xsl:value-of select="@title"/></xsl:attribute>
+				<!--&#8226;-->
+				<!-- в подменю раздела -->
+				<xsl:text disable-output-escaping="yes">&amp;#x25bc;</xsl:text> <xsl:value-of select="@title"/>
+			</a><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+	</nobr>
+	</xsl:template>
+
+
 	<xsl:template match="p"><p><xsl:apply-templates/></p></xsl:template>
 	
 	<xsl:template match="code">
@@ -132,5 +188,233 @@
 				<xsl:value-of select="."/>
 			</p>
 		</center>
+	</xsl:template>
+	
+	<xsl:template match="cit">
+		<p class="cit">
+			<xsl:apply-templates/>
+		</p>
+	</xsl:template>
+	<xsl:template match="note">
+		<xsl:choose>
+			<xsl:when test="parent::section">
+				<p class="note">
+					<xsl:apply-templates/>
+				</p>
+			</xsl:when>
+			<xsl:otherwise>
+				<span class="note">
+					<xsl:apply-templates/>
+				</span>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="srctext">
+		<p class="srctext">
+			<xsl:apply-templates/>
+		</p>
+	</xsl:template>
+	<xsl:template match="class">
+		<span class="class">
+			<xsl:value-of select="."/>
+		</span>
+	</xsl:template>
+	<xsl:template match="sel">
+		<xsl:choose>
+			<!--xsl:when test="parent::cmd"><span style="color:#88ff88;"><xsl:apply-templates/></span></xsl:when-->
+			<xsl:when test="parent::cmd">
+				<span style="padding:2px; background-color:#707070;">
+					<xsl:apply-templates/>
+				</span>
+			</xsl:when>
+			<xsl:when test="parent::code">
+				<span style="background-color:#cccccc; font-weight:normal;">
+					<xsl:apply-templates/>
+				</span>
+			</xsl:when>
+			<!--xsl:when test="parent::code"><span style="font-weight:bold;"><xsl:apply-templates/></span></xsl:when-->
+			<xsl:otherwise>
+				<b>
+					<xsl:apply-templates/>
+				</b>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="notice">
+		<xsl:choose>
+			<xsl:when test="parent::li">
+				<span class="opennotice" onclick="{substring-after(generate-id(), $standard-Id-label)}.style.display=({substring-after(generate-id(), $standard-Id-label)}.style.display=='block')?'none':'block'">...</span>
+				<div class="hiddennotice" onclick="this.style.display='none'" id="{substring-after(generate-id(), $standard-Id-label)}">
+					<xsl:apply-templates/>
+				</div>
+			</xsl:when>
+			<xsl:otherwise>
+				<div class="notice">
+					<xsl:apply-templates/>
+				</div>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="attention">
+		<div class="attention">
+			<xsl:apply-templates/>
+		</div>
+	</xsl:template>
+	<xsl:template match="conclusion">
+		<div class="conclusion">
+			<xsl:apply-templates/>
+		</div>
+	</xsl:template>
+	
+	<xsl:template match="book | webArticle">
+		<p>
+			<a>
+				<xsl:attribute name="name"><xsl:value-of select="substring-after(generate-id(.), $standard-Id-label)"/></xsl:attribute>
+				<xsl:value-of select="count(preceding::book | preceding::webArticle)+1"/>.
+				<xsl:if test="@author">
+					<span style="font-style:italic">
+						<xsl:value-of select="@author"/>
+					</span>. </xsl:if>
+				<xsl:if test="@title">
+					<xsl:choose>
+						<xsl:when test="@url">
+							<a href="{@url}">
+								<xsl:value-of select="@title"/>
+							</a>
+						</xsl:when>
+						<xsl:otherwise>
+							<b>
+								<xsl:value-of select="@title"/>
+							</b>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:if>
+				<xsl:if test="@altUrl"> (<a href="{@altUrl}">зеркало</a>)</xsl:if>
+				<xsl:if test="@translationUrl"> (<a href="{@translationUrl}">перевод</a>)</xsl:if>
+				<xsl:if test="@pub"> - <xsl:value-of select="@pub"/>
+				</xsl:if>
+				<xsl:if test="*|text()"> (<xsl:apply-templates/>)</xsl:if>
+			</a>
+		</p>
+	</xsl:template>
+	<xsl:template match="website">
+		<p>
+			<a href="{@url}">
+				<xsl:value-of select="@title"/>
+			</a>
+			<xsl:if test="node()">
+				- <xsl:apply-templates/>
+			</xsl:if>
+		</p>
+	</xsl:template>
+
+	
+	
+	<xsl:template match="ref">
+		<xsl:choose>
+			<xsl:when test="@url">
+				<a href="{@url}">
+					<xsl:value-of select="."/>
+				</a>
+			</xsl:when>
+			<xsl:when test="@xart">
+				<xsl:variable name="tocPath">
+					<xsl:value-of select="/article/@rootDir"/>../<xsl:value-of select="/article/@targetSite"/>
+				</xsl:variable>
+				<xsl:variable name="targetPage">
+					<xsl:value-of select="bs:urlNoSection(@xart)"/>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="not(/article/@targetSite) or document($tocPath)//page[@src=$targetPage]">
+						<xsl:variable name="doc">
+							<xsl:value-of select="//article/@rootDir"/>
+							<xsl:value-of select="@xart"/>
+						</xsl:variable>
+						<xsl:variable name="sId" select="bs:sectionId(@xart)"/>
+						<xsl:variable name="fileRef">
+							<xsl:value-of select="//article/@rootDir"/>
+							<xsl:value-of select="bs:fileName(@xart)"/>.xml<xsl:if test="not($sId='')">#<xsl:value-of select="$sId"/>
+							</xsl:if>
+						</xsl:variable>
+						<xsl:variable name="tit">
+							<xsl:value-of select="document($doc)//article/section/@title"/>
+							<xsl:if test="not($sId='')"> / <xsl:value-of select="document($doc)//section[@id=$sId]/@title"/>
+							</xsl:if>
+						</xsl:variable>
+						<a href="{$fileRef}">
+							<xsl:choose>
+								<xsl:when test="text()">
+									<xsl:attribute name="title"><xsl:value-of select="$tit"/></xsl:attribute>
+									<xsl:value-of select="."/>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$tit"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</a>
+					</xsl:when>
+					<xsl:otherwise/>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:when test="@xSoftClass">
+				<xsl:variable name="doc">
+					<xsl:value-of select="@xSoftClass"/>
+				</xsl:variable>
+				<xsl:variable name="fileRef">
+					<xsl:value-of select="substring-before($doc, '.')"/>.html
+				</xsl:variable>
+				<a href="{$fileRef}">
+					<xsl:choose>
+						<xsl:when test="text()">
+							<xsl:value-of select="."/>
+						</xsl:when>
+						<xsl:otherwise>Класс <xsl:value-of select="document($doc)//class/@name"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</a>
+			</xsl:when>
+			<xsl:when test="@sect">
+				<xsl:variable name="id">
+					<xsl:value-of select="@sect"/>
+				</xsl:variable>
+				<a>
+					<xsl:attribute name="href">#<xsl:value-of select="substring-after(generate-id(//section[@id = $id]), $standard-Id-label)"/></xsl:attribute>
+					<xsl:attribute name="title">см. "<xsl:value-of select="//section[@id = $id]/@title"/>"</xsl:attribute>
+					<xsl:choose>
+						<xsl:when test="text()">
+							<xsl:value-of select="."/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="//section[@id = $id]/@title"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</a>
+			</xsl:when>
+			<xsl:when test="@book">
+			[<a>
+					<xsl:attribute name="href">#<xsl:value-of select="substring-after(generate-id(id(@book)), $standard-Id-label)"/></xsl:attribute>
+					<xsl:variable name="book" select="id(@book)"/>
+					<xsl:variable name="num" select="count($book/preceding::book|$book/preceding::webArticle)+1"/>
+					<xsl:attribute name="title"><xsl:value-of select="$num"/>. <xsl:choose><xsl:when test="$book/@title"><xsl:value-of select="$book/@title"/></xsl:when><xsl:otherwise><xsl:value-of select="$book"/></xsl:otherwise></xsl:choose></xsl:attribute>
+					<xsl:value-of select="$num"/>
+				</a>]
+		</xsl:when>
+			<xsl:when test="@website">
+				<a>
+					<xsl:attribute name="href"><xsl:value-of select="id(@website)/@url"/></xsl:attribute>
+					<xsl:choose>
+						<xsl:when test="text()">
+							<xsl:attribute name="title"><xsl:value-of select="id(@website)/@title"/><xsl:if test="id(@website)/text()">&#10;(<xsl:value-of select="id(@website)/text()"/>)</xsl:if></xsl:attribute>
+							<xsl:value-of select="."/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="title"><xsl:value-of select="id(@website)"/></xsl:attribute>
+							<xsl:value-of select="id(@website)/@title"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</a>
+			</xsl:when>
+			<xsl:otherwise/>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>
