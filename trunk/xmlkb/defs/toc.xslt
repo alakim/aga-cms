@@ -60,8 +60,12 @@
 				margin-left:20px;
 			}
 			</style>
+			<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+			<script type="text/javascript" src="../core/lib/html.js"></script>
+			<script type="text/javascript" src="toccontrols.js"></script>
 		</head>
 		<body>
+			<div id="controlPnl"></div>
 			<h1><xsl:value-of select="//toc/@name"/></h1>
 			<xsl:apply-templates />
 		</body>
