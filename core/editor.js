@@ -33,7 +33,7 @@ var Editor = (function(){
  
 				//console.log(v);
 				var view = __.selectView(docPath, v);
-				$(pnl)[view](v);
+				$(pnl)[view](v, docPath);
 			});
 		},
 		save: function(path, data, onsuccess, secure, onerror, textMode){
