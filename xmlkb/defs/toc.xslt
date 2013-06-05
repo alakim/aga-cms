@@ -84,7 +84,17 @@
 			</a>
 		</p>
 		
+		<xsl:if test="document($src)//article/section/section">
+			<div class="section2" id="{generate-id()}">
+				<xsl:apply-templates mode="toc" select="document($src)//article/section/section"/>
+			</div>
+		</xsl:if>
 
+	</xsl:template>
+	
+	<xsl:template match="section" mode="toc">
+		<p><xsl:value-of select="@title"/></p>
+		<div class="subToc"><xsl:apply-templates mode="toc" select="section"/></div>
 	</xsl:template>
 
 </xsl:stylesheet>
