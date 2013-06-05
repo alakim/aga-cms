@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="Windows-1251"?>
+<!-- корневой элемент - оглавление сайта
+    name - имя индекса (отображается в заголовке окна) -->
+<!ELEMENT toc (section | page)*>
+<!ATTLIST toc
+	name CDATA #REQUIRED
+>
+<!-- Раздел сайта
+	title - наименование раздела -->
+<!ELEMENT section (section | page)*>
+<!ATTLIST section
+	title CDATA #REQUIRED
+>
+<!-- Страница сайта
+	src - ссылка на исходный файл 
+	additionDate - дата добавления статьи
+-->
+<!ELEMENT page EMPTY>
+<!ATTLIST page
+	src CDATA #REQUIRED
+	additionDate CDATA #IMPLIED
+>
