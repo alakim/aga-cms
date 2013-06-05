@@ -2,7 +2,8 @@
 	
 	var templates = {
 		main: function(doc, path, editMode){with(Html){
-			var ref = path.replace(/^.*aga\/data\//, "data/");
+			var ref = path.match(/aga\/data\/xmlkb\//)?path.replace(/^.*aga\/data\/xmlkb\//, "xmlkb/page.php?p=")
+				:path.replace(/^.*aga\/data\//, "data/");
 			return div(
 				div({"class":"editPnl"},
 					input({type:"button", "class":"btnEdit", value:editMode?"View mode":"Edit mode"})
