@@ -1,6 +1,6 @@
 (function($,H){
 	function template(){with(H){
-		return div(
+		return div({style:style({"text-align":"right", "margin-right":40})},
 			a({href:"#", "class":"btExpandAll"}, "Expand all"), " | ",
 			a({href:"#", "class":"btCollapsePages"}, "Collapse pages"), " | "
 		);
