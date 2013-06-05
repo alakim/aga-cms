@@ -1,15 +1,22 @@
 <?php 
+	include 'sec.php';
+	
 	$path = $_REQUEST["path"];
-	echo("{\"items\":[");
-	$files = scandir($path);
-	foreach($files as $file){
-		if($file!="." && $file!=".." && $file!=".svn"){
-			echo("{\"name\":\"{$file}\"");
-			if(is_dir($path."/".$file))
-				echo(",\"dir\":true");
-			echo("},");
-		}
+	$sec = $_REQUEST["s"];
+	if(!checkAccess($sec)){
+		echo("{\"error\":\"Access denied!\"}");
 	}
-	echo("null]}");
-
+	else{
+		echo("{\"items\":[");
+		$files = scandir($path);
+		foreach($files as $file){
+			if($file!="." && $file!=".." && $file!=".svn"){
+				echo("{\"name\":\"{$file}\"");
+				if(is_dir($path."/".$file))
+					echo(",\"dir\":true");
+				echo("},");
+			}
+		}
+		echo("null]}");
+	}
 ?>

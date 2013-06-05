@@ -1,6 +1,6 @@
 (function($, H){
 	var listView = {
-		build: function(pnl, initPath, onFileSelect){pnl=$(pnl);
+		build: function(pnl, initPath, onFileSelect, getPassword){pnl=$(pnl);
 		
 			var initPath;
 		
@@ -24,8 +24,9 @@
 			function navigate(path, basePath){
 				if(!basePath) initPath = path;
 				pnl.html(H.img({src:"core/wait.gif"}));
+				var psw = getPassword();
 				
-				$.post("ls.php", {path:path}, function(res){
+				$.post("ls.php", {path:path, s:psw}, function(res){
 					var jsData = $.parseJSON(res);
 					var view = $(template(jsData, path, basePath));
 					view.find("li").css({cursor:"pointer"}).click(function(){var _=$(this);
@@ -45,9 +46,9 @@
 	};
 
 	
-	$.fn.fileManager = function(initPath, onFileSelect){
+	$.fn.fileManager = function(initPath, onFileSelect, getPassword){
 		$(this).each(function(i, el){
-			listView.build(el, initPath, onFileSelect);
+			listView.build(el, initPath, onFileSelect, getPassword);
 		});
 	};
 })(jQuery, Html);
