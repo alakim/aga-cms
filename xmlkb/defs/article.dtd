@@ -1,0 +1,249 @@
+<!ENTITY % basicmarkup_cont "#PCDATA | ref | img | class | sel | code | file | url | nobr | regPath | menu | button | shortcut | new">
+<!ENTITY % basicmarkup "(%basicmarkup_cont;)*">
+<!ENTITY % somecontent "p | code | file | regPath | cmd | list | url | picture | table | objTable | cit | note | srctext | notice | attention | conclusion | definition">
+<!ENTITY dash "&#8211;">
+<!ENTITY arrowright "&#8594;">
+<!ENTITY arrowleft "&#8592;">
+<!ENTITY % classDiagram SYSTEM "classDiagram.dtd">
+%classDiagram;
+<!-- статья - корневой элемент 
+	xmlns:cd - идентификатор пространства имен для подключения модуля classDiagram
+	rootDir - путь к корневой папке проекта
+	targetSite - имя (без пути) файла оглавления сайта, для которого производится сборка (если указано, то будет использоваться для проверки связности ссылок на другие статьи)
+-->
+<!ELEMENT article (section, (new | book | webArticle | website)*)>
+<!ATTLIST article
+	xmlns:cd CDATA #IMPLIED
+	rootDir CDATA #IMPLIED
+	targetSite CDATA #IMPLIED
+>
+<!-- раздел документа 
+	id - идентификатор
+	title - заголовок 
+	subtitle - подзаголовок 
+	viewmode - вид отображения
+		normal - традиционный
+		table - все подразделы сводятся в таблицу
+	additionDate - дата добавления раздела
+-->
+<!ELEMENT section (classify | section | thesis | optional | cd:classDiagram | try | new | %somecontent;)*>
+<!ATTLIST section
+	id ID #IMPLIED
+	title CDATA #REQUIRED
+	subtitle CDATA #IMPLIED
+	viewmode (normal | table) "normal"
+	displayInTOC (yes | no) "yes"
+	complete (yes | no) "yes"
+	additionDate CDATA #IMPLIED
+>
+<!-- Привязка к классификатору
+	rubric - идентификатор рубрики -->
+<!ELEMENT classify EMPTY>
+<!ATTLIST classify
+	rubric NMTOKEN #REQUIRED
+>
+<!-- абзац текста -->
+<!ELEMENT p %basicmarkup;>
+<!-- список 
+	marker - вид маркера-->
+<!ELEMENT list (caption?, li+)>
+<!ATTLIST list
+	marker (bullet | num | none) "bullet"
+>
+<!-- заголовок списка -->
+<!ELEMENT caption %basicmarkup;>
+<!-- элемент списка
+	name - имя элемента (например, если это список переменны, то это имя переменной -->
+<!ELEMENT li (%basicmarkup_cont; | list | notice | optional | note)*>
+<!ATTLIST li
+	name CDATA #IMPLIED
+>
+<!-- иллюстрация 
+		src - ссылка на файл
+		текст - подпись к рисунку-->
+<!ELEMENT picture (#PCDATA)>
+<!ATTLIST picture
+	src CDATA #REQUIRED
+>
+<!--in-line image
+		src - ссылка на файл-->
+<!ELEMENT img EMPTY>
+<!ATTLIST img
+	src CDATA #REQUIRED
+>
+<!-- теги таблицы -->
+<!ELEMENT table (caption?, tr+)>
+<!ATTLIST table
+	border CDATA #IMPLIED
+>
+<!ELEMENT tr (td | th)+>
+<!ATTLIST tr
+	class CDATA #IMPLIED
+>
+<!ELEMENT th %basicmarkup;>
+<!ATTLIST th
+	rowspan CDATA #IMPLIED
+	colspan CDATA #IMPLIED
+>
+<!ELEMENT td %basicmarkup;>
+<!ATTLIST td
+	rowspan CDATA #IMPLIED
+	colspan CDATA #IMPLIED
+>
+<!-- гиперссылка 
+	sect - ссылка на главу
+	url - URL источника
+	xart - ссылка на внешний файл, отвечающий article.dtd. (URL должен быть относительно корня сайта - т.е. как бы из директории source)
+			После имени файла через знак # можно указать идентификатор целевой секции
+	book - идентификатор книги (book) или веб-публикации (webArticle)
+	website - ссылка на элемент списка веб-ресурсов
+	-->
+<!ELEMENT ref (#PCDATA)>
+<!ATTLIST ref
+	sect IDREF #IMPLIED
+	url CDATA #IMPLIED
+	xart CDATA #IMPLIED
+	book IDREF #IMPLIED
+	website IDREF #IMPLIED
+>
+<!--неразрывный текст-->
+<!ELEMENT nobr (#PCDATA)>
+<!--пример программного кода
+	если родительский элемент - p, то отображается inline
+	в противном случае - в виде блока
+	display - позволяет явно задать отображение
+-->
+<!ELEMENT code (#PCDATA | sel | optional | cs_region | caption)*>
+<!ATTLIST code
+	display (inline | block | default) "default"
+>
+<!-- имя файла, или некоторый путь
+-->
+<!ELEMENT file (#PCDATA)>
+<!-- URL-->
+<!ELEMENT url (#PCDATA | sel)*>
+<!--пример работы с командной строкой
+-->
+<!-- регион кода программы на C# -->
+<!ELEMENT cs_region (#PCDATA | cs_region)*>
+<!ATTLIST cs_region
+	name CDATA #IMPLIED
+	display (none | block) "none"
+>
+<!ELEMENT cmd (#PCDATA | sel)*>
+<!-- тезис 
+	dsc - описание-->
+<!ELEMENT thesis (%somecontent;)*>
+<!ATTLIST thesis
+	dsc CDATA #REQUIRED
+>
+<!-- цитата - для читателя-->
+<!ELEMENT cit %basicmarkup;>
+<!--заметка не для читателя -->
+<!ELEMENT note %basicmarkup;>
+<!-- текст из первоисточника - не для читателя -->
+<!ELEMENT srctext %basicmarkup;>
+<!-- имя класса -->
+<!ELEMENT class (#PCDATA)>
+<!-- выделенный текст -->
+<!ELEMENT sel ANY>
+<!-- примечание для читателя -->
+<!ELEMENT notice %basicmarkup;>
+<!-- особо важное примечание для читателя -->
+<!ELEMENT attention %basicmarkup;>
+<!-- определение некоторого понятия 
+	term - понятие (не отображается, а служит для ссылок)
+-->
+<!-- Название меню приложения -->
+<!ELEMENT menu (#PCDATA)>
+<!-- Кнопка пользовательского интерфейса -->
+<!ELEMENT button (#PCDATA)>
+<!-- Название комбинации клавиш -->
+<!ELEMENT shortcut (#PCDATA)>
+<!-- Путь в реестре Windows -->
+<!ELEMENT regPath (#PCDATA)>
+<!ELEMENT definition %basicmarkup;>
+<!ATTLIST definition
+	term CDATA #REQUIRED
+>
+<!-- таблица, наполняемая из произвольных тегов - объектов
+каждый такой тег преобразуется в строку таблицы 
+	width - ширина таблицы-->
+<!ELEMENT objTable (tblColumn+, tblObjects)>
+<!ATTLIST objTable
+	width CDATA #IMPLIED
+>
+<!-- определение колонки для таблицы 
+	select - имя атрибута (символ "@" не ставится), из которого следует выбирать значение. 
+		Если вместо имени атрибута стоит точка, то выводится содержимое тега
+		Если вместо имени атрибута стоит #, то выводится номер записи
+	style - описание стиля CSS для ячеек данной колонки
+	текст - заголовок колонки (если во всех колонках этот текст пустой, то строка заголовков 
+				не отображается)-->
+<!ELEMENT tblColumn (#PCDATA)>
+<!ATTLIST tblColumn
+	select CDATA #REQUIRED
+	style CDATA #IMPLIED
+	align (center | left | right) "left"
+	valign (center | top | bottom) "top"
+>
+<!-- объекты - содержимое таблицы -->
+<!ELEMENT tblObjects ANY>
+<!-- элемент списка литературы книга, статья, или веб-публикация 
+	additionDate - дата добавления ссылки на книгу
+-->
+<!ELEMENT book (#PCDATA | ref)*>
+<!ATTLIST book
+	id ID #REQUIRED
+	author CDATA #IMPLIED
+	title CDATA #IMPLIED
+	pub CDATA #IMPLIED
+	additionDate CDATA #IMPLIED
+>
+<!-- Интернет-публикация 
+	author - автор
+	title - название
+	pub - сведения об источнике (издательстве, веб-сайте), дате публикации
+	url - интернет-адрес статьи
+	altUrl - адрес зеркала статьи
+	additionDate - дата добавления ссылки на публикацию
+-->
+<!ELEMENT webArticle (#PCDATA)>
+<!ATTLIST webArticle
+	id ID #REQUIRED
+	author CDATA #IMPLIED
+	title CDATA #REQUIRED
+	pub CDATA #IMPLIED
+	url CDATA #REQUIRED
+	altUrl CDATA #IMPLIED
+	translationUrl CDATA #IMPLIED
+	additionDate CDATA #IMPLIED
+>
+<!-- необязательный фрагмент
+       обычно скрыт, но при желании можно показать -->
+<!ELEMENT optional (%basicmarkup_cont; | caption | notice | picture | attention | cmd | p | list)*>
+<!ELEMENT conclusion (#PCDATA | code | ref)*>
+<!-- веб-сайт (в отличие от book это не конкретная веб-публикация, а целый сайт, или раздел сайта по данной тематике)
+	id - идентификатор для ссылки
+	url - URL
+	title - заголовок
+	текст - произвольная информация 
+	additionDate - дата добавления ссылки на веб-сайт
+-->
+<!ELEMENT website (#PCDATA)>
+<!ATTLIST website
+	id ID #IMPLIED
+	url CDATA #REQUIRED
+	title CDATA #REQUIRED
+	additionDate CDATA #IMPLIED
+>
+<!-- Новый фрагмент
+	date - дата добавления фрагмента -->
+<!ELEMENT new (new | section | thesis | optional | cd:classDiagram | webArticle | book | website | %somecontent;)*>
+<!ATTLIST new
+	date CDATA #REQUIRED
+>
+<!-- Фрагмент, добавляемый при отсутствии ошибок в связности сайта -->
+<!ELEMENT try (onerror | section | thesis | optional | cd:classDiagram | webArticle | book | website | %somecontent;)*>
+<!-- Фрагмент, добавляемый при наличии ошибок в связности сайта -->
+<!ELEMENT onerror (#PCDATA)>
