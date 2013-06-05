@@ -21,11 +21,17 @@
 						$(".tocmenu").click(function(){
 							document.location="#toc";
 						});
+						$("h1").css({cursor:"pointer"}).attr({title:"К оглавлению"}).click(function(){
+							document.location = "toc.php";
+						});
 					});
 				</script>
 			</head>
 			<body>
 				<h1><xsl:value-of select="section[1]/@title"/></h1>
+				<div style="text-align:right; margin-right:40px;">
+					<a href="toc.php">Оглавление</a>
+				</div>
 				<xsl:call-template name="toc"/>
 				<!--xsl:apply-templates select="section" /-->
 				<xsl:apply-templates select="*[local-name()!='book' and local-name()!='website' and local-name()!='webArticle']"/>
