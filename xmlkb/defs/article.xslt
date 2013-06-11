@@ -407,16 +407,18 @@
 				</a>]
 		</xsl:when>
 			<xsl:when test="@website">
+				<xsl:variable name="wID" select="@website"/>
+				<xsl:variable name="wSite" select="//*[@id=$wID]"/>
 				<a>
-					<xsl:attribute name="href"><xsl:value-of select="id(@website)/@url"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="$wSite/@url"/></xsl:attribute>
 					<xsl:choose>
 						<xsl:when test="text()">
-							<xsl:attribute name="title"><xsl:value-of select="id(@website)/@title"/><xsl:if test="id(@website)/text()">&#10;(<xsl:value-of select="id(@website)/text()"/>)</xsl:if></xsl:attribute>
+							<xsl:attribute name="title"><xsl:value-of select="$wSite/@title"/><xsl:if test="$wSite/text()">&#10;(<xsl:value-of select="$wSite/text()"/>)</xsl:if></xsl:attribute>
 							<xsl:value-of select="."/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:attribute name="title"><xsl:value-of select="id(@website)"/></xsl:attribute>
-							<xsl:value-of select="id(@website)/@title"/>
+							<xsl:attribute name="title"><xsl:value-of select="$wSite"/></xsl:attribute>
+							<xsl:value-of select="$wSite/@title"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</a>
