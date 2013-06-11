@@ -397,9 +397,10 @@
 				</a>
 			</xsl:when>
 			<xsl:when test="@book">
-			[<a>
-					<xsl:attribute name="href">#<xsl:value-of select="substring-after(generate-id(id(@book)), $standard-Id-label)"/></xsl:attribute>
-					<xsl:variable name="book" select="id(@book)"/>
+				<xsl:variable name="bkID" select="@book"/>
+				<xsl:variable name="book" select="//*[@id=$bkID]"/>
+				[<a>
+					<xsl:attribute name="href">#<xsl:value-of select="substring-after(generate-id($book), $standard-Id-label)"/></xsl:attribute>
 					<xsl:variable name="num" select="count($book/preceding::book|$book/preceding::webArticle)+1"/>
 					<xsl:attribute name="title"><xsl:value-of select="$num"/>. <xsl:choose><xsl:when test="$book/@title"><xsl:value-of select="$book/@title"/></xsl:when><xsl:otherwise><xsl:value-of select="$book"/></xsl:otherwise></xsl:choose></xsl:attribute>
 					<xsl:value-of select="$num"/>
