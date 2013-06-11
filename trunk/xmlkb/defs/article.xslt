@@ -452,6 +452,30 @@
 		<xsl:apply-templates/>
 	</xsl:template>
 
+	<xsl:template match="img">
+		<img src="{@src}"/>
+	</xsl:template>
+
+	<xsl:template match="classify" mode="classification">
+		<span class="classifier">
+			<!-- *****xsl:value-of select="$classifierUrl"/-->
+			<xsl:variable name="classifier" select="document($classifierUrl)"/>
+			<xsl:variable name="facet" select="@facet"/>
+			<xsl:variable name="rubric" select="@rubric"/>
+			<xsl:choose>
+				<xsl:when test="not($classifier//rubric[@id=$rubric])">
+					<span style="background-color:red; color:yellow; font-weight:bold;">Не существует рубрика <xsl:value-of select="$rubric"/>!</span>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:variable name="rub" select="$classifier//rubric[@id=$rubric]"/>
+					<xsl:attribute name="title"><xsl:value-of select="$rub/parent::facet/@name"/></xsl:attribute>
+					<xsl:value-of select="$rub/@name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</span>
+	</xsl:template>
+	<xsl:template match="classify"/>
+
 	
 	<xsl:template match="*"><span style="color:red; background-color:yellow; font-weight:bold;">Unknown tag &lt;<xsl:value-of select="name(.)"/>&gt;</span ></xsl:template>
 
