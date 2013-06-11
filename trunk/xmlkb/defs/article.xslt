@@ -16,7 +16,7 @@
 						var dir = document.location.search.match(/\?p=(.+)\/[^\.]+\.xml$/)[1];
 						$("img").each(function(i, img){img=$(img);
 							var src = img.attr("src");
-							$(img).attr({src:  "../data/xmlkb"+dir+"/"+src});
+							$(img).attr({src:  "../data/xmlkb/"+dir+"/"+src});
 						});
 						$(".tocmenu").click(function(){
 							document.location="#toc";
@@ -454,6 +454,10 @@
 
 	<xsl:template match="img">
 		<img src="{@src}"/>
+	</xsl:template>
+	
+	<xsl:template match="shortcut">
+		<span style="font-style:italic;">&lt;<xsl:value-of select="."/>&gt;</span>
 	</xsl:template>
 
 	<xsl:template match="classify" mode="classification">
