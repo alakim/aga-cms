@@ -426,4 +426,7 @@
 			<xsl:otherwise/>
 		</xsl:choose>
 	</xsl:template>
+	
+	<xsl:template match="*"><span style="color:red; background-color:yellow; font-weight:bold;">Unknown tag &lt;<xsl:value-of select="name(.)"/>&gt;</span ></xsl:template>
+
 </xsl:stylesheet>
