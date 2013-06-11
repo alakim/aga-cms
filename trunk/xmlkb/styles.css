@@ -218,3 +218,11 @@ div.topMenu a:hover{
 	font-weight:bold;
 	font-size:12px;
 }
+span.optbutton {
+    background-color: #888888;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 70%;
+    font-weight: bold;
+    padding: 2px;
+}

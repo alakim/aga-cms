@@ -427,6 +427,32 @@
 		</xsl:choose>
 	</xsl:template>
 	
+	<xsl:template match="optional">
+		<p>
+			<xsl:apply-templates select="caption" mode="optional"/>&#160;&#160;
+		<span id="{substring-after(generate-id(), $standard-Id-label)}ctrl" class="optbutton" onclick="{substring-after(generate-id(), $standard-Id-label)}.style.display=({substring-after(generate-id(), $standard-Id-label)}.style.display=='block')?'none':'block'; {substring-after(generate-id(), $standard-Id-label)}ctrl.innerText=({substring-after(generate-id(), $standard-Id-label)}.style.display=='block')?'&#160;скрыть&#160;&#160;':'показать'">показать</span>
+		</p>
+		<div id="{substring-after(generate-id(), $standard-Id-label)}">
+			<xsl:attribute name="style">
+			display:none;
+			border-style:solid;
+			border-color:gray;
+			border-left-width:1px;
+			border-top-width:1px;
+			border-right-width:10px;
+			border-bottom-width:10px;
+			padding:4px;
+			margin-left:20px;
+			margin-right:20px;
+		</xsl:attribute>
+			<xsl:apply-templates/>
+		</div>
+	</xsl:template>
+	<xsl:template match="caption" mode="optional">
+		<xsl:apply-templates/>
+	</xsl:template>
+
+	
 	<xsl:template match="*"><span style="color:red; background-color:yellow; font-weight:bold;">Unknown tag &lt;<xsl:value-of select="name(.)"/>&gt;</span ></xsl:template>
 
 </xsl:stylesheet>
