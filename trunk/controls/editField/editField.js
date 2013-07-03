@@ -15,23 +15,21 @@
 		el.click(function(){var _=$(this);
 			el.hide();
 			var eFld = el.next(".editField");
-			var vFld = eFld.find(".valField");
-			vFld.width(el.width());
-			eFld.show();
+			var vFld = eFld.show()
+				.find(".valField");
+			vFld.width(el.width())
+				.val(JsPath.get(doc, path));
 			vFld[0].focus();
 		});
 		var eFld = el.next(".editField");
 		eFld.find(".btOK").click(function(){var _=$(this);
 			var fld = _.parent();
-			var val = fld.find(".valField").val();
-			JsPath.set(doc, path, val);
-			fld.prev().html(JsPath.get(doc, path)).show();
-			fld.hide();
+			JsPath.set(doc, path, fld.find(".valField").val());
+			fld.hide().prev().html(JsPath.get(doc, path)).show();
 		});
 		eFld.find(".btCancel").click(function(){var _=$(this);
 			var fld = _.parent();
-			fld.prev().html(JsPath.get(doc, path)).show();
-			fld.hide();
+			fld.hide().prev().html(JsPath.get(doc, path)).show();
 		});
 	}
 	
