@@ -20,6 +20,9 @@
 	<script type="text/javascript" src="editField.js"></script>
 	<link rel="stylesheet" type="text/css" href="editField.css"/>
 	
+	<link rel="stylesheet" type="text/css" href="../button/theme/button.css"/>
+	<script type="text/javascript" src="../button/button.js"></script>
+	
 	<script type="text/javascript">
 		var doc = {
 			items: [
@@ -43,9 +46,17 @@
 				);
 			}}
 			
-			$("#viewPanel").html(template());
-			$("#viewPanel .attrField").editField(doc);
+			$("#viewPanel1").html(template());
+			$("#viewPanel1 .attrField").editField(doc, "html");
+			
+			$("#viewPanel2").html(template());
+			$("#viewPanel2 .attrField").editField(doc, "text");
+			
+			$("#viewPanel3").html(template());
+			$("#viewPanel3 .attrField").editField(doc, "icon");
 		}
+		
+		$.fn.button.nullImage = "../button/null.gif";
 		
 		$(function(){
 			displayDoc(doc);
@@ -54,6 +65,13 @@
 </head>
 <body>
 	<h1>EditField Demo Page</h1>
-	<div id="viewPanel"></div>
+	<table width="100%">
+		<tr>
+			<td valign="top" width="33%"><div id="viewPanel1"></div></td>
+			<td valign="top" width="33%"><div id="viewPanel2"></div></td>
+			<td valign="top" width="33%"><div id="viewPanel3"></div></td>
+		</tr>
+	</table>
+	
 </body>
 </html>
