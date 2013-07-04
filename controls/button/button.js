@@ -10,7 +10,7 @@
 					));
 					break;
 				case "IMG":
-					itm.attr({src:"null.gif"});
+					itm.attr({src:$.fn.button.nullImage});
 					break;
 				default:
 					break;
@@ -21,4 +21,5 @@
 				.mouseout(function(){$(this).removeClass("highlight");});
 		});
 	};
+	$.fn.button.nullImage = "null.gif";
 })(jQuery,Html);

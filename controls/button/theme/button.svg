@@ -76,7 +76,7 @@
     <rect
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\button.png"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
        ry="3.6991773"
        y="354.36243"
        x="52.125088"
@@ -87,7 +87,10 @@
     <path
        style="fill:#008000;stroke:none"
        d="M 66.9375 356.84375 C 66.698781 356.88789 66.234853 357.11939 66.03125 357.21875 C 63.700889 358.52242 62.032469 360.7382 60.75 363.03125 C 60.084143 364.09221 59.614 365.2715 59.09375 366.40625 C 59.098296 365.73876 59.089187 365.07341 59.0625 364.40625 C 59.1194 362.9813 58.668491 361.58377 58.46875 360.1875 C 58.284501 360.32049 58.084337 360.4157 57.875 360.5 C 57.220709 360.65155 56.703974 361.29201 56.96875 361.96875 C 57.415204 363.33817 57.44921 364.79286 57.46875 366.21875 C 57.52685 366.75294 57.42689 367.28168 57.375 367.8125 C 57.262077 368.48704 58.091046 368.94622 58.625 368.5625 C 59.455395 368.01329 60.062512 367.18255 60.46875 366.28125 C 61.278233 364.37938 62.155266 362.48164 63.34375 360.78125 C 64.359618 359.28338 65.606981 357.94935 67.0625 356.875 C 67.046006 356.83594 67.017073 356.82904 66.9375 356.84375 z "
-       id="path3763" />
+       id="path3763"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="fill:#cccccc;fill-rule:evenodd;stroke:#868686;stroke-width:0.64499998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3780"
@@ -96,13 +99,16 @@
        x="52.125088"
        y="372.80432"
        ry="3.6991773"
-       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\button.png"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        style="fill:#00af00;fill-opacity:1;stroke:none"
        d="M 66.9375 375.28125 C 66.698781 375.32539 66.234853 375.58814 66.03125 375.6875 C 63.700889 376.99117 62.032469 379.1757 60.75 381.46875 C 60.084143 382.52971 59.614 383.709 59.09375 384.84375 C 59.098296 384.17626 59.089187 383.51091 59.0625 382.84375 C 59.1194 381.4188 58.668491 380.05252 58.46875 378.65625 C 58.284501 378.78924 58.084337 378.8532 57.875 378.9375 C 57.220709 379.08905 56.703974 379.72951 56.96875 380.40625 C 57.415204 381.77567 57.44921 383.23036 57.46875 384.65625 C 57.52685 385.19044 57.42689 385.71918 57.375 386.25 C 57.262077 386.92454 58.091046 387.38372 58.625 387 C 59.455395 386.45079 60.062512 385.62005 60.46875 384.71875 C 61.278233 382.81688 62.155266 380.91914 63.34375 379.21875 C 64.359618 377.72088 65.606981 376.38685 67.0625 375.3125 C 67.046006 375.27344 67.017073 375.26654 66.9375 375.28125 z "
-       id="path3782" />
+       id="path3782"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="fill:#f9f9f9;fill-rule:evenodd;stroke:#868686;stroke-width:0.64499998;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
        id="rect3784"
@@ -111,13 +117,13 @@
        x="70.567024"
        y="354.36243"
        ry="3.6991773"
-       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\button.png"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\button.png"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
        ry="3.6991773"
        y="372.80432"
        x="70.567024"
@@ -129,11 +135,17 @@
        style="fill:#d40000;fill-opacity:1;stroke:none"
        d="m 83.828612,359.26976 c -0.06383,0.0273 -0.1237,0.0664 -0.1875,0.0937 -0.34955,0.16339 -0.73661,0.26473 -1.0625,0.46875 -0.53914,0.77159 -1.24751,1.401 -1.84375,2.125 -0.242693,0.32045 -0.487828,0.67016 -0.71875,1 -0.320329,-0.33143 -0.642576,-0.64495 -0.9375,-1 -0.541756,-0.72347 -1.109087,-1.4058 -1.65625,-2.125 l -0.625,0.375 c -0.161036,0.13107 -0.637149,0.22469 -0.375,0.46875 0.790323,0.80205 1.409488,1.74609 2.1875,2.5625 0.219341,0.21563 0.438771,0.43865 0.65625,0.65625 -0.01543,0.0168 -0.01559,0.0459 -0.03125,0.0625 -1.064373,1.14562 -2.469301,1.89613 -3.71875,2.8125 l 1.15625,-0.46875 c 0.976688,-0.68066 2.002629,-1.31567 2.90625,-2.09375 0.899308,0.90326 1.779672,1.82541 2.71875,2.6875 l 1.09375,-0.6875 c -0.50218,-0.39963 -0.97443,-0.83767 -1.4375,-1.28125 -0.499557,-0.51399 -1.023953,-1.02403 -1.53125,-1.53125 0.06513,-0.0734 0.125077,-0.14239 0.1875,-0.21875 0.637975,-0.79144 1.1496,-1.68546 1.875,-2.40625 0.49625,-0.45078 0.92617,-0.97844 1.34375,-1.5 z"
        id="path3792"
-       inkscape:connector-curvature="0" />
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <path
        inkscape:connector-curvature="0"
        id="path3803"
        d="m 83.828612,377.44654 c -0.06383,0.0273 -0.1237,0.0664 -0.1875,0.0937 -0.34955,0.16339 -0.73661,0.26473 -1.0625,0.46875 -0.53914,0.77159 -1.24751,1.401 -1.84375,2.125 -0.242693,0.32045 -0.487828,0.67016 -0.71875,1 -0.320329,-0.33143 -0.642576,-0.64495 -0.9375,-1 -0.541756,-0.72347 -1.109087,-1.4058 -1.65625,-2.125 l -0.625,0.375 c -0.161036,0.13107 -0.637149,0.22469 -0.375,0.46875 0.790323,0.80205 1.409488,1.74609 2.1875,2.5625 0.219341,0.21563 0.438771,0.43865 0.65625,0.65625 -0.01543,0.0168 -0.01559,0.0459 -0.03125,0.0625 -1.064373,1.14562 -2.469301,1.89613 -3.71875,2.8125 l 1.15625,-0.46875 c 0.976688,-0.68066 2.002629,-1.31567 2.90625,-2.09375 0.899308,0.90326 1.779672,1.82541 2.71875,2.6875 l 1.09375,-0.6875 c -0.50218,-0.39963 -0.97443,-0.83767 -1.4375,-1.28125 -0.499557,-0.51399 -1.023953,-1.02403 -1.53125,-1.53125 0.06513,-0.0734 0.125077,-0.14239 0.1875,-0.21875 0.637975,-0.79144 1.1496,-1.68546 1.875,-2.40625 0.49625,-0.45078 0.92617,-0.97844 1.34375,-1.5 z"
-       style="fill:#ff0000;fill-opacity:1;stroke:none" />
+       style="fill:#ff0000;fill-opacity:1;stroke:none"
+       inkscape:export-filename="C:\Users\Alexandr.Akimov\Documents\SVN\GCode\aga\trunk\controls\button\theme\iconButtons.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>
