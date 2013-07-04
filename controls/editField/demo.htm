@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="../../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
 	
+	<script type="text/javascript" src="../browserSupport.js"></script>
 	
 	<script type="text/javascript" src="editField.js"></script>
 	<link rel="stylesheet" type="text/css" href="editField.css"/>
@@ -64,6 +65,7 @@
 		
 		$(function(){
 			displayDoc(doc);
+			$("#support").browserSupport();
 		});
 	</script>
 </head>
@@ -76,6 +78,8 @@
 			<td valign="top" width="33%"><div id="viewPanel3"></div></td>
 		</tr>
 	</table>
+	
+	<div id="support"></div>
 	
 </body>
 </html>

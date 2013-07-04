@@ -1,6 +1,7 @@
 (function($,H){
 	$.fn.button = function(){
 		$(this).each(function(i, itm){itm=$(itm);
+			if($.support.boxSizingReliable) itm.addClass("ie");
 			switch(itm[0].tagName.toUpperCase()){
 				case "SPAN":
 					var txt = itm.text();
