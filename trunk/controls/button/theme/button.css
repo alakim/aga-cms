@@ -1,0 +1,1 @@
+span.button{	background: url('button.jpg') top left no-repeat;	cursor: pointer;	padding: 3px;	padding-right: 0;}span.button .right{	background: url('button.jpg') top right no-repeat;	padding: 3px;	padding-right: 1px;}span.button.highlight{background-position: bottom left;}span.button.highlight .right{background-position: bottom right;}
