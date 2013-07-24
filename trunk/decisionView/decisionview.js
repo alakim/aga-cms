@@ -117,8 +117,6 @@ var Decisions;
 				};
 				
 				buildChildren(_, arguments, 1);
-				items = {};
-				roots = [];
 				register(_);
 				return _;
 			},
@@ -401,6 +399,9 @@ var Decisions;
 	}
 	
 	function buildView(pnl, fDoc){
+		items = {};
+		roots = [];
+		
 		var F = new Function([
 			"with(Decisions.Language){", fDoc, "}"
 		].join("\n"));
