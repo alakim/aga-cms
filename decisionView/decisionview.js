@@ -77,34 +77,6 @@ var Decisions;
 				"Html.js v.", Html.version
 			);
 		}},
-		// taggedItems:function(t){with(Html){
-		// 	console.log(2, t);
-		// 	return div(
-		// 		console.log(tagIndex, t),
-		// 		apply(tagIndex[t], function(itm, i){
-		// 			return span(
-		// 				a({href:"#"+itm.id}, itm.name),
-		// 				" "
-		// 			);
-		// 		})
-		// 	);
-		// }},
-		// tags: function(){with(Html){
-		// 	return div({"class":"tagsPanel"},
-		// 		span({style:"font-weight:bold;"}, "Tags: "),
-		// 		apply(tagIndex, function(items, tag){
-		// 			return span(
-		// 				span({
-		// 					style:"cursor:hand;cursor:pointer;",
-		// 					color:"#000088",
-		// 					onclick:callFunction("Decisions.UI.showItems", tag)
-		// 				}, tag),
-		// 				" "
-		// 			);
-		// 		}),
-		// 		div({id:"taggedItemsPanel"})
-		// 	);
-		// }},
 		advantage: function (title, className){ //advantageTemplate
 			return function(){with(Html){var _=this;
 				return div(
@@ -145,6 +117,8 @@ var Decisions;
 				};
 				
 				buildChildren(_, arguments, 1);
+				items = {};
+				roots = [];
 				register(_);
 				return _;
 			},
@@ -420,7 +394,7 @@ var Decisions;
 	function display(pnl){
 		buildTagIndex();
 		var html = ["<div class=\"decisionView\">"];
-		//html.push(templates.tags());
+
 		each(roots, function(r){html.push(r.html());});
 		
 		pnl.html(html.join(" ")+templates.footer()+"</div>");
