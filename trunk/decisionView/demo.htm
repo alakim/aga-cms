@@ -1,0 +1,54 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>DecisionView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/ext.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="decisions.js"></script>
+	<script type="text/javascript" src="decisionview.js"></script>
+	<link rel="stylesheet" type="text/css" href="decisionview.css"/>
+	
+	<style type="text/css">
+		#viewPanel{
+			border: 1px solid blue;
+			margin: 3px;
+			padding: 3px;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		var doc = [
+			"Reasoning(\"Выбор CMS\",",
+				"Problem(\"Выбор CMS для PHP\",",
+					"Solution(\"Bitrix\"),",
+					"Solution(\"Joomla\")",
+				"),",
+				"Problem(\"Обоснование выбора CMS\")",
+			")"
+		];
+		
+		$(function(){
+			$("#viewPanel").decisionView(doc.join("\n"));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>DecisionView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
