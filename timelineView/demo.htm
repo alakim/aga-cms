@@ -1,0 +1,47 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>TimelineView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/ext.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="timelineView.js"></script>
+	<link rel="stylesheet" type="text/css" href="timelineView.css"/>
+	
+	<style type="text/css">
+		#viewPanel{
+			width:800px;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		var timeline = [
+			{name:"Петр I", begin:"09.06.1672", end:"08.02.1725"},
+			{name:"Магницкий Л.Ф.", begin:"19.06.1669", end:"30.10.1739"},
+			{name:"Ломоносов М.В.", begin:"19.11.1711", end:"15.04.1765"}
+		];
+		
+		$(function(){
+			$("#viewPanel").timelineView(JSON.stringify(timeline));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>TimelineView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
