@@ -1,1 +1,1 @@
-.timelineView{	background-color: #eee;	padding: 10px;}.timelineView .timeline{	background-color: #008;	color: #eef;	font-family: Verdana, Arial, Sans-Serif;	font-size: 10px;	margin: 2px 0 2px 0;	text-align: center;}
+.timelineView{	background-color: #eee;	padding: 10px;}.timelineView .date{	border-left: 3px solid #008;	padding-left: 3px;}.timelineView .timeline{	background-color: #008;	color: #eef;	font-family: Verdana, Arial, Sans-Serif;	font-size: 10px;	margin: 2px 0 2px 0;	text-align: center;}
