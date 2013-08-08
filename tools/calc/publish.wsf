@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="Windows-1251" ?>
+<package>
+	<job id="build">
+		<runtime>
+			<named name="toc" helpstring="ссылка на файл описания структуры сайта" type="string" required="true"/>
+			<!--usage>Скрипт формирования страниц сайта</usage-->
+		</runtime>
+		<object id="fso" progid="Scripting.FileSystemObject"/>
+		<object id="network" progid="WScript.Network"/>
+		<script language="JScript"><![CDATA[
+					
+		var toc = "toc.xml";
+		var outDir;
+		switch(network.ComputerName){
+			case "W1011": outDir = "H:\\kb\\output\\calc"; break;
+			case "ALAKIM-ПК": outDir = "C:\\Users\\alakim\\kb\\output\\calc"; break;
+			default:
+				throw "Скрипт не сконфигурирован для данной рабочей станции";
+			break;
+		}
+		
+		var publishedFiles = [];
+		
+		var srcDir = fso.GetFolder(WScript.ScriptFullName.replace(/publish\.wsf$/i, ""));
+		for(var en = new Enumerator(srcDir.Files); !en.atEnd(); en.moveNext()){
+			if(en.item().Name.match(/\.htm$/i) && isNewerVersion(en.item()))
+				publishFile(en.item());
+		}
+		
+		function getTargetFile(srcFile){
+			var trgPath = outDir +"\\"+ srcFile.Name;
+			try{
+				return fso.GetFile(trgPath);
+			}
+			catch(e){
+				return false;
+			}
+		}
+		
+		function isNewerVersion(file){
+			var trg = getTargetFile(file);
+			if(!trg)
+				return true;
+			var newer = file.DateLastModified > trg.DateLastModified;
+			//alert("file.Name: "+file.Name+", newer: "+newer+"\nfile.DateLastModified: "+file.DateLastModified+",\ntrg.DateLastModified: "+trg.DateLastModified);
+			return newer;
+		}
+		
+		function publishFile(file){
+			publishedFiles.push(file.Name);
+			try{
+				fso.CopyFile(file.Path, outDir+"\\"+file.Name, true);
+			}
+			catch(e){
+				alert(e.message);
+			}
+		}
+		
+		function alert(s){WScript.Echo(s);}
+		
+		
+		alert("Publication complete\nPublished files:\n"+publishedFiles.join(", "));
+		]]></script>
+	</job>
+</package>

@@ -1,0 +1,63 @@
+<html>
+<head>
+<script type="text/javascript">
+Date.fromString = function(str){
+	var mt = str.match(/0*(\d+)\.0*(\d+)\.(\d+)/i);
+	var day = parseInt(mt[1]);
+	var month = parseInt(mt[2]);
+	var year = parseInt(mt[3]);
+	return new Date(year, month-1, day);
+}
+
+Date.prototype.toString = function(){
+	var day = this.getDate();
+	var month = this.getMonth()+1;
+	var year = this.getFullYear() - 2000;
+	return (day<10?"0":"")+day+"."+(month<10?"0":"")+month+"."+(year<10?"0":"")+year;
+}
+
+Date.prototype.increaseDate = function(){
+	this.setDate(this.getDate()+(this.getDay()==5?3:1));
+	return this;
+}
+
+Date.prototype.addWorkDays = function(days){
+	for(var i=0; i<days-1; i++){
+		this.increaseDate();
+	}
+}
+
+function $(id){
+	return document.getElementById(id);
+}
+
+var dBgn;
+
+function calc(){
+	dBgn = Date.fromString($("dBgn").value);
+	var days = $("days").value.split(",");
+	var html = ["<table border=\"1\">"];
+	
+	for(var i=0;i<days.length;i++){
+		var phase = parseInt(days[i]);
+		var sBgn = dBgn.toString();
+		dBgn.addWorkDays(phase);
+		html.push("<tr><td>"+(i+1)+"</td><td>"+sBgn+" - "+dBgn.toString()+"</td></tr>");
+		dBgn.increaseDate();
+	}
+	html.push("</table>");
+	$("out").innerHTML = html.join("");
+}
+</script>
+</head>
+<body>
+	<h1>Расчет календарного плана</h1>
+	Дата начала (например, 01.09.2007): <input type="text" id="dBgn"><br>
+	Дни по этапам:<br>
+	(вводятся через запятую : 3, 10, 4)<br>
+	<textarea id="days" style="width:300px; height:83px;"></textarea><br>
+	<button onclick="calc()">Расчитать</button>
+	<div id="out">
+	</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru" >
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>Old Orthograpy Tool</title>
+   <script type="text/javascript">
+	var codes = {
+		"И":1030, 
+		"и":1110,
+		"Е":1122,
+		"е":1123,
+		"Ф":1138,
+		"ф":1139,
+		"В":1140,
+		"в":1141
+	}
+	
+	function init(){
+		var html = [];
+		for(var k in codes){
+			html.push("<b>"+String.fromCharCode(codes[k])+"</b>:<code>*"+k+"</code>");
+		}
+		html = [html.join("; ")];
+		html.push("<br/>");
+		var sample = "&quot;Оставивъ м*иръ, по*ехалъ *Феодоръ в ла*вру.&quot;";
+		html.push("E.g.: ");
+		html.push(sample);
+		html.push(" =&gt; ");
+		html.push(convertString(sample));
+		document.getElementById("legend").innerHTML = html.join("");
+	}
+	
+	function convertString(s){
+		var re = /\*(.)/g;
+		var res = s.replace(re, function(c){
+			return String.fromCharCode(codes[c[1]]);
+		});
+		return res;
+	}
+	
+	function convert(){
+		var txt = document.getElementById("txtIn").value;
+		document.getElementById("out").innerHTML = convertString(txt);
+	}
+   </script>
+</head>
+<body onload="init()">
+   <h1>Old Orthograpy Tool</h1>
+   <div id="legend"></div>
+   <textarea id="txtIn" style="width:300px; height:200px;"></textarea>
+   <input type="button" value="convert" onclick="convert()"/>
+   <div id="out"></div>
+</body>
+</html>

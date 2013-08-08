@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1251">
+		<script type="text/javascript">
+		function $(id){
+			return document.getElementById(id);
+		}
+		function calc(){
+			var s = parseInt($("sum").value)
+			var res = s<=1000? (25+s*0.05)
+						:s<=5000? (75 + (s - 1000)*0.04)
+						:s<=20000?(235 + (s - 5000)*0.02)
+						:(535 +(s-20000)*0.01);
+			$("res").innerHTML = res + s;
+			$("sbrf").innerHTML = s + s*0.03;
+		}
+		</script>
+	</head>
+	<body>
+		<h1>Почтовый перевод</h1>
+		<pre>
+	Тарифы:
+		Почта:
+			<!--&lt; 1000		7 + 5%
+			1000 - 5000	57 + 4% от суммы, превышающей 1000
+			5000 - 20000	217 + 2% от суммы, превышающей 5000-->
+			&lt;=1000		25 + 5%
+			1000 - 5000 	75 + 4% от суммы, превышающей 1000
+			5000 - 20000	235 + 2% от суммы, превышающей 5000
+			20000 - 500000	535 + 1% от суммы, превышающей 20000
+		
+		СБРФ:
+			3%, но не более 2000
+		</pre>
+		<p>Подробнее: 
+			<a href="http://www.russianpost.ru/portal/ru/home/financial/cybermoney_russia">Почта</a>,
+			<a href="http://www.sbrf.ru/ruswin/payments/faq.htm">СБРФ</a>
+		</p>
+		<input type=text id=sum onkeyup="calc()">
+		<p>
+			Итого к оплате: по почте <span id="res"></span>, 
+			через СБРФ: <span id="sbrf"></span>
+		</p>
+	</body>
+</html>
