@@ -479,6 +479,18 @@
 		</span>
 	</xsl:template>
 	<xsl:template match="classify"/>
+	
+	<xsl:template match="menu">
+		<i style="white-space:nowrap;">«<xsl:value-of select="."/>»</i>
+	</xsl:template>
+	<xsl:template match="button">
+		<span class="UIButton">
+			<xsl:value-of select="."/>
+		</span>
+	</xsl:template>
+	<xsl:template match="shortcut">
+		<span style="font-style:italic;">&lt;<xsl:value-of select="."/>&gt;</span>
+	</xsl:template>
 
 	
 	<xsl:template match="*"><span style="color:red; background-color:yellow; font-weight:bold;">Unknown tag &lt;<xsl:value-of select="name(.)"/>&gt;</span ></xsl:template>
