@@ -234,7 +234,7 @@
 				</span>
 			</xsl:when>
 			<xsl:when test="parent::code">
-				<span style="background-color:#cccccc; font-weight:normal;">
+				<span style="background-color:#eeeeee; font-weight:normal;">
 					<xsl:apply-templates/>
 				</span>
 			</xsl:when>
