@@ -69,11 +69,18 @@
 	</xsl:template>
 
 	<xsl:template match="section" mode="toc">
-		<li><a href="#{generate-id()}"><xsl:value-of select="@title"/></a>
-			<xsl:if test="section">
-				<ul><xsl:apply-templates select="section" mode="toc"/></ul>
-			</xsl:if>
-		</li>
+		<xsl:choose>
+			<xsl:when test="parent::section">
+				<li><a href="#{generate-id()}"><xsl:value-of select="@title"/></a>
+					<xsl:if test="section">
+						<ul><xsl:apply-templates select="section" mode="toc"/></ul>
+					</xsl:if>
+				</li>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="section" mode="toc"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template match="section">
