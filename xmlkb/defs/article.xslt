@@ -59,6 +59,12 @@
 		<a name="toc"></a>
 		<ul class="toc">
 			<xsl:apply-templates select="section" mode="toc"/>
+			<xsl:if test="webArticle | book">
+				<li><a href="#books">Литература</a></li>
+			</xsl:if>
+			<xsl:if test="website">
+				<li><a href="#websites">Веб-ресурсы</a></li>
+			</xsl:if>
 		</ul>
 	</xsl:template>
 
