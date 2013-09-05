@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" 
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:msxsl="urn:schemas-microsoft-com:xslt"
 	xmlns:bs="http://www.bicyclesoft.com/xPublish"
 	>
-	<xsl:output method="html" version="1.0" encoding="Windows-1251" indent="yes"/>
+	<xsl:output method="html" version="1.0" encoding="utf-8" indent="yes"/>
 	
 
 	
@@ -12,6 +12,7 @@
 		<html>
 		<head>
 			<title><xsl:value-of select="//toc/@name"/></title>
+			<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 			<style>
 			body{
 				font-family: Helvetica, Verdana, Sans-serif;
