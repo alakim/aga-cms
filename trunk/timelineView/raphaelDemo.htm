@@ -1,0 +1,71 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Raphael TimelineView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/ext.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="../core/lib/raphael-min.js"></script>
+	<script type="text/javascript" src="raphaelTimelineView.js"></script>
+	<link rel="stylesheet" type="text/css" href="timelineView.css"/>
+	
+	<style type="text/css">
+		#viewPanel{
+			width:1000px;
+			height: 600px;
+			border: 1px solid #888;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		var timeline = [
+			{"name":"Рождество Христово", "date":"07.01.1"},
+			{"name":"Христово Воскресение", "date":"01.05.33"},
+			{"name":"Иоанн Богослов", "begin":"17", "end":"100"},
+			{"name":"Миланский эдикт", "date":"313"},
+			{"name":"I Никейский собор", "date":"325"},
+			{"name":"Иоанн Златоуст", "begin":"347", "end":"14.09.407"},
+			{"name":"Падение Рима", "date":"04.09.476"},
+			{"name":"VII Вселенский собор", "date":"787"},
+			{"name":"Крещение Руси", "date":"988"},
+			{"name":"Великая схизма", "date":"1054"},
+			{"name":"Антоний Печерский", "begin":"983", "end":"07.05.1073"},
+			{"name":"Александр Невский", "begin":"13.05.1221", "end":"14.11.1263"},
+			{"name":"Даниил Московский", "begin":"1261", "end":"17.03.1303"},
+			{"name":"Димитрий Донской", "begin":"12.10.1350", "end":"19.05.1389"},
+			{"name":"Сергий Радонежский", "begin":"03.05.1314", "end":"25.09.1392"},
+			{"name":"Монголо-татарское иго", "begin":"1237", "end":"1480"},
+			{"name":"Падение Константинополя", "date":"29.05.1453"},
+			{"name":"Иоанн IV Грозный", "begin":"25.08.1530", "end":"18.03.1584"},
+			{"name":"Смутное время", "begin":"1598", "end":"1613"},
+			{"name":"Петр I", "begin":"09.06.1672", "end":"08.02.1725"},
+			{"name":"Крымская война", "begin":"1853", "end":"1856"},
+			{"name":"Октябрьский переворот", "date":"25.10.1917"},
+			{"name":"Восстановление Патриаршества", "date":"1917"},
+			{"name":"Today", "date":"now"}
+		];
+		
+		$(function(){
+			$("#viewPanel").timelineView(JSON.stringify(timeline));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>Raphael TimelineView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
