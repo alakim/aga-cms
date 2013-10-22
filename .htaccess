@@ -1,0 +1,8 @@
+
+<IfModule mod_rewrite.c>
+	#Включение модуля
+	RewriteEngine on
+	#Замена адреса
+	#RewriteRule ^index-([0-9]+)\.html$ index.php?id=$1 [L]
+	RewriteRule	xmlkb/(.+)$	xmlkb/page.php?p=$1 [L]
+</IfModule>
