@@ -1,0 +1,86 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Raphael TimelineView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/ext.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="../core/lib/raphael-min.js"></script>
+	<script type="text/javascript" src="raphaelTimelineView.js"></script>
+	<link rel="stylesheet" type="text/css" href="timelineView.css"/>
+	
+	<style type="text/css">
+		#viewPanel{
+			width:1000px;
+			height: 600px;
+			border: 1px solid #888;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		var timeline = {options:{
+				rowDotsInterval: 3650
+			},
+			data:[
+				{"name":"XVIII", "date":"1700"},
+				{"name":"XIX", "date":"1800"},
+				{"name":"Мелетий Смотрицкий", "begin":"1577", "end":"17.12.1633"},
+				{"name":"Епифаний Славинецкий", "begin":"1600", "end":"19.11.1675"},
+				{"name":"Зерцало всея вселенныя", "date":"1657"},
+				{"name":"Петр I", "begin":"09.06.1672", "end":"08.02.1725", "color":"#080"},
+				{"name":"Стрелецкий бунт", "date":"1682"},
+				{"name":"Путешествия по Европе", "date":"1697"},
+				{"name":"Северная война", "begin":"1700", "end":"1721", "color":"#080"},
+				{"name":"Полтавская битва", "date":"08.07.1709"},
+				{"name":"С-Пб.", "date":"27.05.1703"},
+				{"name":"Магницкий Л.Ф.", "begin":"19.06.1669", "end":"30.10.1739"},
+				{"name":"Монастырь", "date":"1684"},
+				{"name":"Дворянство", "date":"1704"},
+				{"name":"Ст.учитель Нав.школы", "date":"1715"},
+				{"name":"Руководство Нав.школой", "date":"1732"},
+				{"name":"Учеба в СГЛ-Академии", "begin":"1685", "end":"1694"},
+				{"name":"Преподавание в Нав.школе Москве", "begin":"1701", "end":"1739"},
+				{"name":"Арифметика", "date":"1703"},
+				{"name":"Ломоносов М.В.", "begin":"19.11.1711", "end":"15.04.1765", "color":"#840"},
+				{"name":"Прибыл в Москву", "date":"1731"},
+				{"name":"Профессор химии", "date":"1745"},
+				{"name":"Учеба", "description":"Учеба за границей", "begin":"1736", "end":"1740", "color":"#840"},
+				{"name":"Иоганн Блеу", "begin":"23.09.1596", "end":"28.05.1673"},
+				{"name":"Исаак Ньютон", "begin":"04.01.1642", "end":"31.03.1727", "color":"#060"},
+				{"name":"Закон всемирного тяготения", "date":"1666"},
+				{"name":"Дифференциальное исчисление", "date":"1684"},
+				{"name":"Законы Ньютона", "date":"1687"},
+				{"name":"Лейбниц", "begin":"01.06.1646", "end":"14.10.1716", "color":"#060"},
+				{"name":"Д'Аламбер", "begin":"16.11.1716", "end":"29.10.1783", "color":"#060"},
+				{"name":"Эйлер", "begin":"15.04.1707", "end":"17.09.1783", "color":"#060"},
+				{"name":"Приезд Эйлера в С-Пб.", "date":"1727"},
+				{"name":"Лагранж", "begin":"25.01.1736", "end":"10.04.1813", "color":"#060"},
+				{"name":"Бернулли", "begin":"08.02.1700", "end":"17.03.1782", "color":"#060"},
+				{"name":"Кулибин И.П.", "begin":"10.04.1735", "end":"30.06.1818", "color":"#060"}
+			]
+		};
+		
+		$(function(){
+			$("#viewPanel").timelineView(JSON.stringify(timeline));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>Raphael TimelineView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
