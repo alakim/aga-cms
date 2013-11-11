@@ -1,7 +1,7 @@
-(function($,H){
+(function($,$H){
 
 	function buildView(el, jsDoc){
-		el.html(jsDoc.templates.main(jsDoc));
+		el.html(jsDoc.templates.main(jsDoc, $, $H));
 	}
 	
 	$.fn.calcView = function(jsDoc){

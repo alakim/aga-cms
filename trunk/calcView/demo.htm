@@ -25,7 +25,7 @@
 	<script type="text/javascript">
 		var doc = {
 			templates:{
-				main:function(doc){with(Html){
+				main:function(doc, $, $H){with($H){
 					return table(
 						tr(th("X"), th("Y")),
 						apply(doc.data.table, function(row){
