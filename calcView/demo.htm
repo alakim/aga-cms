@@ -1,0 +1,59 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>CalcView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="../controls/tagPanel/tagPanel.js"></script>
+	<link rel="stylesheet" type="text/css" href="../controls/tagPanel/tagPanel.css"/>
+	
+	<script type="text/javascript" src="calcView.js"></script>
+	
+	<script type="text/javascript">
+		var doc = {
+			templates:{
+				main:function(doc){with(Html){
+					return table(
+						tr(th("X"), th("Y")),
+						apply(doc.data.table, function(row){
+							return tr(
+								td(row.x), td(row.y)
+							);
+						})
+					);
+				}}
+			},
+			data:{
+				table:[
+					{x:5, y:2},
+					{x:6, y:3},
+					{x:7, y:5},
+					{x:8, y:8},
+					{x:9, y:11}
+				]
+			}
+		};
+		
+		$(function(){
+			$("#viewPanel").calcView(doc);
+		});
+	</script>
+</head>
+<body>
+	<h1>CalcView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
