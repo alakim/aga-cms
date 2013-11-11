@@ -25,16 +25,8 @@
 	<script type="text/javascript">
 		var doc = {
 			templates:{
-				main:function(doc, $, $H){with($H){
-					return table(
-						tr(th("X"), th("Y")),
-						apply(doc.data.table, function(row){
-							return tr(
-								td(row.x), td(row.y)
-							);
-						})
-					);
-				}}
+				main:"doc|return table(tr(th('X'), th('Y')),apply(doc.data.table, function(r){return doc.templates.row(r)}))",
+				row:"row|return tr(td(row.x), td(row.y))"
 			},
 			data:{
 				table:[
@@ -48,7 +40,7 @@
 		};
 		
 		$(function(){
-			$("#viewPanel").calcView(doc);
+			$("#viewPanel").calcView(JSON.stringify(doc));
 		});
 	</script>
 </head>
