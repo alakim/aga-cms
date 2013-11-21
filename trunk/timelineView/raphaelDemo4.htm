@@ -1,0 +1,72 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Raphael TimelineView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/ext.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="../core/lib/raphael-min.js"></script>
+	<script type="text/javascript" src="raphaelTimelineView.js"></script>
+	<link rel="stylesheet" type="text/css" href="timelineView.css"/>
+	
+	<style type="text/css">
+		#viewPanel{
+			width:1000px;
+			height: 600px;
+			border: 1px solid #888;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		var timeline = {"options":{
+			"rowDotsInterval": 3650,
+			"colors":{
+				"composer":"#4c0",
+				"theorist":"#09c",
+				"inventor":"#ca4",
+				"style":"#a80",
+				"publication":"#888",
+				"period":"#08f",
+				"instrument":"#cca"
+			},
+			"grid":"ages"
+		},"data":[
+			{"name":"эпоха Средневековья", "begin":"~476", "end":"~1400", "color":"$period"},
+			{"name":"Григорий I Великий", "begin":"~540", "end":"12.03.604", "color":"$composer"},
+			{"name":"Гвидо Д'Ареццо", "begin":"990", "end":"~1050", "color":"$theorist"},
+			{"name":"Кондакарный распев", "begin":"1000", "end":"1299", "nearMode":"true", "color":"$style"},
+			{"name":"Столповой распев", "begin":"1450", "end":"now", "nearMode":"true", "color":"$style"},
+			{"name":"Путевой распев", "begin":"1475", "end":"1675", "nearMode":"true", "color":"$style"},
+			{"name":"Демественный распев", "begin":"1441", "end":"1790", "nearMode":"true", "color":"$style"},
+			{"name":"эпоха Возрождения", "begin":"1400", "end":"1600", "nearMode":"true", "color":"$period"},
+			{"name":"виолы", "begin":"1500", "end":"1799", "nearMode":"true", "color":"$instrument"},
+			{"name":"Царлино Дж.", "begin":"31.01.1517", "end":"04.02.1590", "color":"$composer"},
+			{"name":"Царлино Дж. Основы гармонии", "date":"1558", "color":"$publication"}
+		]
+		};
+
+		
+		$(function(){
+			$("#viewPanel").timelineView(JSON.stringify(timeline));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>Raphael TimelineView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
