@@ -1,0 +1,84 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=windows-1251"/>
+	<title>Raphael TimelineView Demo Page</title>
+	<script type="text/javascript" src="../core/lib/html.js"></script>
+	<script type="text/javascript" src="../core/lib/jspath.js"></script>
+	<script type="text/javascript" src="../core/lib/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../core/ext.js"></script>
+	<script type="text/javascript" src="../core/cdk.js"></script>
+	<script type="text/javascript" src="../core/editor.js"></script>
+	<script type="text/javascript" src="../core/textEditor.js"></script>
+	<script type="text/javascript" src="../core/defaultView.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../core/defaultView.css"/>
+	<link rel="stylesheet" type="text/css" href="../styles.css"/>
+	
+	<script type="text/javascript" src="../core/lib/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="../core/lib/jquery-ui-1.10.2.custom/css/smoothness/jquery-ui-1.10.2.custom.css"/>
+	
+	
+	<script type="text/javascript" src="../core/lib/raphael-min.js"></script>
+	<script type="text/javascript" src="raphaelTimelineView.js"></script>
+	<link rel="stylesheet" type="text/css" href="timelineView.css"/>
+	
+	<style type="text/css">
+		#viewPanel{
+			width:1000px;
+			height: 600px;
+			border: 1px solid #888;
+		}
+	</style>
+	
+	<script type="text/javascript">
+		var timeline = {"options":{
+			"rowDotsInterval": 365,
+			"grid":"decades",
+			"colors":{
+				"launch":"#4c0",
+				"progress":"#f40",
+				"station":"#04e",
+				"program":"#cec",
+				"trouble":"#668"
+			}
+		},"data":[
+			{"name":"Первый спутник", "date":"04.10.1957", "color":"$progress"},
+			{"name":"Луна (СССР)", "begin":"23.09.1958", "end":"09.08.1976", "color":"$program"},
+			{"name":"Луна-2, первая посадка на Луну", "date":"14.09.1959", "color":"$progress"},
+			{"name":"Луна-3, первые снимки обратной стороны Луны", "date":"07.10.1959", "color":"$progress"},
+			{"name":"Луноход-1", "begin":"10.11.1970", "end":"30.09.1971", "color":"$program", "activity":{"name":"исследования", "begin":"17.11.1970", "end":"30.09.1971"}},
+			{"name":"Apollo 10", "begin":"18.05.1969", "end":"26.05.1969", "color":"$launch"},
+			{"name":"Apollo 11", "begin":"16.07.1969", "end":"24.07.1969", "color":"$launch"},
+			{"name":"Первый человек на Луне", "date":"21.07.1969", "color":"$progress"},
+			{"name":"Apollo 12", "begin":"14.11.1969", "end":"24.11.1969", "color":"$launch"},
+			{"name":"Apollo 13", "begin":"11.04.1970", "end":"17.04.1970", "color":"$launch"},
+			{"name":"Apollo 14", "begin":"31.01.1971", "end":"09.02.1971", "color":"$launch"},
+			{"name":"Apollo 15", "begin":"26.07.1971", "end":"07.08.1971", "color":"$launch"},
+			{"name":"Apollo 16", "begin":"16.04.1972", "end":"27.04.1972", "color":"$launch"},
+			{"name":"Apollo 17", "begin":"07.12.1972", "end":"19.12.1972", "color":"$launch"},
+			{"name":"Skylab", "begin":"14.05.1973", "end":"11.07.1979", "color":"$station", "activity":{"name":"Экспедиции", "begin":"25.05.1973", "end":"08.02.1974"}},
+			{"name":"Союз-Аполлон", "begin":"15.07.1975", "end":"24.07.1975", "color":"$launch"},
+			{"name":"Салют-4", "begin":"26.12.1974", "end":"03.02.1977", "color":"$station"},
+			{"name":"Салют-5", "begin":"22.06.1976", "end":"08.08.1977", "color":"$station"},
+			{"name":"Салют-6", "begin":"29.09.1977", "end":"29.07.1982", "color":"$station"},
+			{"name":"Салют-7", "begin":"19.04.1982", "end":"07.02.1991", "color":"$station"},
+			{"name":"Hubble", "begin":"24.12.1990", "end":"now", "color":"$program"},
+			{"name":"Huygens probe", "begin":"15.10.1997", "end":"14.01.2005", "color":"$program"},
+			{"name":"Spirit", "begin":"10.07.2003", "end":"25.05.2011", "color":"$program", "activity":{"name":"исследования", "begin":"04.01.2004", "end":"22.03.2010"}},
+			{"name":"Opportunity", "begin":"08.07.2003", "end":"now", "color":"$program", "activity":{"name":"исследования", "begin":"25.01.2004", "end":"now"}},
+			{"name":"Curiosity", "begin":"26.11.2011", "end":"now", "color":"$program", "activity":{"name":"исследования", "begin":"06.08.2012", "end":"now"}}
+		]
+		};
+
+		
+		$(function(){
+			$("#viewPanel").timelineView(JSON.stringify(timeline));
+		});
+		
+	</script>
+</head>
+<body>
+	<h1>Raphael TimelineView Demo Page</h1>
+	<div id="viewPanel"></div>
+</body>
+</html>
