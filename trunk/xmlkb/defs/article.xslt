@@ -472,6 +472,10 @@
 	<xsl:template match="shortcut">
 		<span style="font-style:italic;">&lt;<xsl:value-of select="."/>&gt;</span>
 	</xsl:template>
+	
+	<xsl:template match="definition">
+		<div style="border:1px solid #888; padding:3px; font-style:italic;"><xsl:apply-templates/></div>
+	</xsl:template>
 
 	<xsl:template match="classify" mode="classification">
 		<span class="classifier">
