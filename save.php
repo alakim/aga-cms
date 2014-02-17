@@ -1,6 +1,6 @@
 <?php 
-	$docPath = $_REQUEST["path"];
-	$docContent = $_REQUEST["data"];
+	$docPath = $_POST["path"];
+	$docContent = stripslashes($_POST["data"]);
 	file_put_contents($docPath, $docContent);
 	echo ($docContent);
 ?>
