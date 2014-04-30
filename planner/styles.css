@@ -1,0 +1,25 @@
+﻿body{
+	font-family: Arial, Verdana, Tahoma, Sans-serif;
+	font-size:14px;
+}
+IMG{border:0;}
+P{margin:0;}
+A{text-decoration:none;color:black;}
+A:active{text-decoration:none;color:black;}
+A:link{text-decoration:none;color:black;}
+A:visited{color:black}
+A:hover{color:#cc0000;}
+
+
+
+.validation{
+	font-style: italic;
+	padding-left:10px;
+	color:#f00;
+}
+
+.mainMenu li{
+	display: inline;
+	margin-left:10px;
+	cursor: pointer;
+}
