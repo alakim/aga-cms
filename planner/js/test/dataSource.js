@@ -23,7 +23,10 @@
 		getProjects: function(){
 			var res = [];
 			for(var id in db.projects){
-				res.push({id:id, name:db.projects[id].name});
+				var prj = db.projects[id],
+					data = {id:id, name:prj.name};
+				if(prj.color) data.color = prj.color;
+				res.push(data);
 			}
 			return res;
 		},

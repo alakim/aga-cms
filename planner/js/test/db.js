@@ -21,7 +21,7 @@
 		projects:{
 			gss:{
 				name:"ГСС", 
-				color:"#080",
+				color:"#088",
 				tasks:[
 					{id:"gss_1", name:"Залить новости", initiator:"BA", completed:"2013-04-12", jobs:[{date:"2013-04-12", hours:2.5}]},
 					{id:"gss_2", name:"Не открываются страницы новостей", initiator:"BA", completed:"2013-04-15", jobs:[{date:"2013-04-15", hours:3}]},

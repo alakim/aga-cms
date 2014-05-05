@@ -2,7 +2,10 @@
 	function template(data){with($H){
 		return div(ul(
 			apply(data, function(prj){
-				return li(a({href:"#"+prj.id}, prj.name));
+				return li(
+					prj.color?{style:"color:"+prj.color}:null,
+					a({href:"#"+prj.id}, prj.name)
+				);
 			})
 		));
 	}}
