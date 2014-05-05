@@ -1,18 +1,18 @@
-﻿define(["html", "dataSource", "common"], function($H, ds, common){
+﻿define(["html", "dataSource", "forms/taskView"], function($H, ds, taskView){
 	function template(data){with($H){
 		return div(ul(
 			apply(data, function(itm){
-				return li(itm.name);
+				return li(a({href:"#"+itm.id}, itm.name));
 			})
 		));
 	}}
 	
 	return {
 		view: function(pnl){
-			common.wait(pnl);
-			ds.getQueue(function(data){
-				pnl.html(template(data));
-			});
+			pnl.html(template(ds.getQueue()));
+			pnl.find("a").click(function(){
+				taskView.view($(this).attr("href").replace("#", ""), $(pnl));
+			})
 		}
 	};
 });

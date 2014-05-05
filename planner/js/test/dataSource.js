@@ -20,28 +20,36 @@
 	
 	
 	return {
-		getProjects: function(callback){
-			setTimeout(function(){
-				var res = [];
-				for(var id in db.projects){
-					res.push({id:id, name:db.projects[id].name});
-				}
-				callback(res);
-			}, timeout);
+		getProjects: function(){
+			var res = [];
+			for(var id in db.projects){
+				res.push({id:id, name:db.projects[id].name});
+			}
+			return res;
 		},
-		getQueue: function(callback){
-			setTimeout(function(){
-				var res = [];
-				for(var taskID,i=0; taskID=db.queue[i],i<db.queue.length; i++){
-					var task = taskIndex[taskID];
-					if(!task) console.log("missing task "+taskID);
-					res.push({name:task.name});
-				}
-				callback(res);
-			}, timeout);
+		getProject: function(id){
+			var prj = db.projects[id];
+			prj.id = id;
+			return prj;
+		},
+		getQueue: function(){
+			var res = [];
+			for(var taskID,i=0; taskID=db.queue[i],i<db.queue.length; i++){
+				var task = taskIndex[taskID];
+				if(!task) console.log("missing task "+taskID);
+				res.push({name:task.name, id:taskID});
+			}
+			return res;
 		},
 		loadProject: function(name){
 			console.log(name+" loaded!");
+		},
+		getTask: function(id){
+			return taskIndex[id];
+		},
+		getPerson: function(id){
+			return db.persons[id];
+			
 		}
 	};
 });

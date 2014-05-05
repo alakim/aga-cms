@@ -1,4 +1,4 @@
-﻿define(["html", "dataSource", "common"], function($H, ds, common){
+﻿define(["html", "dataSource", "forms/projectView"], function($H, ds, projectView){
 	function template(data){with($H){
 		return div(ul(
 			apply(data, function(prj){
@@ -9,10 +9,10 @@
 	
 	return {
 		view: function(pnl){
-			common.wait(pnl);
-			ds.getProjects(function(data){
-				pnl.html(template(data));
-			});
+			pnl.html(template(ds.getProjects()));
+			pnl.find("a").click(function(){
+				projectView.view($(this).attr("href").replace("#", ""), $(pnl));
+			})
 		}
 	};
 });
