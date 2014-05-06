@@ -12,12 +12,26 @@
 	</style>
 	<script type="text/javascript">
 		function convertText(){
+			var lineWrapper = document.getElementById("tbLineWrapper").value,
+				insertNbsp = document.getElementById("cbInsetNbsp").checked;
 			var txt = document.getElementById("srcText").value;
 			txt = txt.replace(/\&/g, "&amp;")
 				.replace(/\>/g, "&gt;")
 				.replace(/\</g, "&lt;")
 				.replace(/\"/g, "&quot;")
-				.replace(/\'/g, "&amp;");
+				.replace(/\«/g, "&laquo;")
+				.replace(/\»/g, "&raquo;")
+				.replace(/ +/g, " ")
+				.replace(/\'/g, "&apos;");
+				
+			if(insertNbsp){
+				txt = txt.replace(/(\s|(&nbsp;))([a-zа-я][a-zа-я\.]?)\s/ig, "$1$3&nbsp;")
+				.replace(/(\s|(&nbsp;))([a-zа-я][a-zа-я\.]?)\s/ig, "$1$3&nbsp;");
+			}
+			if(lineWrapper.length){
+				txt = txt.replace(/[\n\r]+/g, "</"+lineWrapper+">\n<"+lineWrapper+">");
+				txt = "<"+lineWrapper+">"+txt+"</"+lineWrapper+">";
+			}
 			var destFld = document.getElementById("destText");
 			destFld.value = txt;
 		}
@@ -27,7 +41,11 @@
 	<h1>Text to HTML converter</h1>
 	<textarea id="srcText" style="width:700px; height:300px;"></textarea>
 	<div>
-		<input type="button" value="Convert" onclick="convertText()"/>
+		<input type="button" value="Convert" onclick="convertText()"/> , 
+		wrapping lines with <input type="text" value="p" id="tbLineWrapper" style="width:35px;"/> tag
+		<div>
+			<input type="checkbox" id="cbInsetNbsp" checked="true"/> insert non-break spaces
+		</div>
 	</div>
 	<textarea id="destText" readonly="true" style="width:700px; height:300px;"></textarea>
 </body>
