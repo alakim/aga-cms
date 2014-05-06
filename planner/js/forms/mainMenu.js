@@ -1,9 +1,8 @@
-﻿define(["html", "knockout", "forms/projectList", "forms/Queue", "forms/taskEdit"], function($H, ko, prjList, queue, taskEdit){
+﻿define(["html", "knockout", "forms/projectList", "forms/Queue"], function($H, ko, prjList, queue){
 	function template(){with($H){
-		return div(ul(
+		return div(ul({"class":"menu"},
 			li({"data-bind":"click:showProjects"}, "Projects"),
-			li({"data-bind":"click:showQueue"}, "Queue"),
-			li({"data-bind":"click:addTask"}, "Add Task")
+			li({"data-bind":"click:showQueue"}, "Queue")
 		));
 	}}
 	
@@ -14,9 +13,6 @@
 			},
 			showQueue: function(){
 				queue.view($(".mainPanel"));
-			},
-			addTask: function(){
-				taskEdit.view($(".mainPanel"));
 			}
 		});
 	}

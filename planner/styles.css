@@ -18,7 +18,7 @@ A:hover{color:#cc0000;}
 	color:#f00;
 }
 
-.mainMenu li{
+.menu li{
 	display: inline;
 	margin-left:10px;
 	cursor: pointer;
@@ -37,3 +37,11 @@ div.task{
 	margin: 2px;
 	margin-left: 20px;
 }
+
+div.panel{
+	margin: 5px;
+	padding: 5px;
+	border: 1px solid #ccc;
+}
+
+.hidden{display:none;}

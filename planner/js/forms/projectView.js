@@ -1,4 +1,4 @@
-﻿define(["html", "dataSource"], function($H, ds){
+﻿define(["html", "dataSource", "forms/taskEdit"], function($H, ds, taskEdit){
 	function taskJobListTemplate(jobList){with($H){
 		return ul(
 			apply(jobList, function(job){
@@ -33,13 +33,25 @@
 				prj.color?{style:"color:"+prj.color}:null,
 				prj.name, " (", prj.id,")"
 			),
+			menuTemplate(prj),
 			taskListTemplate(prj.tasks)
 		);
 	}}
 	
+	function menuTemplate(prj){with($H){
+		return ul({"class":"menu"},
+			li({"class":"bt_AddTask"}, "Add Task")
+		);
+	}}
+	
+	function addTask(prjID){
+		taskEdit.view(prjID, $(".mainPanel"));
+	}
+	
 	return {
 		view: function(id, pnl){
 			pnl.html(template(ds.getProject(id)));
+			pnl.find(".bt_AddTask").click(function(){addTask(id);});
 		}
 	};
 });
