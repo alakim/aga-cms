@@ -1,4 +1,4 @@
-﻿define(["test/db"], function(db){
+﻿define(["jspath", "test/db"], function($JP, db){
 	var timeout = 200;
 	
 	var taskIndex = {};
@@ -55,13 +55,8 @@
 				task = taskIndex[id];
 			if(!task){
 				task = {id:id};
-				var parent = data.parent?taskIndex[data.parent]:db.projects[data.prjID],
-					taskList = parent.tasks;
-				if(!taskList){
-					taskList = {};
-					parent.tasks = taskList;
-				}
-				taskList.push(task);
+				taskIndex[id] = task;
+				$JP.push(data.parent?taskIndex[data.parent]:db.projects[data.prjID], "tasks", task);
 			}
 			for(var k in data){
 				if(k!="prjID" && k!="parent")
