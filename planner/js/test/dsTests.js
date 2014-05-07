@@ -41,10 +41,29 @@
 		})
 	]);
 	
-	new shell.TestGroup("Saving Task Tests", [
+	new shell.TestGroup("Task Editig Tests", [
 		new shell.Test("Savint Task", function(assert){
-			return "Not implemented";
-			//assert(ds.saveTask(), null);
+			var taskData = {
+				id: "gss_1",
+				name: "Залить новости!!!"
+			};
+			
+			ds.saveTask(taskData);
+			var task = ds.getTask(taskData.id);
+			assert(task.name, taskData.name);
+			assert(ds.getParent("gss", taskData.id).name, "ГСС");
+		}),
+		new shell.Test("Moving Task", function(assert){
+			var taskData = {
+				id: "gss_1",
+				name: "Залить новости!!!",
+				parent: "gss_2"
+			};
+			
+			ds.saveTask(taskData);
+			var task = ds.getTask(taskData.id);
+			assert(task.name, taskData.name);
+			assert(ds.getParent("gss", taskData.id).id, taskData.parent, "Bad parent");
 		})
 	]);
 	

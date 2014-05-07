@@ -34,7 +34,8 @@
 			getLogPanel().append($H.div({"class":"message"}, _.name+": "+$H.span({"class":"success"}, msg||"OK")));
 		}
 		_.assert = function(val, expected, msg){
-			if(val!=expected) _.errors.push($H.format("Expected {0}, but was {1}", expected, val));
+			msg = msg || "";
+			if(val!=expected) _.errors.push($H.format("***{2}*** Expected {0}, but was {1}", expected, val, msg));
 		}
 		_.run = function(noGroup){
 			if(_.group && noGroup) return;
