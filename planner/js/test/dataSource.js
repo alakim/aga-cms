@@ -20,6 +20,18 @@
 	indexTasks();
 	
 	
+	function removeTask(parent, task){
+		var res = [];
+		var tasks = parent.tasks;
+		for(var e,i=0; e=tasks[i],i<tasks.length; i++){
+			console.log(e != task);
+			if(e!=task) res.push(e);
+		}
+		parent.tasks = res;
+		return task;
+	}
+	
+	
 	return {
 		getProjects: function(){
 			var res = [];
@@ -69,11 +81,17 @@
 		},
 		saveTask: function(data){
 			var id = data.id,
-				task = taskIndex[id];
+				task = taskIndex[id],
+				curParent = this.getParent(data.prjID, id),
+				newParent = data.parent?taskIndex[data.parent]:db.projects[data.prjID];
+			console.log(curParent?curParent.id:"no parent", " to ", data.parent);
 			if(!task){
 				task = {id:id};
 				taskIndex[id] = task;
-				$JP.push(data.parent?taskIndex[data.parent]:db.projects[data.prjID], "tasks", task);
+			}
+			if(curParent.id!=data.parent){
+				removeTask(curParent, task);
+				$JP.push(newParent, "tasks", task);
 			}
 			for(var k in data){
 				if(k!="prjID" && k!="parent")

@@ -9,7 +9,8 @@
 				tr(th("Parent"), td(
 					input({type:"text", readonly:true, "data-bind":"value:$parent"}),
 					input({type:"button", value:"Select", "data-bind":"click:selectParent"}),
-					span({style:"padding-left:25px;", "data-bind":"text:parentName"})
+					span({style:"padding-left:25px;", "data-bind":"text:parentName"}),
+					util.validMsg("$parent")
 				)),
 				tr(th("ID"), td(input({type:"text", readonly:true, "data-bind":"value:$id"}))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
@@ -33,10 +34,11 @@
 	}}
 	
 	function Model(data){var _=this;
+		var taskID = data&&data.id?data.id:ds.newTaskID(data.prjID);
 		$.extend(_, {
 			$prjID: ko.observable(data?data.prjID:null),
-			$parent: ko.observable(data?data.parent:null),
-			$id: ko.observable(data&&data.id?data.id:ds.newTaskID(data.prjID)),
+			$parent: ko.observable(data?data.parent:null).extend({condition:{condition:$H.format("x|x!='{0}'", taskID), message:"Задача не может быть вложена сама в себя"}}),
+			$id: ko.observable(taskID),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$completed: ko.observable(data?data.completed:""),

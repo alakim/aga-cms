@@ -22,6 +22,25 @@
 		return target;
 	}
 	
+	ko.extenders.condition = function(target, options) {
+		var cond = typeof(options)=="string"?options:options.condition;
+		var overrideMessage = options.message || "Должно выполняться условие "+cond;
+		
+		cond = lambda(cond);
+		target.hasError = ko.observable();
+		target.validationMessage = ko.observable();
+		
+		function validate(newValue) {
+			var valid = cond(newValue);
+			target.hasError(!valid);
+			target.validationMessage(valid ? "" : overrideMessage);
+		}
+
+		validate(target());
+		target.subscribe(validate);
+		return target;
+	}
+	
 	ko.extenders.required = function(target, options) {
 		var overrideMessage = typeof(options)=="string"?options:options.message;
 		
