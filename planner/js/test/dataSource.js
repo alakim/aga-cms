@@ -1,19 +1,20 @@
 ﻿define(["jspath", "test/db"], function($JP, db){
 	var timeout = 200;
 	
-	var taskIndex = {};
+	var taskIndex = {},
+		taskProjects = {};
 	function indexTasks(){
+		function indexTaskList(prjID, tasks){
+			$.each(tasks, function(i, t){
+				taskIndex[t.id] = t;
+				taskProjects[t.id] = prjID;
+				if(t.tasks) indexTaskList(prjID, t.tasks);
+			});
+		}
 		for(var k in db.projects){
 			var prj = db.projects[k];
-			if(prj.tasks) indexTaskList(prj.tasks);
+			if(prj.tasks) indexTaskList(k, prj.tasks);
 		}
-	}
-	
-	function indexTaskList(tasks){
-		$.each(tasks, function(i, t){
-			taskIndex[t.id] = t;
-			if(t.tasks) indexTaskList(t.tasks);
-		});
 	}
 	
 	indexTasks();
@@ -62,6 +63,9 @@
 			}
 			
 			return search(db.projects[prjID], taskID);
+		},
+		getTaskProject: function(taskID){
+			return taskProjects[taskID];
 		},
 		saveTask: function(data){
 			var id = data.id,
