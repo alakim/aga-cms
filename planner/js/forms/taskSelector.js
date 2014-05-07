@@ -11,8 +11,10 @@
 		return ul(
 			apply(list, function(task){
 				return li(
-					span({"class":"selectable", "data-bind":"click:select", taskID:task.id}, task.name), 
-					format(" ({0})", task.id),
+					span({"class":"selectable", "data-bind":"click:select", taskID:task.id},
+						task.name,
+						format(" ({0})", task.id)
+					), 
 					task.tasks?taskListTemplate(task.tasks):null
 				);
 			})

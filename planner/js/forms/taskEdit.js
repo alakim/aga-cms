@@ -6,7 +6,8 @@
 			table(
 				tr(th("Parent"), td(
 					input({type:"text", "data-bind":"value:$parent"}),
-					input({type:"button", value:"Select", "data-bind":"click:selectParent"})
+					input({type:"button", value:"Select", "data-bind":"click:selectParent"}),
+					span({style:"padding-left:25px;", "data-bind":"text:parentName"})
 				)),
 				tr(th("ID"), td(input({type:"text", "data-bind":"value:$id"}))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}))),
@@ -25,9 +26,9 @@
 		);
 	}}
 	
-	function Model(data){
-		$.extend(this, {
-			prjID: ko.observable(data?data.prjID:null),
+	function Model(data){var _=this;
+		$.extend(_, {
+			$prjID: ko.observable(data?data.prjID:null),
 			$parent: ko.observable(data?data.parent:null),
 			$id: ko.observable(data?data.id:""),
 			$name: ko.observable(data?data.name:""),
@@ -36,9 +37,9 @@
 			jobs: ko.observable(data?data.jobs:""),
 			$description: ko.observable(data?data.description:""),
 			setCompleted: function(){
-				this.completed(util.formatDate(new Date()));
+				_.$completed(util.formatDate(new Date()));
 			},
-			selectParent: function(){var _=this;
+			selectParent: function(){
 				taskSelector.view(data.prjID, function(id){
 					_.$parent(id);
 				});
@@ -49,6 +50,16 @@
 				console.log("Saved ", data);
 			}
 		});
+		
+		$.extend(_,{
+			parentName: ko.computed(function(){
+				if(!_.$parent) return; 
+				var id = _.$parent();
+				var parent = ds.getTask(id);
+				return parent?parent.name:"";
+			})
+		});
+
 	}
 	
 	return {

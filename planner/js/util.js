@@ -12,7 +12,7 @@
 			if(k.slice(0,1)!="$") continue;
 			var v = model[k];
 			if(typeof(v)=="function") v = v();
-			if(v==null) continue;
+			if(v==null || v.length==0) continue;
 			res[k.slice(1)] = getModelData(v, level+1);
 		}
 		return res;
