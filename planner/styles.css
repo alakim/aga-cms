@@ -20,6 +20,10 @@ A:hover{color:#cc0000;}
 .selectable{
 	cursor: pointer;
 }
+.menu{
+	cursor: pointer;
+	text-decoration: underline;
+}
 .validation{
 	color: red;
 	font-style: italic;
@@ -27,8 +31,6 @@ A:hover{color:#cc0000;}
 .menu li{
 	display: inline;
 	margin-left:10px;
-	cursor: pointer;
-	text-decoration: underline;
 }
 
 div.taskList{

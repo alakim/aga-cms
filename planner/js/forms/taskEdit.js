@@ -25,7 +25,7 @@
 				tr(th("Jobs"), td(input({type:"text", "data-bind":"value:jobs"}))),
 				tr(th("Description"), td(textarea({style:"width:400px; height:150px;", "data-bind":"value:$description"}))),
 				tr(td({colspan:2},
-					// input({type:"button", value:"Cancel", "data-bind":"click:cancel"}),
+					input({type:"button", value:"Cancel", "data-bind":"click:cancel"}), " ",
 					input({type:"button", value:"Save", "data-bind":"click:save"})
 				))
 			)
@@ -55,7 +55,9 @@
 					_.$initiator(id);
 				});
 			},
-			// cancel: function(){},
+			cancel: function(){
+				require("forms/projectView").view(data.prjID);
+			},
 			save: function(){
 				if(!validation.validate(_)) return;
 				var data = util.getModelData(this);
@@ -86,6 +88,9 @@
 		view: function(prjID, pnl, id){
 			var data = id?ds.getTask(id):{};
 			data.prjID = prjID;
+			var parent = ds.getParent(prjID, id);
+			if(parent && parent.id!=prjID)
+				data.parent = parent.id;
 			pnl.html(template(data));
 			ko.applyBindings(new Model(data), pnl.find("div")[0]);
 		}

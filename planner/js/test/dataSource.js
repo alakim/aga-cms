@@ -50,6 +50,19 @@
 		getTask: function(id){
 			return taskIndex[id];
 		},
+		getParent: function(prjID, taskID){
+			function search(parent, id){
+				var list = parent.tasks;
+				if(!list || list.length==0) return;
+				for(var el, i=0; el=list[i],i<list.length; i++){
+					if(el.id==id) return parent;
+					var p = search(el, id);
+					if(p) return p;
+				}
+			}
+			
+			return search(db.projects[prjID], taskID);
+		},
 		saveTask: function(data){
 			var id = data.id,
 				task = taskIndex[id];
