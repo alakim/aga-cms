@@ -1,5 +1,24 @@
 ﻿define(["jquery", "html"], function($, $H) {
-	var tests = [];
+	var tests = [],
+		testGroups = [];
+	
+	function TestGroup(name, testList){var _=this;
+		$.extend(_,{
+			name: name,
+			testList: testList,
+			run: function(){
+				getLogPanel().append($H.h2(_.name));
+				$.each(_.testList, function(i, test){
+					test.run();
+				});
+				getLogPanel().append($H.hr());
+			}
+		});
+		testGroups.push(_);
+		$.each(testList, function(i, test){
+			test.group = _;
+		});
+	}
 	
 	function Test(name, action){var _=this;
 		$.extend(_,{
@@ -17,24 +36,33 @@
 		_.assert = function(val, expected, msg){
 			if(val!=expected) _.errors.push($H.format("Expected {0}, but was {1}", expected, val));
 		}
+		_.run = function(noGroup){
+			if(_.group && noGroup) return;
+			var err = this.action(this.assert) || "";
+			err+=this.errors.join("<br/>");
+			if(err.length) this.logError("Error: "+err);
+			else this.logSuccess();
+		}
 	}
 	
 	function getLogPanel(){
 		return $("#out");
 	}
 	
-	function runTests(){
-		$.each(tests, function(i, test){
-			var err = test.action(test.assert) || "";
-			err+=test.errors.join("<br/>");
-			if(err.length) test.logError("Error: "+err);
-			else test.logSuccess();
-		});
+	
+	function log(msg){
+		getLogPanel().append($H.div({"class":"message"}, msg));
 	}
 	
 	
 	return {
 		Test: Test,
-		run: runTests
+		TestGroup: TestGroup,
+		run: function(){
+			$.each(testGroups, function(i, group){group.run();});
+			//log("<hr>");
+			$.each(tests, function(i, test){test.run(true);});
+		},
+		log: log
 	};
 });

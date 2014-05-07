@@ -21,6 +21,7 @@
 	function validMsg(field){with($H){
 		return span({"class":"validation", "data-bind":"text:"+field+".validationMessage"})
 	}}
+	
 
 	
 	return {
@@ -33,6 +34,11 @@
 			var res = [Y,twoDigits(M+1),twoDigits(D)].join("-");
 			res+="T"+[twoDigits(h), twoDigits(m)].join(":");
 			return res;
+		},
+		getDictSize: function(dict){
+			var i=0;
+			for(var k in dict) i++;
+			return i;
 		},
 		getModelData: getModelData,
 		validMsg: validMsg

@@ -65,6 +65,7 @@
 		},
 		getParent: function(prjID, taskID){
 			function search(parent, id){
+				if(!parent) return;
 				var list = parent.tasks;
 				if(!list || list.length==0) return;
 				for(var el, i=0; el=list[i],i<list.length; i++){
@@ -114,10 +115,6 @@
 				var id = prjID+"_"+i;
 				if(!taskIndex[id]) return id;
 			}
-		},
-		getPerson: function(id){
-			return db.persons[id];
-			
 		}
 	};
 });
