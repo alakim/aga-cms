@@ -1,4 +1,4 @@
-﻿define([], function() {
+﻿define(["html"], function($H) {
 	function twoDigits(x){
 		return x<10?"0"+x:x;
 	}
@@ -18,6 +18,11 @@
 		return res;
 	}
 	
+	function validMsg(field){with($H){
+		return span({"class":"validation", "data-bind":"text:"+field+".validationMessage"})
+	}}
+
+	
 	return {
 		formatDate: function(date){
 			var Y = date.getFullYear(),
@@ -29,6 +34,7 @@
 			res+="T"+[twoDigits(h), twoDigits(m)].join(":");
 			return res;
 		},
-		getModelData: getModelData
+		getModelData: getModelData,
+		validMsg: validMsg
 	};
 });

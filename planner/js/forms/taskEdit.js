@@ -1,17 +1,23 @@
-﻿define(["html", "knockout", "dataSource", "util", "forms/taskSelector"], function($H, ko, ds, util, taskSelector){
+﻿define(["html", "knockout", "dataSource", "util", "validation", "forms/projectView", "forms/taskSelector", "forms/personSelector"], function($H, ko, ds, util, validation, projectView, taskSelector, personSelector){
+	
 	function template(data){with($H){
 		var newMode = data==null;
 		return div(
 			div({id:"taskSelector", "class":"hidden panel"}),
+			div({id:"personSelector", "class":"hidden panel"}),
 			table(
 				tr(th("Parent"), td(
-					input({type:"text", "data-bind":"value:$parent"}),
+					input({type:"text", readonly:true, "data-bind":"value:$parent"}),
 					input({type:"button", value:"Select", "data-bind":"click:selectParent"}),
 					span({style:"padding-left:25px;", "data-bind":"text:parentName"})
 				)),
-				tr(th("ID"), td(input({type:"text", "data-bind":"value:$id"}))),
-				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}))),
-				tr(th("Initiator"), td(input({type:"text", "data-bind":"value:$initiator"}))),
+				tr(th("ID"), td(input({type:"text", readonly:true, "data-bind":"value:$id"}))),
+				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
+				tr(th("Initiator"), td(
+					input({type:"text", readonly:true, "data-bind":"value:$initiator"}),
+					input({type:"button", value:"Select", "data-bind":"click:selectInitiator"}),
+					span({style:"padding-left:25px;", "data-bind":"text:initiatorName"})
+				)),
 				tr(th("Completed"), td(
 					input({type:"text", "data-bind":"value:$completed"}),
 					input({type:"button", value:"Now", "data-bind":"click:setCompleted"})
@@ -30,8 +36,8 @@
 		$.extend(_, {
 			$prjID: ko.observable(data?data.prjID:null),
 			$parent: ko.observable(data?data.parent:null),
-			$id: ko.observable(data?data.id:""),
-			$name: ko.observable(data?data.name:""),
+			$id: ko.observable(data&&data.id?data.id:ds.newTaskID(data.prjID)),
+			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$completed: ko.observable(data?data.completed:""),
 			jobs: ko.observable(data?data.jobs:""),
@@ -44,10 +50,18 @@
 					_.$parent(id);
 				});
 			},
+			selectInitiator: function(){
+				personSelector.view(function(id){
+					_.$initiator(id);
+				});
+			},
 			// cancel: function(){},
 			save: function(){
+				if(!validation.validate(_)) return;
 				var data = util.getModelData(this);
-				console.log("Saved ", data);
+				ds.saveTask(data);
+				projectView = require("forms/projectView");
+				projectView.view(data.prjID);
 			}
 		});
 		
@@ -57,6 +71,12 @@
 				var id = _.$parent();
 				var parent = ds.getTask(id);
 				return parent?parent.name:"";
+			}),
+			initiatorName: ko.computed(function(){
+				if(!_.$initiator) return; 
+				var id = _.$initiator();
+				var person = ds.getPerson(id);
+				return person?person.name:"";
 			})
 		});
 

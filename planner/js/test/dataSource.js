@@ -50,6 +50,41 @@
 		getTask: function(id){
 			return taskIndex[id];
 		},
+		saveTask: function(data){
+			var id = data.id,
+				task = taskIndex[id];
+			if(!task){
+				task = {id:id};
+				var parent = data.parent?taskIndex[data.parent]:db.projects[data.prjID],
+					taskList = parent.tasks;
+				if(!taskList){
+					taskList = {};
+					parent.tasks = taskList;
+				}
+				taskList.push(task);
+			}
+			for(var k in data){
+				if(k!="prjID" && k!="parent")
+					task[k] = data[k];
+			}
+		},
+		getPersons: function(){
+			var res = {};
+			$.extend(res, db.persons);
+			for(var k in res){
+				res[k].id = k;
+			}
+			return res;
+		},
+		getPerson: function(id){
+			return db.persons[id];
+		},
+		newTaskID: function(prjID){
+			for(var i=1; true; i++){
+				var id = prjID+"_"+i;
+				if(!taskIndex[id]) return id;
+			}
+		},
 		getPerson: function(id){
 			return db.persons[id];
 			

@@ -20,7 +20,10 @@ A:hover{color:#cc0000;}
 .selectable{
 	cursor: pointer;
 }
-
+.validation{
+	color: red;
+	font-style: italic;
+}
 .menu li{
 	display: inline;
 	margin-left:10px;

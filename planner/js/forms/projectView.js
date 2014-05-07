@@ -50,6 +50,7 @@
 	
 	return {
 		view: function(id, pnl){
+			pnl = pnl || $(".mainPanel");
 			pnl.html(template(ds.getProject(id)));
 			pnl.find(".bt_AddTask").click(function(){addTask(id);});
 		}
