@@ -17,6 +17,9 @@ A:hover{color:#cc0000;}
 	padding-left:10px;
 	color:#f00;
 }
+.selectable{
+	cursor: pointer;
+}
 
 .menu li{
 	display: inline;

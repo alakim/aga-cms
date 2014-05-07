@@ -5,6 +5,7 @@
 			div({id:"taskSelector", "class":"hidden panel"}),
 			table(
 				tr(th("Parent"), td(
+					input({type:"text", "data-bind":"value:parent"}),
 					input({type:"button", value:"Select", "data-bind":"click:selectParent"})
 				)),
 				tr(th("ID"), td(input({type:"text", "data-bind":"value:id"}))),
@@ -27,6 +28,7 @@
 	function Model(data){
 		$.extend(this, {
 			prjID: ko.observable(data?data.prjID:null),
+			parent: ko.observable(data?data.parent:null),
 			id: ko.observable(data?data.id:""),
 			name: ko.observable(data?data.name:""),
 			initiator: ko.observable(data?data.initiator:""),
@@ -36,9 +38,9 @@
 			setCompleted: function(){
 				this.completed(util.formatDate(new Date()));
 			},
-			selectParent: function(){
+			selectParent: function(){var _=this;
 				taskSelector.view(data.prjID, function(id){
-					console.log("Selected!!! "+id);
+					_.parent(id);
 				});
 			},
 			// cancel: function(){},
