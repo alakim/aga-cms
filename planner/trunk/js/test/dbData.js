@@ -22,7 +22,10 @@
 				name:"ГСС", 
 				color:"#088",
 				tasks:[
-					{id:"gss_1", name:"Залить новости", initiator:"BA", completed:"2013-04-12", jobs:[{date:"2013-04-12", hours:2.5}]},
+					{id:"gss_1", name:"Залить новости", initiator:"BA", completed:"2013-04-12", jobs:[
+						{date:"2013-04-12", hours:2.5},
+						{date:"2013-04-14", hours:2, notes:"Добавил еще несколько новостей"}
+					]},
 					{id:"gss_2", name:"Не открываются страницы новостей", initiator:"BA", completed:"2013-04-15", jobs:[{date:"2013-04-15", hours:3}]},
 					{id:"gss_3", name:"Сделать новую версию сайта с дизайном как у Гроссблок", initiator:"VVV", jobs:[
 						{date:"2013-06-24", hours:6},
