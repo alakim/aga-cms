@@ -1,4 +1,4 @@
-﻿define(["jspath", "test/db"], function($JP, db){
+﻿define(["jspath", "test/dbData"], function($JP, dbData){
 	var timeout = 200;
 	
 	var taskIndex = {},
@@ -11,8 +11,8 @@
 				if(t.tasks) indexTaskList(prjID, t.tasks);
 			});
 		}
-		for(var k in db.projects){
-			var prj = db.projects[k];
+		for(var k in dbData.projects){
+			var prj = dbData.projects[k];
 			if(prj.tasks) indexTaskList(k, prj.tasks);
 		}
 	}
@@ -35,8 +35,8 @@
 	return {
 		getProjects: function(){
 			var res = [];
-			for(var id in db.projects){
-				var prj = db.projects[id],
+			for(var id in dbData.projects){
+				var prj = dbData.projects[id],
 					data = {id:id, name:prj.name};
 				if(prj.color) data.color = prj.color;
 				res.push(data);
@@ -44,13 +44,13 @@
 			return res;
 		},
 		getProject: function(id){
-			var prj = db.projects[id];
+			var prj = dbData.projects[id];
 			prj.id = id;
 			return prj;
 		},
 		getQueue: function(){
 			var res = [];
-			for(var taskID,i=0; taskID=db.queue[i],i<db.queue.length; i++){
+			for(var taskID,i=0; taskID=dbData.queue[i],i<dbData.queue.length; i++){
 				var task = taskIndex[taskID];
 				if(!task) console.log("missing task "+taskID);
 				res.push({name:task.name, id:taskID});
@@ -75,7 +75,7 @@
 				}
 			}
 			
-			return search(db.projects[prjID], taskID);
+			return search(dbData.projects[prjID], taskID);
 		},
 		getTaskProject: function(taskID){
 			return taskProjects[taskID];
@@ -84,7 +84,7 @@
 			var id = data.id,
 				task = taskIndex[id],
 				curParent = this.getParent(data.prjID, id),
-				newParent = data.parent?taskIndex[data.parent]:db.projects[data.prjID];
+				newParent = data.parent?taskIndex[data.parent]:dbData.projects[data.prjID];
 			console.log(curParent?curParent.id:"no parent", " to ", data.parent);
 			if(!task){
 				task = {id:id};
@@ -101,14 +101,14 @@
 		},
 		getPersons: function(){
 			var res = {};
-			$.extend(res, db.persons);
+			$.extend(res, dbData.persons);
 			for(var k in res){
 				res[k].id = k;
 			}
 			return res;
 		},
 		getPerson: function(id){
-			return db.persons[id];
+			return dbData.persons[id];
 		},
 		newTaskID: function(prjID){
 			for(var i=1; true; i++){
