@@ -5,7 +5,7 @@
 		html:"lib/html",
 		jspath:"lib/jspath",
 		knockout:"lib/knockout-3.1.0",
-		dataSource: "test/dataSource",
+		//dataSource: "test/dataSource",
 		common:"forms/common"
     },
 	urlArgs: "bust=" + (new Date()).getTime(),
