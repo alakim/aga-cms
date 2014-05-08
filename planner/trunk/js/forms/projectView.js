@@ -1,4 +1,4 @@
-﻿define(["html", "dataSource", "forms/taskEdit"], function($H, ds, taskEdit){
+﻿define(["html", "db", "forms/taskEdit"], function($H, db, taskEdit){
 	function taskJobListTemplate(jobList){with($H){
 		return ul(
 			apply(jobList, function(job){
@@ -14,7 +14,7 @@
 				span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
 			),
 			task.completed?p({"class":"completed"}, "Completed ", task.completed):null,
-			task.initiator?p("Initiator: ", ds.getPerson(task.initiator).name):null,
+			task.initiator?p("Initiator: ", db.getPerson(task.initiator).name):null,
 			task.description?div(task.description):null,
 			task.jobs?taskJobListTemplate(task.jobs):null,
 			task.tasks?taskListTemplate(task.tasks):null
@@ -59,7 +59,7 @@
 	return {
 		view: function(id, pnl){
 			pnl = pnl || $(".mainPanel");
-			pnl.html(template(ds.getProject(id)));
+			pnl.html(template(db.getProject(id)));
 			pnl.find(".bt_AddTask").click(function(){addTask(id);});
 			pnl.find(".bt_Edit").click(function(e){editTask(id, $(e.target).attr("taskID"));});
 		}

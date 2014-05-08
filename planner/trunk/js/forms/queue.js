@@ -1,4 +1,4 @@
-﻿define(["html", "dataSource", "forms/taskView"], function($H, ds, taskView){
+﻿define(["html", "db", "forms/taskView"], function($H, db, taskView){
 	function template(data){with($H){
 		return div(ul(
 			apply(data, function(itm){
@@ -9,7 +9,7 @@
 	
 	return {
 		view: function(pnl){
-			pnl.html(template(ds.getQueue()));
+			pnl.html(template(db.getQueue()));
 			pnl.find("a").click(function(){
 				taskView.view($(this).attr("href").replace("#", ""), $(pnl));
 			})

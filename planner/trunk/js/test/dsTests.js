@@ -1,8 +1,8 @@
-﻿define(["test/testShell", "util", "dataSource"], function(shell, util, ds) {
+﻿define(["test/testShell", "util", "db"], function(shell, util, db) {
 
 	new shell.TestGroup("Simple Tests", [
 		new shell.Test("Project List", function(assert){
-			var list = ds.getProjects();
+			var list = db.getProjects();
 			assert(list.length, 9);
 			assert(list[0].name, "ГСС");
 			assert(list[0].id, "gss");
@@ -12,31 +12,31 @@
 		}),
 		
 		new shell.Test("Queue", function(assert){
-			var list = ds.getQueue();
+			var list = db.getQueue();
 			assert(list.length, 4);
 			assert(list[0].name, "Залить новости");
 			assert(list[0].id, "gss_1");
 		}),
 		
 		new shell.Test("Getting Parent", function(assert){
-			assert(ds.getParent("gss", "gss_1").name, "ГСС");
-			assert(ds.getParent("grossblock", "grossblock_1").id, "grossblock_2");
-			assert(ds.getParent("grossblock", "grossblock_1x"), null);
-			assert(ds.getParent("grossblockx", "grossblock_1"), null);
+			assert(db.getParent("gss", "gss_1").name, "ГСС");
+			assert(db.getParent("grossblock", "grossblock_1").id, "grossblock_2");
+			assert(db.getParent("grossblock", "grossblock_1x"), null);
+			assert(db.getParent("grossblockx", "grossblock_1"), null);
 		}),
 		
 		new shell.Test("Getting Task Project ID", function(assert){
-			assert(ds.getTaskProject("gss_1"), "gss");
+			assert(db.getTaskProject("gss_1"), "gss");
 		}),
 		
 		new shell.Test("Getting Persons List", function(assert){
-			var persons = ds.getPersons();
+			var persons = db.getPersons();
 			assert(util.getDictSize(persons), 8);
 			assert(persons["KKA"].name, "Калинников К.М.");
 		}),
 		
 		new shell.Test("Generating new Task ID", function(assert){
-			var id = ds.newTaskID("gss");
+			var id = db.newTaskID("gss");
 			assert(id, "gss_4");
 		})
 	]);
@@ -48,10 +48,10 @@
 				name: "Залить новости!!!"
 			};
 			
-			ds.saveTask(taskData);
-			var task = ds.getTask(taskData.id);
+			db.saveTask(taskData);
+			var task = db.getTask(taskData.id);
 			assert(task.name, taskData.name);
-			assert(ds.getParent("gss", taskData.id).name, "ГСС");
+			assert(db.getParent("gss", taskData.id).name, "ГСС");
 		}),
 		new shell.Test("Moving Task", function(assert){
 			var taskData = {
@@ -60,10 +60,10 @@
 				parent: "gss_2"
 			};
 			
-			ds.saveTask(taskData);
-			var task = ds.getTask(taskData.id);
+			db.saveTask(taskData);
+			var task = db.getTask(taskData.id);
 			assert(task.name, taskData.name);
-			assert(ds.getParent("gss", taskData.id).id, taskData.parent, "Bad parent");
+			assert(db.getParent("gss", taskData.id).id, taskData.parent, "Bad parent");
 		})
 	]);
 	

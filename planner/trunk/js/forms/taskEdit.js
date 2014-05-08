@@ -1,4 +1,4 @@
-﻿define(["html", "knockout", "dataSource", "util", "validation", "forms/projectView", "forms/taskSelector", "forms/personSelector"], function($H, ko, ds, util, validation, projectView, taskSelector, personSelector){
+﻿define(["html", "knockout", "db", "util", "validation", "forms/projectView", "forms/taskSelector", "forms/personSelector"], function($H, ko, db, util, validation, projectView, taskSelector, personSelector){
 	
 	function template(data){with($H){
 		var newMode = data==null;
@@ -34,7 +34,7 @@
 	}}
 	
 	function Model(data){var _=this;
-		var taskID = data&&data.id?data.id:ds.newTaskID(data.prjID);
+		var taskID = data&&data.id?data.id:db.newTaskID(data.prjID);
 		$.extend(_, {
 			$prjID: ko.observable(data?data.prjID:null),
 			$parent: ko.observable(data?data.parent:null).extend({condition:{condition:$H.format("x|x!='{0}'", taskID), message:"Задача не может быть вложена сама в себя"}}),
@@ -63,7 +63,7 @@
 			save: function(){
 				if(!validation.validate(_)) return;
 				var data = util.getModelData(this);
-				ds.saveTask(data);
+				db.saveTask(data);
 				projectView = require("forms/projectView");
 				projectView.view(data.prjID);
 			}
@@ -73,13 +73,13 @@
 			parentName: ko.computed(function(){
 				if(!_.$parent) return; 
 				var id = _.$parent();
-				var parent = ds.getTask(id);
+				var parent = db.getTask(id);
 				return parent?parent.name:"";
 			}),
 			initiatorName: ko.computed(function(){
 				if(!_.$initiator) return; 
 				var id = _.$initiator();
-				var person = ds.getPerson(id);
+				var person = db.getPerson(id);
 				return person?person.name:"";
 			})
 		});
@@ -88,9 +88,9 @@
 	
 	return {
 		view: function(prjID, pnl, id){
-			var data = id?ds.getTask(id):{};
+			var data = id?db.getTask(id):{};
 			data.prjID = prjID;
-			var parent = ds.getParent(prjID, id);
+			var parent = db.getParent(prjID, id);
 			if(parent && parent.id!=prjID)
 				data.parent = parent.id;
 			pnl.html(template(data));

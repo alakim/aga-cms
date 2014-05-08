@@ -1,4 +1,4 @@
-﻿define(["jquery", "html", "knockout", "dataSource"], function($, $H, ko, ds){
+﻿define(["jquery", "html", "knockout", "db"], function($, $H, ko, db){
 	
 	function template(prj){with($H){
 		return div(
@@ -37,7 +37,7 @@
 	return {
 		view: function(prjID, onSelect){
 			var pnl = $("#taskSelector");
-			pnl.hide().html(template(ds.getProject(prjID))).slideDown();
+			pnl.hide().html(template(db.getProject(prjID))).slideDown();
 			pnl.find("th").attr({align:"right"});
 			ko.applyBindings(new Model(onSelect), pnl.find("div")[0]);
 		}

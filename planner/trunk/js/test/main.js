@@ -15,7 +15,7 @@
 	}
 });
 
-requirejs(["jquery", "html", "dataSource", "test/dsTests"], function($, $H, ds, dsTests) {
+requirejs(["jquery", "html", "test/dsTests"], function($, $H, dsTests) {
 		//$("#out").html("Tests are performed!");
 		
 		dsTests.run();

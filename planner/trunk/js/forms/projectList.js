@@ -1,4 +1,4 @@
-﻿define(["html", "dataSource", "forms/projectView"], function($H, ds, projectView){
+﻿define(["html", "db", "forms/projectView"], function($H, db, projectView){
 	function template(data){with($H){
 		return div(ul(
 			apply(data, function(prj){
@@ -12,7 +12,7 @@
 	
 	return {
 		view: function(pnl){
-			pnl.html(template(ds.getProjects()));
+			pnl.html(template(db.getProjects()));
 			pnl.find("a").click(function(){
 				projectView.view($(this).attr("href").replace("#", ""), $(pnl));
 			})

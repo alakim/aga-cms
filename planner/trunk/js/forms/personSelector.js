@@ -1,4 +1,4 @@
-﻿define(["jquery", "html", "knockout", "dataSource"], function($, $H, ko, ds){
+﻿define(["jquery", "html", "knockout", "db"], function($, $H, ko, db){
 	
 	function template(persons){with($H){
 		return div(ul(
@@ -29,7 +29,7 @@
 	return {
 		view: function(onSelect){
 			var pnl = $("#personSelector");
-			pnl.hide().html(template(ds.getPersons())).slideDown();
+			pnl.hide().html(template(db.getPersons())).slideDown();
 			pnl.find("th").attr({align:"right"});
 			ko.applyBindings(new Model(onSelect), pnl.find("div")[0]);
 		}
