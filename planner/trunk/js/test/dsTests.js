@@ -42,8 +42,9 @@
 	]);
 	
 	new shell.TestGroup("Task Editig Tests", [
-		new shell.Test("Savint Task", function(assert){
+		new shell.Test("Saving Task", function(assert){
 			var taskData = {
+				prjID: "gss",
 				id: "gss_1",
 				name: "Залить новости!!!"
 			};
@@ -55,6 +56,7 @@
 		}),
 		new shell.Test("Moving Task", function(assert){
 			var taskData = {
+				prjID: "gss",
 				id: "gss_1",
 				name: "Залить новости!!!",
 				parent: "gss_2"

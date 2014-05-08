@@ -24,7 +24,7 @@
 		var res = [];
 		var tasks = parent.tasks;
 		for(var e,i=0; e=tasks[i],i<tasks.length; i++){
-			console.log(e != task);
+			//console.log(e != task);
 			if(e!=task) res.push(e);
 		}
 		parent.tasks = res;
@@ -118,12 +118,16 @@
 				task = taskIndex[id],
 				curParent = this.getParent(data.prjID, id),
 				newParent = data.parent?taskIndex[data.parent]:dbData.projects[data.prjID];
-			console.log(curParent?curParent.id:"no parent", " to ", data.parent);
+			//console.log(curParent?curParent.id:"no parent", " to ", data.parent);
 			if(!task){
 				task = {id:id};
 				taskIndex[id] = task;
 			}
-			if(curParent && curParent.id!=data.parent){
+			if(!curParent&&data.parent){
+				$JP.push(newParent, "tasks", task);
+			}
+			else if(curParent.id!=data.parent){
+				//console.log("moving...");
 				removeTask(curParent, task);
 				$JP.push(newParent, "tasks", task);
 			}
