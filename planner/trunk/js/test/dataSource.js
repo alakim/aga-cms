@@ -1,5 +1,5 @@
 define(["jspath", "test/dbData"], function($JP, dbData){
-	var timeout = 300;
+	var timeout = 100;
 	
 	return {
 		load: function(file, onload){

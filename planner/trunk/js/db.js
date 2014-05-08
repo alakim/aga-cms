@@ -1,4 +1,4 @@
-﻿define(["jspath", "test/dbData", "dataSource"], function($JP, dbData, dSrc){
+﻿define(["jspath", "dataSource"], function($JP, dSrc){
 	var dbData = {};
 	
 	var taskIndex = {},
@@ -65,7 +65,6 @@
 			for(var m,i=0; m=modules[i],i<modules.length; i++){
 				load(m);
 			}
-			
 		},
 		getProjects: function(){
 			var res = [];

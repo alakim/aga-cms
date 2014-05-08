@@ -1,5 +1,4 @@
 ﻿define(["html"], function($H){with($H){
-	//function p(s){return ["<p>", s, "</p>"].join("");}
 	
 	return {
 		queue:[
