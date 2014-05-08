@@ -1,8 +1,9 @@
-﻿define(["jspath", "test/dbData"], function($JP, dbData){
-	var timeout = 200;
+﻿define(["jspath", "test/dbData", "dataSource"], function($JP, dbData, dSrc){
+	var dbData = {};
 	
 	var taskIndex = {},
 		taskProjects = {};
+		
 	function indexTasks(){
 		function indexTaskList(prjID, tasks){
 			$.each(tasks, function(i, t){
@@ -17,7 +18,6 @@
 		}
 	}
 	
-	indexTasks();
 	
 	
 	function removeTask(parent, task){
@@ -33,6 +33,40 @@
 	
 	
 	return {
+		loadData: function(onload){
+			var modules = [
+				{file:"queue"},
+				{file:"persons"},
+				{file:"projects"}
+			];
+			
+			function allLoaded(){
+				for(var m,i=0; m=modules[i],i<modules.length; i++){
+					if(!m.loaded) return false;
+				}
+				return true;
+			}
+			
+			function load(module){
+				var file = module.file,
+					targetPath = module.path;
+				targetPath = targetPath || file;
+				module.loaded = false;
+				dSrc.load(file, function(data){
+					$JP.set(dbData, targetPath, data);
+					module.loaded = true;
+					if(allLoaded()){
+						indexTasks();
+						onload();
+					}
+				})
+			}
+			
+			for(var m,i=0; m=modules[i],i<modules.length; i++){
+				load(m);
+			}
+			
+		},
 		getProjects: function(){
 			var res = [];
 			for(var id in dbData.projects){

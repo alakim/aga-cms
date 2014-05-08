@@ -25,6 +25,11 @@
 
 	
 	return {
+		wait: function(pnl){with($H){
+			pnl.html(
+				$H.img({src:"images/wait.gif"})
+			);
+		}},
 		formatDate: function(date){
 			var Y = date.getFullYear(),
 				M = date.getMonth(),
