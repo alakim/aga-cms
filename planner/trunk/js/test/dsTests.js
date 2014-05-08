@@ -58,7 +58,7 @@
 			var taskData = {
 				prjID: "gss",
 				id: "gss_1",
-				name: "Залить новости!!!",
+				name: "Залить новости!!",
 				parent: "gss_2"
 			};
 			
@@ -66,6 +66,10 @@
 			var task = db.getTask(taskData.id);
 			assert(task.name, taskData.name);
 			assert(db.getParent("gss", taskData.id).id, taskData.parent, "Bad parent");
+			
+			taskData.parent = null;
+			db.saveTask(taskData);
+			assert(db.getParent("gss", taskData.id).name, "ГСС", "Bad parent");
 		})
 	]);
 	
