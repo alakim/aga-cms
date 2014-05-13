@@ -133,8 +133,8 @@
 			if(!curParent&&data.parent){
 				$JP.push(newParent, "tasks", task);
 			}
-			else if(curParent.id!=data.parent){
-				//console.log("moving...");
+			else if(curParent.id!=data.prjID && curParent.id!=data.parent){
+				//console.log("moving from "+curParent.id +" to "+data.parent);
 				removeTask(curParent, task);
 				$JP.push(newParent, "tasks", task);
 			}

@@ -12,7 +12,11 @@
 	
 	function taskTemplate(task){with($H){
 		return div({"class":"task"},
-			h3(task.name, task.id?span(" (", task.id,")"):null),
+			h3(
+				task.name, 
+				task.id?span(" (", task.id,")"):null
+				//   ," pos:", db.getTaskPosition(task.id)
+			),
 			div({style:"text-align:right; margin-right:300px;"},
 				span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
 			),
