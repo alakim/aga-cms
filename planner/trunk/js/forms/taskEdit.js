@@ -2,7 +2,7 @@
 	
 	function template(data){with($H){
 		var newMode = data==null;
-		return div(div(
+		return div(
 			div({id:"taskSelector", "class":"hidden panel"}),
 			div({id:"personSelector", "class":"hidden panel"}),
 			table(
@@ -26,7 +26,16 @@
 				tr(th("Jobs"), td(
 					// input({type:"text", "data-bind":"value:$jobs"})
 					div("count: ", span({"data-bind":"text:$jobs().length"})),
-					div({"data-bind":"template:{name:'jobTemplate', foreach:$jobs, as:'job'}"}),
+					div({"data-bind":"foreach:{data:$jobs, as:'job'}"},
+						div(
+							input({type:"text", "data-bind":"value:job.date"}), ": ",
+							input({type:"text", "data-bind":"value:job.hours"}), "h  ",
+							input({type:"text", "data-bind":"value:job.notes"}), " ",
+							input({type:"button", "data-bind":"click: $parent.deleteJob", value:"Delete"})
+						)
+					),
+					
+					
 					input({type:"button", value:"Add", "data-bind":"click:addJob"}),
 					div({style:"margin-left:80px; border:1px solid #ddd; padding:3px;"},
 						"date:",input({type:"text", "data-bind":"value:newJobDate"}),
@@ -39,13 +48,6 @@
 					input({type:"button", value:"Cancel", "data-bind":"click:cancel"}), " ",
 					input({type:"button", value:"Save", "data-bind":"click:save"})
 				))
-			)),
-			div({"class":"hidden", id:"jobTemplate"},
-				div(
-					span({"data-bind":"text:job.date"}), ": ",
-					span({"data-bind":"text:job.hours"}), "h  ",
-					span({"data-bind":"text:job.notes"})
-				)
 			)
 		);
 	}}
@@ -59,7 +61,7 @@
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$completed: ko.observable(data?data.completed:""),
-			$jobs: ko.observableArray(data?data.jobs:[]),
+			$jobs: ko.observableArray(data&&data.jobs?data.jobs:[]),
 			$description: ko.observable(data?data.description:""),
 			setCompleted: function(){
 				_.$completed(util.formatDate(new Date()));
@@ -74,6 +76,9 @@
 				_.newJobDate(util.formatDate(new Date()));
 				_.newJobHours(1);
 				_.newJobNotes("");
+			},
+			deleteJob: function(job){
+				_.$jobs.remove(job);
 			},
 			selectParent: function(){
 				taskSelector.view(data.prjID, function(id){
@@ -128,7 +133,7 @@
 			if(parent && parent.id!=prjID)
 				data.parent = parent.id;
 			pnl.html(template(data));
-			ko.applyBindings(new Model(data), pnl.find("div")[1]);
+			ko.applyBindings(new Model(data), pnl.find("div")[0]);
 		}
 	};
 });

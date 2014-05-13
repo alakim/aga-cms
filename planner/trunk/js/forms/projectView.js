@@ -2,7 +2,10 @@
 	function taskJobListTemplate(jobList){with($H){
 		return ul(
 			apply(jobList, function(job){
-				return li(job.date, ": ", job.hours, "h");
+				return li(
+					job.date, ": ", job.hours, "h",
+					job.notes?markup(" - ", job.notes):null
+				);
 			})
 		);
 	}}
