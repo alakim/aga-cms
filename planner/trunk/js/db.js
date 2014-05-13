@@ -133,23 +133,24 @@
 			dbData.queue = q;
 		},
 		setQueuePosition: function(taskID, pos){
-			if(pos==null){
+			if(pos==null)
 				this.removeFromQueue(taskID);
-				return;
-			}
-			if(pos>=dbData.queue.length){
+			else if(pos>=dbData.queue.length)
 				dbData.queue.push(taskID);
-				return;
+			else {
+				var curPos = this.getQueuePosition(taskID);
+				if(curPos==pos) return;
+				
+				console.log(1, dbData.queue);
+				this.removeFromQueue(taskID);
+				console.log(2, dbData.queue);
+				var q1 = dbData.queue.splice(0,pos),
+					q2 = dbData.queue.splice(pos);
+				console.log(3, dbData.queue, q1, q2);
+				
+				dbData.queue = q1.concat([taskID], q2);
 			}
-			
-			var curPos = this.getQueuePosition(taskID);
-			if(curPos==pos) return;
-			
-			this.removeFromQueue(taskID);
-			var q1 = dbData.queue.splice(0,1),
-				q2 = dbData.queue.splice(1);
-			
-			dbData.queue = q1.concat([taskID], q2);
+			console.log(dbData.queue);
 		},
 		saveTask: function(data){
 			var id = data.id,
