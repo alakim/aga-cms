@@ -130,10 +130,10 @@
 				task = {id:id};
 				taskIndex[id] = task;
 			}
-			if(!curParent&&data.parent){
+			if(!curParent){
 				$JP.push(newParent, "tasks", task);
 			}
-			else if(curParent.id!=data.prjID && curParent.id!=data.parent){
+			else if(curParent /*&& curParent.id!=data.prjID*/ && curParent.id!=data.parent){
 				//console.log("moving from "+curParent.id +" to "+data.parent);
 				removeTask(curParent, task);
 				$JP.push(newParent, "tasks", task);

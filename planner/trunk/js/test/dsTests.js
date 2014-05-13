@@ -100,6 +100,19 @@
 			taskData.parent = null;
 			db.saveTask(taskData);
 			assert(db.getParent("gss", taskData.id).name, "ГСС", "Bad parent");
+		}),
+		new shell.Test("Adding Task", function(assert){
+			var taskData = {
+				prjID: "gss",
+				id: "gss_4",
+				name: "Залить новости!!"
+			};
+			db.saveTask(taskData);
+			var task = db.getTask(taskData.id);
+			assert(task.name, taskData.name);
+			var parent = db.getParent("gss", taskData.id);
+			assert(parent!=null, true, "No parent");
+			if(parent) assert(parent.name, "ГСС", "Bad parent");
 		})
 	]);
 	
