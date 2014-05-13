@@ -1,5 +1,5 @@
 ﻿define(["html", "knockout", "db", "util", "validation", "forms/projectView", "forms/taskSelector", "forms/personSelector"], function($H, ko, db, util, validation, projectView, taskSelector, personSelector){
-	
+
 	function template(data){with($H){
 		var newMode = data==null;
 		return div(
@@ -28,9 +28,9 @@
 					div("count: ", span({"data-bind":"text:$jobs().length"})),
 					div({"data-bind":"foreach:{data:$jobs, as:'job'}"},
 						div(
-							input({type:"text", "data-bind":"value:job.date"}), ": ",
-							input({type:"text", "data-bind":"value:job.hours"}), "h  ",
-							input({type:"text", "data-bind":"value:job.notes"}), " ",
+							input({type:"text", "data-bind":"value:job.$date"}), ": ",
+							input({type:"text", "data-bind":"value:job.$hours"}), "h  ",
+							input({type:"text", "data-bind":"value:job.$notes"}), " ",
 							input({type:"button", "data-bind":"click: $parent.deleteJob", value:"Delete"})
 						)
 					),
@@ -54,6 +54,13 @@
 	
 	function Model(data){var _=this;
 		var taskID = data&&data.id?data.id:db.newTaskID(data.prjID);
+		var jobs = [];
+		if(data&&data.jobs){
+			for(var el,i=0; el=data.jobs[i],i<data.jobs.length; i++){
+				jobs.push({$date:el.date, $hours:el.hours, $notes:el.notes});
+			}
+		}
+		
 		$.extend(_, {
 			$prjID: ko.observable(data?data.prjID:null),
 			$parent: ko.observable(data?data.parent:null).extend({condition:{condition:$H.format("x|x!='{0}'", taskID), message:"Задача не может быть вложена сама в себя"}}),
@@ -61,17 +68,17 @@
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$completed: ko.observable(data?data.completed:""),
-			$jobs: ko.observableArray(data&&data.jobs?data.jobs:[]),
+			$jobs: ko.observableArray(jobs),
 			$description: ko.observable(data?data.description:""),
 			setCompleted: function(){
 				_.$completed(util.formatDate(new Date()));
 			},
 			addJob: function(){
 				var job = {
-					date: _.newJobDate(),
-					hours: _.newJobHours()
+					$date: _.newJobDate(),
+					$hours: _.newJobHours()
 				};
-				if(_.newJobNotes().length) job.notes = _.newJobNotes();
+				if(_.newJobNotes().length) job.$notes = _.newJobNotes();
 				_.$jobs.push(job);
 				_.newJobDate(util.formatDate(new Date()));
 				_.newJobHours(1);

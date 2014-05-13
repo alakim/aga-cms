@@ -113,6 +113,13 @@
 		getTaskProject: function(taskID){
 			return taskProjects[taskID];
 		},
+		getTaskPosition: function(taskID){
+			var prjID = this.getTaskProject(taskID);
+			var prj = dbData.projects[prjID];
+			for(var t,i=0; t=prj.tasks[i],i<prj.tasks.length; i++){
+				if(t.id==taskID) return i;
+			}
+		},
 		saveTask: function(data){
 			var id = data.id,
 				task = taskIndex[id],
