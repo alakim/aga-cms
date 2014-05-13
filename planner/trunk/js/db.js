@@ -120,6 +120,37 @@
 				if(t.id==taskID) return i;
 			}
 		},
+		getQueuePosition: function(taskID){
+			for(var el,i=0; el=dbData.queue[i],i<dbData.queue.length; i++){
+				if(el==taskID) return i;
+			}
+		},
+		removeFromQueue: function(taskID){
+			var q = [];
+			for(var el,i=0; el=dbData.queue[i],i<dbData.queue.length; i++){
+				if(el!=taskID) q.push(el);
+			}
+			dbData.queue = q;
+		},
+		setQueuePosition: function(taskID, pos){
+			if(pos==null){
+				this.removeFromQueue(taskID);
+				return;
+			}
+			if(pos>=dbData.queue.length){
+				dbData.queue.push(taskID);
+				return;
+			}
+			
+			var curPos = this.getQueuePosition(taskID);
+			if(curPos==pos) return;
+			
+			this.removeFromQueue(taskID);
+			var q1 = dbData.queue.splice(0,1),
+				q2 = dbData.queue.splice(1);
+			
+			dbData.queue = q1.concat([taskID], q2);
+		},
 		saveTask: function(data){
 			var id = data.id,
 				task = taskIndex[id],
@@ -138,8 +169,9 @@
 				removeTask(curParent, task);
 				$JP.push(newParent, "tasks", task);
 			}
+			this.setQueuePosition(data.id, data.queuePos);
 			for(var k in data){
-				if(k!="prjID" && k!="parent")
+				if(k!="prjID" && k!="parent" && k!="queuePos")
 					task[k] = data[k];
 			}
 		},

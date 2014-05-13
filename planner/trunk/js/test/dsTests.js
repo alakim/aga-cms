@@ -42,6 +42,21 @@
 			assert(list[0].id, "gss_1");
 		}),
 		
+		new shell.Test("Queue Position", function(assert){
+			assert(db.getQueuePosition("gss_1"), 0);
+			assert(db.getQueuePosition("grossblock_3"), 1);
+			assert(db.getQueuePosition("portal_2"), 2);
+			assert(db.getQueuePosition("aga_1"), 3);
+		}),
+		
+		new shell.Test("Setting Queue Position", function(assert){
+			db.setQueuePosition("gss_1", null);
+			assert(db.getQueuePosition("gss_1"), null);
+			db.setQueuePosition("gss_1", 1);
+			assert(db.getQueuePosition("gss_1"), 1);
+			db.setQueuePosition("gss_1", 2);
+			assert(db.getQueuePosition("gss_1"), 2);
+		}),
 		new shell.Test("Getting Parent", function(assert){
 			assert(db.getParent("gss", "gss_1").name, "ГСС");
 			assert(db.getParent("grossblock", "grossblock_1").id, "grossblock_2");

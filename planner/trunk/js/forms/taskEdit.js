@@ -13,6 +13,7 @@
 					util.validMsg("$parent")
 				)),
 				tr(th("ID"), td(input({type:"text", readonly:true, "data-bind":"value:$id"}))),
+				tr(th("Queue position"), td(input({type:"text", readonly:true, "data-bind":"value:$queuePos"}))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
 				tr(th("Initiator"), td(
 					input({type:"text", readonly:true, "data-bind":"value:$initiator"}),
@@ -70,6 +71,7 @@
 			$completed: ko.observable(data?data.completed:""),
 			$jobs: ko.observableArray(jobs),
 			$description: ko.observable(data?data.description:""),
+			$queuePos: ko.observable(db.getQueuePosition(data.id)),
 			setCompleted: function(){
 				_.$completed(util.formatDate(new Date()));
 			},
