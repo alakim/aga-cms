@@ -1,4 +1,4 @@
-﻿define(["test/testShell", "util", "db"], function(shell, util, db) {
+﻿define(["test/testShell", "jsflow", "util", "db"], function(shell, flow, util, db) {
 	new shell.TestGroup("Util Tests", [
 		new shell.Test("Getting Model Data", function(assert){
 			var model = {
@@ -48,7 +48,9 @@
 			assert(db.getQueuePosition("portal_2"), 2);
 			assert(db.getQueuePosition("aga_1"), 3);
 		}),
-		new shell.Test("Remove from Queue", function(assert){
+		new shell.Test("Remove from Queue", function(assert, report){
+			db.set("queue", ["gss_1", "grossblock_3", "portal_2", "aga_1"]);
+			
 			db.removeFromQueue("gss_1");
 			var list = db.getQueue();
 			assert(list.length, 3);
@@ -61,27 +63,31 @@
 			assert(list.length, 2);
 			assert(list[0].id, "grossblock_3");
 			assert(list[1].id, "aga_1");
+			
 		}),
 		
 		new shell.Test("Setting Queue Position", function(assert){
-			// db.setQueuePosition("gss_1", null);
-			// assert(db.getQueuePosition("gss_1"), null);
-			// assert(db.getQueue().length, 3);
+			db.set("queue", ["gss_1", "grossblock_3", "portal_2", "aga_1"]);
 			
+			db.setQueuePosition("gss_1", null);
+			assert(db.getQueuePosition("gss_1"), null);
+			assert(db.getQueue().length, 3);
+			
+			assert(db.getQueue().length, 3, "Before position setting");
 			db.setQueuePosition("gss_1", 1);
 			assert(db.getQueuePosition("gss_1"), 1);
+			assert(db.getQueue().length, 4, "After position setting");
+			
+			db.setQueuePosition("gss_1", 2);
+			assert(db.getQueuePosition("gss_1"), 2);
 			assert(db.getQueue().length, 4);
 			
-			// db.setQueuePosition("gss_1", 2);
-			// assert(db.getQueuePosition("gss_1"), 2);
-			// assert(db.getQueue().length, 4);
+			db.setQueuePosition("gss_1", 3);
+			assert(db.getQueuePosition("gss_1"), 3);
+			assert(db.getQueue().length, 4);
 			
-			// db.setQueuePosition("gss_1", 3);
-			// assert(db.getQueuePosition("gss_1"), 3);
-			// assert(db.getQueue().length, 4);
-			
-			// db.setQueuePosition("gss_1", 12);
-			// assert(db.getQueuePosition("gss_1"), 1);
+			db.setQueuePosition("gss_1", 12);
+			assert(db.getQueuePosition("gss_1"), 3);
 		}),
 		new shell.Test("Getting Parent", function(assert){
 			assert(db.getParent("gss", "gss_1").name, "ГСС");

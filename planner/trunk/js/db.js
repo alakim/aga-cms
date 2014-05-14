@@ -33,6 +33,9 @@
 	
 	
 	return {
+		set: function(path, data){
+			$JP.set(dbData, path, data);
+		},
 		loadData: function(onload){
 			var modules = [
 				{file:"queue"},
@@ -141,16 +144,11 @@
 				var curPos = this.getQueuePosition(taskID);
 				if(curPos==pos) return;
 				
-				console.log(1, dbData.queue);
 				this.removeFromQueue(taskID);
-				console.log(2, dbData.queue);
-				var q1 = dbData.queue.splice(0,pos),
-					q2 = dbData.queue.splice(pos);
-				console.log(3, dbData.queue, q1, q2);
-				
+				var q1 = [].concat(dbData.queue).splice(0,pos),
+					q2 = [].concat(dbData.queue).splice(pos);
 				dbData.queue = q1.concat([taskID], q2);
 			}
-			console.log(dbData.queue);
 		},
 		saveTask: function(data){
 			var id = data.id,

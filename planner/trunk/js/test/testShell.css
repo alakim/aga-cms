@@ -1,0 +1,19 @@
+.message{
+}
+.error{
+	color:#f00;
+	font-weight: bold;
+}
+.success{
+	color:#080;
+	font-weight: bold;
+}
+.disabled{
+	color:#ccc;
+}
+h2{
+	font-size: 16px;
+	font-weight: bold;
+	padding-left:250px;
+	background-color:#eee;
+}

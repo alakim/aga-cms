@@ -4,6 +4,7 @@
 		jquery: "lib/jquery-1.11.0.min",
 		html:"lib/html",
 		jspath:"lib/jspath",
+		jsflow:"lib/jsflow",
 		knockout:"lib/knockout-3.1.0",
 		dataSource: "test/dataSource",
 		common:"forms/common"
@@ -11,7 +12,8 @@
 	urlArgs: "bust=" + (new Date()).getTime(),
 	shim:{
 		"html":{exports:"Html"},
-		"jspath":{exports:"JsPath"}
+		"jspath":{exports:"JsPath"},
+		"jsflow":{exports:"JSFlow"}
 	}
 });
 

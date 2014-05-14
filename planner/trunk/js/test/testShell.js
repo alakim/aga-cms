@@ -1,4 +1,4 @@
-﻿define(["jquery", "html"], function($, $H) {
+﻿define(["jquery", "html", "jsflow"], function($, $H, flow) {
 	var tests = [],
 		testGroups = [];
 		
@@ -31,35 +31,40 @@
 		});
 	}
 	
-	function Test(name, action){var _=this;
+	function Test(name, action, async){var _=this;
 		$.extend(_,{
 			name:name,
-			action:action
+			action:action,
+			async: async||false
 		});
 		tests.push(_);
 		_.id = tests.length;
 		_.errors = [];
 		_.logError = function(msg){
 			getLogPanel().append($H.div({"class":"message"}, _.id+": "+_.name+": "+$H.span({"class":"error"}, msg)));
-		}
+		};
 		_.logSuccess = function(msg){
 			getLogPanel().append($H.div({"class":"message"}, _.id+": "+_.name+": "+$H.span({"class":"success"}, msg||"OK")));
-		}
+		};
 		_.assert = function(val, expected, msg){
 			msg = msg || "";
 			if(val!=expected) _.errors.push($H.format("***{2}*** Expected {0}, but was {1}", expected, val, msg));
-		}
+		};
+		_.report = function(err){
+			err = err || "";
+			err+=_.errors.join("<br/>");
+			if(err.length) _.logError("Error: "+err);
+			else _.logSuccess();
+		};
 		_.run = function(noGroup){
 			if(_.group && noGroup) return;
 			if(!testEnabled(this.id)){
 				log($H.span({"class":"disabled"}, this.id+": "+this.name+" disabled"));
 				return;
 			}
-			var err = this.action(this.assert) || "";
-			err+=this.errors.join("<br/>");
-			if(err.length) this.logError("Error: "+err);
-			else this.logSuccess();
-		}
+			var err = this.action(this.assert, this.report) || "";
+			if(!async) this.report();
+		};
 	}
 	
 	function getLogPanel(){
