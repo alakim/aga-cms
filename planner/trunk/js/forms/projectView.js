@@ -11,12 +11,14 @@
 	}}
 	
 	function taskTemplate(task){with($H){
+		var qPos = db.getQueuePosition(task.id);
 		return div({"class":"task"},
 			h3(
 				task.name, 
 				task.id?span(" (", task.id,")"):null
 				//   ," pos:", db.getTaskPosition(task.id)
 			),
+			qPos!=null?span({"class":"queuePos"}, qPos+1, " in queue"):null,
 			div({style:"text-align:right; margin-right:300px;"},
 				span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
 			),

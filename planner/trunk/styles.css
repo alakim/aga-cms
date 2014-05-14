@@ -53,3 +53,7 @@ div.panel{
 }
 
 .hidden{display:none;}
+.queuePos{
+	color:#080;
+	font-weight:bold;
+}

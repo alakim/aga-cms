@@ -13,7 +13,7 @@
 					util.validMsg("$parent")
 				)),
 				tr(th("ID"), td(input({type:"text", readonly:true, "data-bind":"value:$id"}))),
-				tr(th("Queue position"), td(input({type:"text", readonly:true, "data-bind":"value:$queuePos"}))),
+				tr(th("Queue position"), td(input({type:"text", "data-bind":"value:$queuePos"}))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
 				tr(th("Initiator"), td(
 					input({type:"text", readonly:true, "data-bind":"value:$initiator"}),
@@ -62,6 +62,7 @@
 			}
 		}
 		
+		var queuePos = db.getQueuePosition(data.id);
 		$.extend(_, {
 			$prjID: ko.observable(data?data.prjID:null),
 			$parent: ko.observable(data?data.parent:null).extend({condition:{condition:$H.format("x|x!='{0}'", taskID), message:"Задача не может быть вложена сама в себя"}}),
@@ -71,7 +72,7 @@
 			$completed: ko.observable(data?data.completed:""),
 			$jobs: ko.observableArray(jobs),
 			$description: ko.observable(data?data.description:""),
-			$queuePos: ko.observable(db.getQueuePosition(data.id)),
+			$queuePos: ko.observable(queuePos==null?"":queuePos+1),
 			setCompleted: function(){
 				_.$completed(util.formatDate(new Date()));
 			},

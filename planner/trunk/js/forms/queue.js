@@ -1,6 +1,6 @@
 ﻿define(["html", "db", "forms/taskView"], function($H, db, taskView){
 	function template(data){with($H){
-		return div(ul(
+		return div(ol(
 			apply(data, function(itm){
 				return li(a({href:"#"+itm.id}, itm.name));
 			})
