@@ -14,7 +14,8 @@
 		function convertText(){
 			var lineWrapper = document.getElementById("tbLineWrapper").value,
 				allWrapper = document.getElementById("tbAllWrapper").value,
-				insertNbsp = document.getElementById("cbInsetNbsp").checked;
+				insertNbsp = document.getElementById("cbInsertNbsp").checked
+				insertNDash = document.getElementById("cbInsertNDash").checked;
 			var txt = document.getElementById("srcText").value;
 			txt = txt.replace(/\&/g, "&amp;")
 				.replace(/\>/g, "&gt;")
@@ -22,11 +23,16 @@
 				.replace(/\"/g, "&quot;")
 				.replace(/\«/g, "&laquo;")
 				.replace(/\»/g, "&raquo;")
-				.replace(/\'/g, "&apos;");
+				.replace(/\'/g, "&apos;")
+				.replace(/–/g, "-"); // N-Dash
+				
 			if(lineWrapper.length){
 				txt = txt.replace(/[\n\r]+/g, "</"+lineWrapper+">\n"+(allWrapper.length?"\t":"")+"<"+lineWrapper+">");
 				txt = (allWrapper.length?"\t":"")+"<"+lineWrapper+">"+txt+"</"+lineWrapper+">";
 			}
+			
+			if(insertNDash) txt = txt.replace(/ - /g, " &ndash; ").replace(/ - /g, " &ndash; ");
+			
 			
 			txt = txt.replace(/ +/g, " ");
 				
@@ -50,7 +56,8 @@
 		<div>wrapping lines with <input type="text" value="p" id="tbLineWrapper" style="width:35px;"/> tag</div>
 		<div>wrapping all with <input type="text" value="" id="tbAllWrapper" style="width:35px;"/> tag</div>
 		<div>
-			<input type="checkbox" id="cbInsetNbsp" checked="true"/> insert non-break spaces
+			<input type="checkbox" id="cbInsertNbsp" checked="true"/> insert non-break spaces
+			<input type="checkbox" id="cbInsertNDash" checked="true"/> insert n-dashes
 		</div>
 	</div>
 	<textarea id="destText" readonly="true" style="width:700px; height:300px;"></textarea>
