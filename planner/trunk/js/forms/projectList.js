@@ -10,7 +10,10 @@
 					),
 					div({style:"display:inline;"},
 						prj.frozen?a({href:"#", "class":"selectable btLoad", style:"padding-left:50px;"}, "load")
-							:a({href:"#", "class":"selectable btSave"}, "save")
+							:markup(
+								a({href:"#", "class":"selectable btSave"}, "save"),
+								a({href:"#", "class":"selectable btUnload", style:"padding-left:50px;"}, "unload")
+							)
 					)
 				);
 			})
@@ -18,18 +21,29 @@
 	}}
 	
 	return {
-		view: function(pnl){
+		view: function(pnl){var _=this;
+			function getPrjId(btn){
+				return $(btn).parent().parent().find(".btProject").attr("prjID");
+			}
 			pnl.html(template(db.getProjects()))
 				.find("span.btProject").click(function(){
 					projectView.view($(this).attr("prjID"), $(pnl));
 				}).end()
 				.find(".btSave").click(function(){
-					var prjID = $(this).parent().parent().find(".btProject").attr("prjID");
+					var prjID = getPrjId(this);
 					console.log("Saving "+prjID+"...");
 				}).end()
 				.find(".btLoad").click(function(){
-					var prjID = $(this).parent().parent().find(".btProject").attr("prjID");
-					console.log("Loading "+prjID+"...");
+					var prjID = getPrjId(this);
+					db.loadProject(prjID, function(){
+						_.view(pnl);
+					});
+				}).end()
+				.find(".btUnload").click(function(){
+					var prjID = getPrjId(this);
+					db.unloadProject(prjID, function(){
+						_.view(pnl);
+					});
 				});
 		}
 	};

@@ -1,5 +1,5 @@
 ﻿define(["jspath", "dataSource"], function($JP, dSrc){
-	var dbData = {};
+	var localDB = {};
 	
 	var taskIndex = {},
 		taskProjects = {};
@@ -12,8 +12,8 @@
 				if(t.tasks) indexTaskList(prjID, t.tasks);
 			});
 		}
-		for(var k in dbData.projects){
-			var prj = dbData.projects[k];
+		for(var k in localDB.projects){
+			var prj = localDB.projects[k];
 			if(prj.tasks) indexTaskList(k, prj.tasks);
 		}
 	}
@@ -34,7 +34,24 @@
 	
 	return {
 		set: function(path, data){
-			$JP.set(dbData, path, data);
+			$JP.set(localDB, path, data);
+		},
+		setRegistry: function(prjID, options){
+			var obj = $.grep(localDB.registry, function(el, i){return el.id==prjID;});
+			if(!obj.length) return;
+			$.extend(obj[0], options);
+		},
+		loadProject: function(prjID, onload){var _=this;
+			dSrc.load("projects/"+prjID, function(data){
+				$JP.set(localDB, ["projects", prjID], data);
+				_.setRegistry(prjID, {frozen: false});
+				onload();
+			});
+		},
+		unloadProject: function(prjID, onunload){var _=this;
+			$JP.set(localDB, ["projects", prjID], null);
+			_.setRegistry(prjID, {frozen: true});
+			onunload();
 		},
 		loadData: function(onload){
 			var modules = [
@@ -57,7 +74,7 @@
 				targetPath = targetPath || file;
 				module.loaded = false;
 				dSrc.load(file, function(data){
-					$JP.set(dbData, targetPath, data);
+					$JP.set(localDB, targetPath, data);
 					module.loaded = true;
 					if(allLoaded()){
 						indexTasks();
@@ -72,7 +89,7 @@
 		},
 		getProjects: function(){
 			var res = [];
-			for(var el,i=0; el=dbData.registry[i],i<dbData.registry.length; i++){
+			for(var el,i=0; el=localDB.registry[i],i<localDB.registry.length; i++){
 				res.push({
 					id: el.id,
 					color: el.color,
@@ -83,21 +100,18 @@
 			return res;
 		},
 		getProject: function(id){
-			var prj = dbData.projects[id];
+			var prj = localDB.projects[id];
 			prj.id = id;
 			return prj;
 		},
 		getQueue: function(){
 			var res = [];
-			for(var taskID,i=0; taskID=dbData.queue[i],i<dbData.queue.length; i++){
+			for(var taskID,i=0; taskID=localDB.queue[i],i<localDB.queue.length; i++){
 				var task = taskIndex[taskID];
 				if(!task) console.log("missing task "+taskID);
 				res.push({name:task.name, id:taskID});
 			}
 			return res;
-		},
-		loadProject: function(name){
-			console.log(name+" loaded!");
 		},
 		getTask: function(id){
 			return taskIndex[id];
@@ -114,50 +128,50 @@
 				}
 			}
 			
-			return search(dbData.projects[prjID], taskID);
+			return search(localDB.projects[prjID], taskID);
 		},
 		getTaskProject: function(taskID){
 			return taskProjects[taskID];
 		},
 		getTaskPosition: function(taskID){
 			var prjID = this.getTaskProject(taskID);
-			var prj = dbData.projects[prjID];
+			var prj = localDB.projects[prjID];
 			for(var t,i=0; t=prj.tasks[i],i<prj.tasks.length; i++){
 				if(t.id==taskID) return i;
 			}
 		},
 		getQueuePosition: function(taskID){
-			for(var el,i=0; el=dbData.queue[i],i<dbData.queue.length; i++){
+			for(var el,i=0; el=localDB.queue[i],i<localDB.queue.length; i++){
 				if(el==taskID) return i;
 			}
 		},
 		removeFromQueue: function(taskID){
 			var q = [];
-			for(var el,i=0; el=dbData.queue[i],i<dbData.queue.length; i++){
+			for(var el,i=0; el=localDB.queue[i],i<localDB.queue.length; i++){
 				if(el!=taskID) q.push(el);
 			}
-			dbData.queue = q;
+			localDB.queue = q;
 		},
 		setQueuePosition: function(taskID, pos){
 			if(pos==null)
 				this.removeFromQueue(taskID);
-			else if(pos>=dbData.queue.length)
-				dbData.queue.push(taskID);
+			else if(pos>=localDB.queue.length)
+				localDB.queue.push(taskID);
 			else {
 				var curPos = this.getQueuePosition(taskID);
 				if(curPos==pos) return;
 				
 				this.removeFromQueue(taskID);
-				var q1 = [].concat(dbData.queue).splice(0,pos),
-					q2 = [].concat(dbData.queue).splice(pos);
-				dbData.queue = q1.concat([taskID], q2);
+				var q1 = [].concat(localDB.queue).splice(0,pos),
+					q2 = [].concat(localDB.queue).splice(pos);
+				localDB.queue = q1.concat([taskID], q2);
 			}
 		},
 		saveTask: function(data){
 			var id = data.id,
 				task = taskIndex[id],
 				curParent = this.getParent(data.prjID, id),
-				newParent = data.parent?taskIndex[data.parent]:dbData.projects[data.prjID];
+				newParent = data.parent?taskIndex[data.parent]:localDB.projects[data.prjID];
 			//console.log(curParent?curParent.id:"no parent", " to ", data.parent);
 			if(!task){
 				task = {id:id};
@@ -179,14 +193,14 @@
 		},
 		getPersons: function(){
 			var res = {};
-			$.extend(res, dbData.persons);
+			$.extend(res, localDB.persons);
 			for(var k in res){
 				res[k].id = k;
 			}
 			return res;
 		},
 		getPerson: function(id){
-			return dbData.persons[id];
+			return localDB.persons[id];
 		},
 		newTaskID: function(prjID){
 			for(var i=1; true; i++){
