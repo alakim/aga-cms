@@ -13,6 +13,7 @@
 	<script type="text/javascript">
 		function convertText(){
 			var lineWrapper = document.getElementById("tbLineWrapper").value,
+				allWrapper = document.getElementById("tbAllWrapper").value,
 				insertNbsp = document.getElementById("cbInsetNbsp").checked;
 			var txt = document.getElementById("srcText").value;
 			txt = txt.replace(/\&/g, "&amp;")
@@ -21,17 +22,21 @@
 				.replace(/\"/g, "&quot;")
 				.replace(/\«/g, "&laquo;")
 				.replace(/\»/g, "&raquo;")
-				.replace(/ +/g, " ")
 				.replace(/\'/g, "&apos;");
+			if(lineWrapper.length){
+				txt = txt.replace(/[\n\r]+/g, "</"+lineWrapper+">\n"+(allWrapper.length?"\t":"")+"<"+lineWrapper+">");
+				txt = (allWrapper.length?"\t":"")+"<"+lineWrapper+">"+txt+"</"+lineWrapper+">";
+			}
+			
+			txt = txt.replace(/ +/g, " ");
 				
 			if(insertNbsp){
 				txt = txt.replace(/(\s|(&nbsp;))([a-zа-я][a-zа-я\.]?)\s/ig, "$1$3&nbsp;")
 				.replace(/(\s|(&nbsp;))([a-zа-я][a-zа-я\.]?)\s/ig, "$1$3&nbsp;");
 			}
-			if(lineWrapper.length){
-				txt = txt.replace(/[\n\r]+/g, "</"+lineWrapper+">\n<"+lineWrapper+">");
-				txt = "<"+lineWrapper+">"+txt+"</"+lineWrapper+">";
-			}
+			
+			if(allWrapper.length)
+				txt = "<"+allWrapper+">\n"+txt+"\n</"+allWrapper+">";
 			var destFld = document.getElementById("destText");
 			destFld.value = txt;
 		}
@@ -42,7 +47,8 @@
 	<textarea id="srcText" style="width:700px; height:300px;"></textarea>
 	<div>
 		<input type="button" value="Convert" onclick="convertText()"/> , 
-		wrapping lines with <input type="text" value="p" id="tbLineWrapper" style="width:35px;"/> tag
+		<div>wrapping lines with <input type="text" value="p" id="tbLineWrapper" style="width:35px;"/> tag</div>
+		<div>wrapping all with <input type="text" value="" id="tbAllWrapper" style="width:35px;"/> tag</div>
 		<div>
 			<input type="checkbox" id="cbInsetNbsp" checked="true"/> insert non-break spaces
 		</div>
