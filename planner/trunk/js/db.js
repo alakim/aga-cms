@@ -5,6 +5,8 @@
 		taskProjects = {};
 		
 	function indexTasks(){
+		taskIndex = {};
+		taskProjects = {};
 		function indexTaskList(prjID, tasks){
 			$.each(tasks, function(i, t){
 				taskIndex[t.id] = t;
@@ -14,6 +16,7 @@
 		}
 		for(var k in localDB.projects){
 			var prj = localDB.projects[k];
+			if(!prj)continue;
 			if(prj.tasks) indexTaskList(k, prj.tasks);
 		}
 	}
@@ -44,17 +47,20 @@
 		loadProject: function(prjID, onload){var _=this;
 			dSrc.load("projects/"+prjID, function(data){
 				$JP.set(localDB, ["projects", prjID], data);
+				localDB.projects[prjID].changed = false;
 				_.setRegistry(prjID, {frozen: false});
+				indexTasks();
 				onload();
 			});
 		},
 		unloadProject: function(prjID, onunload){var _=this;
 			$JP.set(localDB, ["projects", prjID], null);
 			_.setRegistry(prjID, {frozen: true});
+			indexTasks();
 			onunload();
 		},
 		saveProject: function(prjID, onsave){var _=this;
-			dSrc.save("projects/"+prjID, function(){
+			dSrc.save("projects/"+prjID, localDB.projects[prjID], function(){
 				$JP.set(localDB, ["projects", prjID, "changed"], false);
 				onsave();
 			});
@@ -98,7 +104,8 @@
 			function loadProjects(){
 				modules = [];
 				$.each(localDB.registry, function(i, el){
-					modules.push({file:"projects/"+el.id});
+					if(!el.frozen)
+						modules.push({file:"projects/"+el.id});
 				});
 				for(var m,i=0; m=modules[i],i<modules.length; i++){
 					load(m, true);
@@ -127,8 +134,9 @@
 			var res = [];
 			for(var taskID,i=0; taskID=localDB.queue[i],i<localDB.queue.length; i++){
 				var task = taskIndex[taskID];
-				if(!task) console.log("missing task "+taskID);
-				res.push({name:task.name, id:taskID});
+				// if(!task) console.log("missing task "+taskID);
+				if(task)
+					res.push({name:task.name, id:taskID});
 			}
 			return res;
 		},

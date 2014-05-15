@@ -11,7 +11,9 @@ define(["jspath", "test/dbData"], function($JP, dbData){
 				onload(d2);
 			}, timeout);
 		},
-		save: function(path, onsave){
+		save: function(path, data, onsave){
+			var json = JSON.stringify(data);
+			$JP.set(dbData, path, $.parseJSON(json));
 			setTimeout(onsave, timeout);
 		}
 	};
