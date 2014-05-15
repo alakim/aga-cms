@@ -40,6 +40,7 @@
 			var modules = [
 				{file:"queue"},
 				{file:"persons"},
+				{file:"registry"},
 				{file:"projects"}
 			];
 			
@@ -71,11 +72,13 @@
 		},
 		getProjects: function(){
 			var res = [];
-			for(var id in dbData.projects){
-				var prj = dbData.projects[id],
-					data = {id:id, name:prj.name};
-				if(prj.color) data.color = prj.color;
-				res.push(data);
+			for(var el,i=0; el=dbData.registry[i],i<dbData.registry.length; i++){
+				res.push({
+					id: el.id,
+					color: el.color,
+					name: el.name,
+					frozen: el.frozen
+				});
 			}
 			return res;
 		},

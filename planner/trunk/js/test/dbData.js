@@ -17,10 +17,20 @@
 			VVV:{name:"Владыкин В.В."},
 			TEB:{name:"Терехин Е."}
 		},
+		registry:[
+			{id:"gss", name:"ГСС", color:"#088"},
+			{id:"port2", name:"Порт 2", color:"#08a"},
+			{id:"grossblock", name:"Гроссблок", color:"#008"},
+			{id:"besttools", name:"Бесттулз"},
+			{id:"portal", name:"Портал"},
+			{id:"system", name:"Система", color:"#a00"},
+			{id:"dataBases", name:"Базы данных", frozen:true},
+			{id:"department", name:"Наш отдел"},
+			{id:"aga", name:"Aga"}
+		],
 		projects:{
 			gss:{
-				name:"ГСС", 
-				color:"#088",
+				name:"ГСС",
 				tasks:[
 					{id:"gss_1", name:"Залить новости", initiator:"BA", completed:"2013-04-12", jobs:[
 						{date:"2013-04-12", hours:2.5},
@@ -38,7 +48,6 @@
 			},
 			port2:{
 				name:"Порт 2",
-				color:"#08a",
 				tasks:[
 					{id:"port2_1", name:"Извлечь верстку", description:"Извлечь верстку сайта из резервной копии", initiator:"KKA", jobs:[
 						{date:"2013-07-23", hours:6},
@@ -48,7 +57,6 @@
 			},
 			grossblock:{
 				name:"Гроссблок",
-				color:"#008",
 				description:"Сайт Рыбинского завода",
 				tasks:[
 					{id:"grossblock_0", name:"Совещания", jobs:[
@@ -205,7 +213,6 @@
 			system:{
 				name:"Система",
 				description:"Настройка рабочего места",
-				color:"#a00",
 				tasks:[
 					{id:"system_1", name:"Настройка доступа по FTP.", description:"Слава настроил удаленно доступ через Forefront.TMG через прокси.", completed:"2013-04-15", jobs:[{date:"2013-04-15", hours:2}]},
 					{id:"system_2", name:"Denver installation", jobs:[{date:"2013-04-19", hours:3, notes:"Долго со Славой мучились - был конфликт у Денвера и VisualSVN Server'а по 443 порту. Уговорили SVN на 8443-м поработать."}]},
