@@ -1,8 +1,9 @@
-﻿define(["html", "knockout", "forms/projectList", "forms/Queue"], function($H, ko, prjList, queue){
+﻿define(["html", "knockout", "forms/projectList", "forms/Queue", "forms/persons"], function($H, ko, prjList, queue, persons){
 	function template(){with($H){
 		return div(ul({"class":"menu"},
 			li({"data-bind":"click:showProjects"}, "Projects"),
-			li({"data-bind":"click:showQueue"}, "Queue")
+			li({"data-bind":"click:showQueue"}, "Queue"),
+			li({"data-bind":"click:showPersons"}, "Persons")
 		));
 	}}
 	
@@ -13,6 +14,9 @@
 			},
 			showQueue: function(){
 				queue.view($(".mainPanel"));
+			},
+			showPersons: function(){
+				persons.view($(".mainPanel"));
 			}
 		});
 	}

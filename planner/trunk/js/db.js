@@ -228,6 +228,15 @@
 			}
 			return res;
 		},
+		getPersonRefs: function(prsID){
+			var refs = {tasksInitialized:[]};
+			for(var k in taskIndex){
+				var task = taskIndex[k];
+				if(task.initiator==prsID)
+					refs.tasksInitialized.push(task.id);
+			}
+			return refs;
+		},
 		getPerson: function(id){
 			return localDB.persons[id];
 		},
