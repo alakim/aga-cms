@@ -1,5 +1,5 @@
 define(["jspath", "test/dbData"], function($JP, dbData){
-	var timeout = 100;
+	var timeout = 300;
 	
 	return {
 		load: function(file, onload){
@@ -10,6 +10,9 @@ define(["jspath", "test/dbData"], function($JP, dbData){
 				var d2 = $.parseJSON(json);
 				onload(d2);
 			}, timeout);
+		},
+		save: function(path, onsave){
+			setTimeout(onsave, timeout);
 		}
 	};
 });

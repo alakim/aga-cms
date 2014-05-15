@@ -11,7 +11,7 @@
 					div({style:"display:inline;"},
 						prj.frozen?a({href:"#", "class":"selectable btLoad", style:"padding-left:50px;"}, "load")
 							:markup(
-								a({href:"#", "class":"selectable btSave"}, "save"),
+								prj.changed?a({href:"#", "class":"selectable btSave"}, "save"):null,
 								a({href:"#", "class":"selectable btUnload", style:"padding-left:50px;"}, "unload")
 							)
 					)
@@ -30,20 +30,15 @@
 					projectView.view($(this).attr("prjID"), $(pnl));
 				}).end()
 				.find(".btSave").click(function(){
-					var prjID = getPrjId(this);
-					console.log("Saving "+prjID+"...");
+					$(this).html("saving...");
+					db.saveProject(getPrjId(this), function(){_.view(pnl);});
 				}).end()
 				.find(".btLoad").click(function(){
-					var prjID = getPrjId(this);
-					db.loadProject(prjID, function(){
-						_.view(pnl);
-					});
+					$(this).html("loading...");
+					db.loadProject(getPrjId(this), function(){_.view(pnl);});
 				}).end()
 				.find(".btUnload").click(function(){
-					var prjID = getPrjId(this);
-					db.unloadProject(prjID, function(){
-						_.view(pnl);
-					});
+					db.unloadProject(getPrjId(this), function(){_.view(pnl);});
 				});
 		}
 	};

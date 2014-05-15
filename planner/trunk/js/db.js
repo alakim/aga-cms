@@ -53,12 +53,17 @@
 			_.setRegistry(prjID, {frozen: true});
 			onunload();
 		},
+		saveProject: function(prjID, onsave){var _=this;
+			dSrc.save("projects/"+prjID, function(){
+				$JP.set(localDB, ["projects", prjID, "changed"], false);
+				onsave();
+			});
+		},
 		loadData: function(onload){
 			var modules = [
 				{file:"queue"},
 				{file:"persons"},
-				{file:"registry"},
-				{file:"projects"}
+				{file:"registry"}
 			];
 			
 			function allLoaded(){
@@ -68,7 +73,7 @@
 				return true;
 			}
 			
-			function load(module){
+			function load(module, prjMode){
 				var file = module.file,
 					targetPath = module.path;
 				targetPath = targetPath || file;
@@ -78,13 +83,26 @@
 					module.loaded = true;
 					if(allLoaded()){
 						indexTasks();
-						onload();
+						if(prjMode)
+							onload();
+						else
+							loadProjects();
 					}
 				})
 			}
 			
 			for(var m,i=0; m=modules[i],i<modules.length; i++){
 				load(m);
+			}
+			
+			function loadProjects(){
+				modules = [];
+				$.each(localDB.registry, function(i, el){
+					modules.push({file:"projects/"+el.id});
+				});
+				for(var m,i=0; m=modules[i],i<modules.length; i++){
+					load(m, true);
+				}
 			}
 		},
 		getProjects: function(){
@@ -94,7 +112,8 @@
 					id: el.id,
 					color: el.color,
 					name: el.name,
-					frozen: el.frozen
+					frozen: el.frozen,
+					changed: el.frozen || localDB.projects[el.id].changed
 				});
 			}
 			return res;
@@ -171,7 +190,8 @@
 			var id = data.id,
 				task = taskIndex[id],
 				curParent = this.getParent(data.prjID, id),
-				newParent = data.parent?taskIndex[data.parent]:localDB.projects[data.prjID];
+				project = localDB.projects[data.prjID],
+				newParent = data.parent?taskIndex[data.parent]:project;
 			//console.log(curParent?curParent.id:"no parent", " to ", data.parent);
 			if(!task){
 				task = {id:id};
@@ -190,6 +210,7 @@
 				if(k!="prjID" && k!="parent" && k!="queuePos")
 					task[k] = data[k];
 			}
+			project.changed = true;
 		},
 		getPersons: function(){
 			var res = {};
