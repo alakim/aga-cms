@@ -240,6 +240,12 @@
 		getPerson: function(id){
 			return localDB.persons[id];
 		},
+		savePerson: function(data){
+			for(var k in data){
+				if(k!="id")
+					localDB.persons[data.id][k] = data[k];
+			}
+		},
 		newTaskID: function(prjID){
 			for(var i=1; true; i++){
 				var id = prjID+"_"+i;

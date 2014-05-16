@@ -2,7 +2,8 @@
 	function template(data){with($H){
 		return div(ol(
 			apply(data, function(itm){
-				return li(a({href:"#"+itm.id}, itm.name));
+				var prj = db.getProject(db.getTaskProject(itm.id));
+				return li(a({href:"#"+itm.id}, itm.name, format(" [{0}]", prj.name)));
 			})
 		));
 	}}

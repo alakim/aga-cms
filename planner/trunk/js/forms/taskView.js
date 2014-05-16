@@ -1,9 +1,13 @@
 ﻿define(["html", "db", "forms/taskEdit"], function($H, db, taskEdit){
 	function template(data){with($H){
+		var prjID = db.getTaskProject(data.id),
+			prj = db.getProject(prjID);
+		
 		return div(
 			ul({"class":"menu"},
 				li({"class":"bt_Edit", taskID:data.id}, "Edit")
 			),
+			h3("Project: ", prj.name),
 			table(
 				tr(th("ID"), td(data.id)),
 				tr(th("Name"), td(data.name)),
