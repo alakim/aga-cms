@@ -1,4 +1,4 @@
-﻿define(["knockout"], function(ko){
+﻿define(["knockout", "db"], function(ko, db){
 	function lambda(expr){
 		expr = expr.split("|");
 		return new Function(expr[0], "return "+expr[1]);
@@ -15,6 +15,24 @@
 			
 			target.hasError(!valid);
 			target.validationMessage(valid ? "" : "Укажите адрес электронной почты");
+		}
+	 
+		validate(target());
+		target.subscribe(validate);
+		return target;
+	}
+	
+	ko.extenders.uniqueID = function(target, path) {
+		target.hasError = ko.observable();
+		target.validationMessage = ko.observable();
+		
+		var coll = db.getCollection(path);
+	 
+		function validate(newValue) {
+			var valid = newValue && newValue.length && coll[newValue]==null;
+			
+			target.hasError(!valid);
+			target.validationMessage(valid ? "" : "Требуется уникальный идентификатор");
 		}
 	 
 		validate(target());

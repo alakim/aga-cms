@@ -112,6 +112,9 @@
 				}
 			}
 		},
+		getCollection: function(path){
+			return $JP.get(localDB, path);
+		},
 		getProjects: function(){
 			var res = [];
 			for(var el,i=0; el=localDB.registry[i],i<localDB.registry.length; i++){
@@ -241,10 +244,23 @@
 			return localDB.persons[id];
 		},
 		savePerson: function(data){
+			var person = localDB.persons[data.id];
+			if(!person){
+				person = {};
+				localDB.persons[data.id] = person;
+			}
 			for(var k in data){
 				if(k!="id")
-					localDB.persons[data.id][k] = data[k];
+					person[k] = data[k];
 			}
+		},
+		deletePerson: function(prsID){
+			var persons = {};
+			for(var k in localDB.persons){
+				if(k!=prsID)
+					persons[k] = localDB.persons[k];
+			}
+			localDB.persons = persons;
 		},
 		newTaskID: function(prjID){
 			for(var i=1; true; i++){

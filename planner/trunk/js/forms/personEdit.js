@@ -1,10 +1,10 @@
-﻿define(["html", "knockout", "db", "util"], function($H, ko, db, util){
+﻿define(["html", "knockout", "db", "util", "validation"], function($H, ko, db, util, validation){
 	function template(data){with($H){
 		return div(
 			h2("Person Editor"),
 			table({border:0, cellpadding:3, cellspacing:0},
-				tr(th("ID"), td(input({type:"text", "data-bind":"value:$id"}))),
-				tr(th("ФИО"), td(input({type:"text", "data-bind":"value:$name"}))),
+				tr(th("ID"), td(input({type:"text", "data-bind":"value:$id"}), util.validMsg("$id"))),
+				tr(th("ФИО"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
 				tr(
 					td({colspan:2},
 						input({type:"button", value:"Save", "data-bind":"click:save"}), " ",
@@ -17,17 +17,21 @@
 	
 	function Model(data, pnl){var _=this;
 		$.extend(_,{
-			$id: ko.observable(data.id),
-			$name: ko.observable(data.name).extend({required:"Укажите ФИО"})
+			$id: ko.observable(data?data.id:"").extend({uniqueID:"persons"}),
+			$name: ko.observable(data?data.name:"").extend({required:"Укажите ФИО"})
 		});
 		$.extend(_,{
 			save: function(){
+				if(!validation.validate(_)) return;
 				var d = util.getModelData(this);
 				db.savePerson(d);
 				_.close();
 			},
 			close: function(){
-				require("forms/personView").view(pnl, data.id);
+				if(data)
+					require("forms/personView").view(pnl, data.id);
+				else
+					require("forms/persons").view(pnl);
 			}
 		});
 	}
