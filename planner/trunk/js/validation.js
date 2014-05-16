@@ -26,7 +26,7 @@
 		target.hasError = ko.observable();
 		target.validationMessage = ko.observable();
 		
-		var coll = db.getCollection(path);
+		var coll = db.getBranch(path);
 	 
 		function validate(newValue) {
 			var valid = newValue && newValue.length && coll[newValue]==null;

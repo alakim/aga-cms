@@ -1,23 +1,28 @@
-﻿define(["html", "db", "forms/projectView"], function($H, db, projectView){
+﻿define(["html", "db", "forms/projectView", "forms/projectEditor"], function($H, db, projectView, projectEditor){
 	function template(data){with($H){
-		return div(ul(
-			apply(data, function(prj){
-				return li(
-					prj.color?{style:"color:"+prj.color}:null,
-					span({style:"float:left; width:200px;"},
-						prj.frozen?span({"class":"frozen btProject", prjID:prj.id}, prj.name)
-							:span({"class":"selectable btProject", prjID:prj.id}, prj.name)
-					),
-					div({style:"display:inline;"},
-						prj.frozen?a({href:"#", "class":"selectable btLoad", style:"padding-left:50px;"}, "load")
-							:markup(
-								prj.changed?a({href:"#", "class":"selectable btSave"}, "save"):null,
-								a({href:"#", "class":"selectable btUnload", style:"padding-left:50px;"}, "unload")
-							)
-					)
-				);
-			})
-		));
+		return div(
+			ul(
+				apply(data, function(prj){
+					return li(
+						prj.color?{style:"color:"+prj.color}:null,
+						span({style:"float:left; width:200px;"},
+							prj.frozen?span({"class":"frozen btProject", prjID:prj.id}, prj.name)
+								:span({"class":"selectable btProject", prjID:prj.id}, prj.name)
+						),
+						div({style:"display:inline;"},
+							prj.frozen?a({href:"#", "class":"selectable btLoad", style:"padding-left:50px;"}, "load")
+								:markup(
+									prj.changed?a({href:"#", "class":"selectable btSave"}, "save"):null,
+									a({href:"#", "class":"selectable btUnload", style:"padding-left:50px;"}, "unload")
+								)
+						)
+					);
+				})
+			),
+			ul({"class":"menu"},
+				li(a({href:"#", "class":"btAdd"}, "Add"))
+			)
+		);
 	}}
 	
 	return {
@@ -39,6 +44,9 @@
 				}).end()
 				.find(".btUnload").click(function(){
 					db.unloadProject(getPrjId(this), function(){_.view(pnl);});
+				}).end()
+				.find(".btAdd").click(function(){
+					projectEditor.view(pnl);
 				});
 		}
 	};

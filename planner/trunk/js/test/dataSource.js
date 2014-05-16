@@ -6,6 +6,7 @@ define(["jspath", "test/dbData"], function($JP, dbData){
 			setTimeout(function(){
 				var path = file;
 				var data = $JP.get(dbData, path);
+				data = data || {};
 				var json = JSON.stringify(data);
 				var d2 = $.parseJSON(json);
 				onload(d2);

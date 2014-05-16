@@ -112,7 +112,7 @@
 				}
 			}
 		},
-		getCollection: function(path){
+		getBranch: function(path){
 			return $JP.get(localDB, path);
 		},
 		getProjects: function(){
@@ -123,7 +123,7 @@
 					color: el.color,
 					name: el.name,
 					frozen: el.frozen,
-					changed: el.frozen || localDB.projects[el.id].changed
+					changed: el.frozen || (localDB.projects[el.id] && localDB.projects[el.id].changed)
 				});
 			}
 			return res;
@@ -132,6 +132,25 @@
 			var prj = localDB.projects[id];
 			prj.id = id;
 			return prj;
+		},
+		getRegistryItem: function(id){
+			return localDB.registry[id];
+		},
+		saveRegistryItem: function(data){
+			//var itm = localDB.registry[data.id];
+			var itm = $.grep(localDB.registry, function(el, i){
+				return el.id==data.id;
+			});
+			if(itm.length) itm = itm[0];
+			else {
+				itm = {};
+				localDB.registry.push(itm);
+			}
+			
+			for(var k in data){
+				if(k!="id") itm[k] = data[k];
+			}
+			// console.log(localDB.registry);
 		},
 		getQueue: function(){
 			var res = [];
