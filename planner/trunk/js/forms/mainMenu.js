@@ -1,4 +1,4 @@
-﻿define(["jquery", "html", "knockout", "db", "forms/projectList", "forms/Queue", "forms/persons"], function($, $H, ko, db, prjList, queue, persons){
+﻿define(["jquery", "html", "knockout", "db", "forms/projectList", "forms/queue", "forms/persons"], function($, $H, ko, db, prjList, queue, persons){
 	function template(){with($H){
 		return div(ul({"class":"menu"},
 			li({"data-bind":"click:showProjects"}, "Projects"),
