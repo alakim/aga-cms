@@ -1,4 +1,4 @@
-﻿define(["html"], function($H) {
+﻿define(["jquery", "html"], function($, $H) {
 	function twoDigits(x){
 		return x<10?"0"+x:x;
 	}
@@ -38,6 +38,16 @@
 			pnl.html(
 				$H.img({src:"images/wait.gif"})
 			);
+		}},
+		log: function(msg, logMsg){with($H){
+			if(logMsg){
+				$(logMsg).append(span({style:"padding-left:5px;"}, msg));
+			}
+			else{
+				logMsg = $(div(msg));
+				$("div.console").append(logMsg);
+			}
+			return logMsg;
 		}},
 		formatDate: function(date){
 			var Y = date.getFullYear(),

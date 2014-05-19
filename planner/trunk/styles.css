@@ -60,3 +60,11 @@ div.panel{
 .frozen{
 	color: #ccc;
 }
+
+div.console{
+	background-color:#004;
+	color:#ffc;
+	padding:5px;
+	margin:5px;
+	margin-top:80px;
+}

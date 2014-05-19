@@ -61,7 +61,7 @@
 			}
 		},
 		loadProject: function(prjID, onload){var _=this;
-			dSrc.load("projects/"+prjID, function(data){
+			dSrc.load("projects/"+prjID, false, function(data){
 				if(!data.name){
 					data.name = _.getRegistryItem(prjID).name;
 				}
@@ -84,11 +84,32 @@
 				onsave();
 			});
 		},
-		loadData: function(onload){
+		saveAll: function(){
 			var modules = [
-				{file:"queue"},
+				{file:"queue", data:localDB.queue},
+				{file:"persons", data:localDB.persons},
+				{file:"registry", data:localDB.registry}
+			];
+			$.each(localDB.registry, function(i, itm){
+				if(itm.frozen) return;
+				modules.push({file:"projects/"+itm.id, data:localDB.projects[itm.id]});
+			});
+			
+			function save(){
+				if(!modules.length) return;
+				var mod = modules.pop();
+				// console.log("Saving "+mod.file+" ...");
+				dSrc.save(mod.file, mod.data, save);
+			}
+			
+			save();
+		},
+		loadData: function(onload){
+			// console.log("Loading Data...")
+			var modules = [
+				{file:"queue", arrMode:true},
 				{file:"persons"},
-				{file:"registry"}
+				{file:"registry", arrMode:true}
 			];
 			
 			function allLoaded(){
@@ -99,17 +120,20 @@
 			}
 			
 			function load(module, prjMode){
+				// console.log("loading "+module.file);
 				var file = module.file,
 					targetPath = module.path;
 				targetPath = targetPath || file;
 				module.loaded = false;
-				dSrc.load(file, function(data){
+				dSrc.load(file, module.arrMode, function(data){
 					$JP.set(localDB, targetPath, data);
 					module.loaded = true;
 					if(allLoaded()){
 						indexTasks();
-						if(prjMode)
+						if(prjMode){
 							onload();
+							// console.log("Data Loaded!")
+						}
 						else
 							loadProjects();
 					}
@@ -122,12 +146,20 @@
 			
 			function loadProjects(){
 				modules = [];
+				if(!localDB.registry) localDB.registry = [];
+				
 				$.each(localDB.registry, function(i, el){
 					if(!el.frozen)
 						modules.push({file:"projects/"+el.id});
 				});
-				for(var m,i=0; m=modules[i],i<modules.length; i++){
-					load(m, true);
+				if(!modules.length){
+					onload();
+					// console.log("2 Data Loaded!")
+				}
+				else{
+					for(var m,i=0; m=modules[i],i<modules.length; i++){
+						load(m, true);
+					}
 				}
 			}
 		},

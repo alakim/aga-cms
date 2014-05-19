@@ -1,6 +1,7 @@
 ﻿define(["html", "db", "forms/personView", "forms/personEdit"], function($H, db, personView, editor){
 	function template(data){with($H){
 		return div(
+			h2("Persons List"),
 			ol(
 				apply(data, function(prs){
 					var refCount = getRefCount(prs.id);
