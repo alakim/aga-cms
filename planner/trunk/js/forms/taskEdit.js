@@ -5,6 +5,7 @@
 		return div(
 			div({id:"taskSelector", "class":"hidden panel"}),
 			div({id:"personSelector", "class":"hidden panel"}),
+			h2("Task Editor"),
 			table(
 				tr(th("Parent"), td(
 					input({type:"text", readonly:true, "data-bind":"value:$parent"}),
@@ -97,6 +98,7 @@
 			},
 			selectInitiator: function(){
 				personSelector.view(function(id){
+					// if(!id.length) id = null;
 					_.$initiator(id);
 				});
 			},

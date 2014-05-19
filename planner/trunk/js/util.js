@@ -12,6 +12,7 @@
 			if(k.slice(0,1)!="$") continue;
 			var v = model[k];
 			if(typeof(v)=="function") v = v();
+			//console.log(k, v);
 			if(v instanceof Array){
 				var arr = [];
 				for(var el,i=0; el=v[i],i<v.length; i++){
@@ -20,7 +21,7 @@
 				res[k.slice(1)] = arr;
 			}
 			else{
-				if(v==null || v.length==0) continue;
+				//if(v==null || v.length==0) continue;
 				res[k.slice(1)] = getModelData(v, level+1);
 			}
 		}

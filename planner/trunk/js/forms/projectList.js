@@ -1,6 +1,7 @@
 ﻿define(["html", "db", "forms/projectView", "forms/projectEditor"], function($H, db, projectView, projectEditor){
 	function template(data){with($H){
 		return div(
+			h2("Projects List"),
 			ul(
 				apply(data, function(prj){
 					return li(

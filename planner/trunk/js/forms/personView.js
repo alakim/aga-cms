@@ -1,6 +1,7 @@
 ﻿define(["html", "db", "forms/taskView", "forms/personEdit"], function($H, db, taskView, editor){
 	function template(data, refs){with($H){
 		return div(
+			h2("Person"),
 			p(span({style:"font-weight:bold;"}, "ID: "), data.id),
 			p(span({style:"font-weight:bold;"}, "ФИО: "), data.name),
 			div({"class":"menu"},

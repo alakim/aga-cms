@@ -1,14 +1,18 @@
 ﻿define(["jquery", "html", "knockout", "db"], function($, $H, ko, db){
 	
 	function template(persons){with($H){
-		return div(ul(
-			apply(persons, function(pers){
-				return li(span({"class":"selectable", "data-bind":"click:select", persID:pers.id},
-					pers.name,
-					format(" ({0})", pers.id)
-				));
-			})
-		));
+		return div(
+			h2("Person Selector"),
+			ul(
+				li(span({"class":"selectable", "data-bind":"click:select", persID:""}, "[ NONE ]")),
+				apply(persons, function(pers){
+					return li(span({"class":"selectable", "data-bind":"click:select", persID:pers.id},
+						pers.name,
+						format(" ({0})", pers.id)
+					));
+				})
+			)
+		);
 	}}
 	
 

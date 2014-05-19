@@ -4,7 +4,7 @@
 			prj = db.getProject(prjID);
 		
 		return div(
-			h3("Project: ", prj.name),
+			h3("Task of Project: ", prj.name),
 			ul({"class":"menu"},
 				li({"class":"bt_Edit", taskID:data.id}, "Edit Task")
 			),

@@ -1,12 +1,14 @@
 ﻿define(["html", "db", "forms/taskEdit"], function($H, db, taskEdit){
 	function taskJobListTemplate(jobList){with($H){
-		return ul(
-			apply(jobList, function(job){
-				return li(
-					job.date, ": ", job.hours, "h",
-					job.notes?markup(" - ", job.notes):null
-				);
-			})
+		return div(
+			ul(
+				apply(jobList, function(job){
+					return li(
+						job.date, ": ", job.hours, "h",
+						job.notes?markup(" - ", job.notes):null
+					);
+				})
+			)
 		);
 	}}
 	
@@ -42,6 +44,7 @@
 	function template(prj){with($H){
 		return div(
 			h2(
+				"Project ",
 				prj.color?{style:"color:"+prj.color}:null,
 				prj.name, " (", prj.id,")"
 			),

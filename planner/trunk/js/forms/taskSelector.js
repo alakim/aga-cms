@@ -2,6 +2,7 @@
 	
 	function template(prj){with($H){
 		return div(
+			h2("Task Selector"),
 			div({"class":"selectable", "data-bind":"click:select"}, prj.name),
 			taskListTemplate(prj.tasks)
 		);
