@@ -1,6 +1,6 @@
 define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 	
-	var cdk = new Cdk("123456");
+	var cdk;
 	
 	function encode(val){
 		return cdk.ec(val);
@@ -12,6 +12,7 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 
 	return {
 		load: function(file, arrMode, onload){
+			cdk = new Cdk($(".key").val());
 			var log = util.log("loading " + file + " ...");
 			$.post("ws/load.php", {path:file}, function(res){
 				if(res==null || res.length==0) res = arrMode?"[]":"{}";
@@ -23,6 +24,7 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 
 		},
 		save: function(path, data, onsave){
+			cdk = new Cdk($(".key").val());
 			var log = util.log("saving "+path+" ...");
 			var json = JSON.stringify(data);
 			$.post("ws/save.php", {path:path, data:encode(json)}, function(res){

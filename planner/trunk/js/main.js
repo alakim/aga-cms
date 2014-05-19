@@ -23,9 +23,12 @@ requirejs(["jquery", "html", "forms/mainMenu", "forms/common", "db"], function($
 		mainMenu.view($(".mainMenu"));
 		
 		var mainPnl = $(".mainPanel");
-		common.wait(mainPnl);
-		db.loadData(function(){
-			mainPnl.html("");
+		
+		$(".btInit").click(function(){
+			common.wait(mainPnl);
+			db.loadData(function(){
+				mainPnl.html("");
+			});
 		});
 	}
 );
