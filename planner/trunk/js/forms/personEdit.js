@@ -3,7 +3,7 @@
 		return div(
 			h2("Person Editor"),
 			table({border:0, cellpadding:3, cellspacing:0},
-				tr(th("ID"), td(input({type:"text", "data-bind":"value:$id"}), util.validMsg("$id"))),
+				tr(th("ID"), td(templateIDField(data))),
 				tr(th("ФИО"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
 				tr(
 					td({colspan:2},
@@ -12,6 +12,13 @@
 					)
 				)
 			)
+		);
+	}}
+	
+	function templateIDField(data){with($H){
+		return markup(
+			data?input({type:"text", readonly:true, "data-bind":"value:$id"})
+				:markup(input({type:"text", "data-bind":"value:$id"}), util.validMsg("$id"))
 		);
 	}}
 	
