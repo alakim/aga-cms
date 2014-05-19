@@ -37,6 +37,7 @@
 		
 		new shell.Test("Queue", function(assert){
 			var list = db.getQueue();
+			console.log(list);
 			assert(list.length, 4);
 			assert(list[0].name, "Залить новости");
 			assert(list[0].id, "gss_1");
@@ -162,6 +163,42 @@
 			if(parent) assert(parent.name, "ГСС", "Bad parent");
 		})
 	]);
+	new shell.TestGroup("Project edit", [
+		new shell.Test("Adding Project", function(assert, report){with(flow){
+			sequence(
+				function(){var go = new Continuation();
+					db.saveRegistryItem({id:"www", name:"Веб"});
+					assert(db.getRegistryItem("www")!=null, true);
+					assert(db.getRegistryItem("www").frozen, true);
+					go();
+				},
+				function(){var go = new Continuation();
+					db.loadProject("www", function(){
+						assert(db.getProject("www")!=null, true);
+						go();
+					});
+				},
+				function(){var go = new Continuation();
+					db.saveTask({
+						id:"www_1",
+						prjID:"www",
+						name:"simple task",
+						queuePos: 1
+					});
+					assert(db.getQueue().length, 5);
+					assert(db.getTask("www_1")!=null, true);
+					assert(db.getTaskProject("www_1"), "www");
+					go();
+				},
+				function(){var go = new Continuation();
+					report();
+					go();
+				}
+			).run();
+			
+		}}, true)
+	]);
+
 	
 	return {
 		run: shell.run

@@ -40,12 +40,31 @@
 			$JP.set(localDB, path, data);
 		},
 		setRegistry: function(prjID, options){
+			var prj = this.getRegistryItem(prjID);
+			if(prj) $.extend(prj, options);
+		},
+		getRegistryItem: function(prjID){
+			// console.log(localDB.registry);
 			var obj = $.grep(localDB.registry, function(el, i){return el.id==prjID;});
-			if(!obj.length) return;
-			$.extend(obj[0], options);
+			return obj.length?obj[0]:null;
+		},
+		saveRegistryItem: function(data){
+			var itm = this.getRegistryItem(data.id);
+			if(!itm) {
+				itm = {id:data.id, frozen:true};
+				localDB.registry.push(itm);
+				// localDB.projects[data.id] = {name:data.name};
+			}
+			
+			for(var k in data){
+				if(k!="id") itm[k] = data[k];
+			}
 		},
 		loadProject: function(prjID, onload){var _=this;
 			dSrc.load("projects/"+prjID, function(data){
+				if(!data.name){
+					data.name = _.getRegistryItem(prjID).name;
+				}
 				$JP.set(localDB, ["projects", prjID], data);
 				localDB.projects[prjID].changed = false;
 				_.setRegistry(prjID, {frozen: false});
@@ -133,25 +152,6 @@
 			prj.id = id;
 			return prj;
 		},
-		getRegistryItem: function(id){
-			return localDB.registry[id];
-		},
-		saveRegistryItem: function(data){
-			//var itm = localDB.registry[data.id];
-			var itm = $.grep(localDB.registry, function(el, i){
-				return el.id==data.id;
-			});
-			if(itm.length) itm = itm[0];
-			else {
-				itm = {};
-				localDB.registry.push(itm);
-			}
-			
-			for(var k in data){
-				if(k!="id") itm[k] = data[k];
-			}
-			// console.log(localDB.registry);
-		},
 		getQueue: function(){
 			var res = [];
 			for(var taskID,i=0; taskID=localDB.queue[i],i<localDB.queue.length; i++){
@@ -226,6 +226,7 @@
 			if(!task){
 				task = {id:id};
 				taskIndex[id] = task;
+				taskProjects[id] = data.prjID;
 			}
 			if(!curParent){
 				$JP.push(newParent, "tasks", task);

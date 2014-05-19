@@ -22,7 +22,7 @@
 			{id:"port2", name:"Порт 2", color:"#08a"},
 			{id:"grossblock", name:"Гроссблок", color:"#008"},
 			{id:"besttools", name:"Бесттулз", frozen:true},
-			{id:"portal", name:"Портал", frozen:true},
+			{id:"portal", name:"Портал"},
 			{id:"system", name:"Система", color:"#a00", frozen:true},
 			{id:"dataBases", name:"Базы данных", frozen:true},
 			{id:"department", name:"Наш отдел"},
