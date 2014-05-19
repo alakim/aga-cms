@@ -17,12 +17,12 @@
 	}
 });
 
-requirejs(["jquery", "html", "test/dsTests", "util", "db"], function($, $H, dsTests, util, db) {
+requirejs(["jquery", "html", "test/dsTests", "forms/common", "db"], function($, $H, dsTests, common, db) {
 		//$("#out").html("Tests are performed!");
 		
 		
 		var mainPnl = $("#out");
-		util.wait(mainPnl);
+		common.wait(mainPnl);
 		db.loadData(function(){
 			mainPnl.html("");
 			dsTests.run();

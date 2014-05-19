@@ -249,6 +249,7 @@
 			}
 		},
 		saveTask: function(data){
+			//console.log(data);
 			var id = data.id,
 				task = taskIndex[id],
 				curParent = this.getParent(data.prjID, id),

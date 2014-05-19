@@ -19,11 +19,11 @@
 	}
 });
 
-requirejs(["jquery", "html", "forms/mainMenu", "util", "db"], function($, $H, mainMenu, util, db) {
+requirejs(["jquery", "html", "forms/mainMenu", "forms/common", "db"], function($, $H, mainMenu, common, db) {
 		mainMenu.view($(".mainMenu"));
 		
 		var mainPnl = $(".mainPanel");
-		util.wait(mainPnl);
+		common.wait(mainPnl);
 		db.loadData(function(){
 			mainPnl.html("");
 		});

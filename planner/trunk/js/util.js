@@ -35,11 +35,6 @@
 
 	
 	return {
-		wait: function(pnl){with($H){
-			pnl.html(
-				$H.img({src:"images/wait.gif"})
-			);
-		}},
 		log: function(msg, logMsg){with($H){
 			if(logMsg){
 				$(logMsg).append(span({style:"padding-left:5px;"}, msg));
