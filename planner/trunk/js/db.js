@@ -351,6 +351,9 @@
 				var id = prjID+"_"+i;
 				if(!taskIndex[id]) return id;
 			}
+		},
+		saveResource: function(prjID, data){
+			$JP.set(localDB, ["projects", prjID, "resources", data.id], data);
 		}
 	};
 });
