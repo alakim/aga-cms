@@ -112,6 +112,10 @@
 				dSrc.save(mod.file, mod.data, save);
 			}
 			
+			for(var k in localDB.projects){
+				localDB.projects[k].changed = false;
+			}
+			
 			save();
 		},
 		loadData: function(onload){
