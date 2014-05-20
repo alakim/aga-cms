@@ -29,7 +29,8 @@
 		var coll = db.getBranch(path);
 	 
 		function validate(newValue) {
-			var valid = newValue && newValue.length && coll[newValue]==null;
+			var valid = (coll==null) || 
+				(newValue && newValue.length && coll[newValue]==null);
 			
 			target.hasError(!valid);
 			target.validationMessage(valid ? "" : "Требуется уникальный идентификатор");

@@ -12,6 +12,7 @@
 				tr(th("ID"), td(data.id)),
 				tr(th("Name"), td(data.name)),
 				data.initiator?tr(th("Initiator"), td(db.getPerson(data.initiator).name)):null,
+				data.executor?tr(th("Executor"), td(db.getPerson(data.executor).name)):null,
 				data.jobs && data.jobs.length?(
 					tr(th("Jobs"), td(
 						apply(data.jobs, function(job, i){

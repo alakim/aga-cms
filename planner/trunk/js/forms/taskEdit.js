@@ -21,6 +21,11 @@
 					input({type:"button", value:"Select", "data-bind":"click:selectInitiator"}),
 					span({style:"padding-left:25px;", "data-bind":"text:initiatorName"})
 				)),
+				tr(th("Executor"), td(
+					input({type:"text", readonly:true, "data-bind":"value:$executor"}),
+					input({type:"button", value:"Select", "data-bind":"click:selectExecutor"}),
+					span({style:"padding-left:25px;", "data-bind":"text:executorName"})
+				)),
 				tr(th("Completed"), td(
 					input({type:"text", "data-bind":"value:$completed"}),
 					input({type:"button", value:"Now", "data-bind":"click:setCompleted"})
@@ -71,6 +76,7 @@
 			$id: ko.observable(taskID),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
+			$executor: ko.observable(data?data.executor:""),
 			$completed: ko.observable(data?data.completed:""),
 			$jobs: ko.observableArray(jobs),
 			$description: ko.observable(data?data.description:""),
@@ -101,6 +107,12 @@
 				personSelector.view(function(id){
 					// if(!id.length) id = null;
 					_.$initiator(id);
+				});
+			},
+			selectExecutor: function(){
+				personSelector.view(function(id){
+					// if(!id.length) id = null;
+					_.$executor(id);
 				});
 			},
 			cancel: function(){
@@ -136,6 +148,12 @@
 			initiatorName: ko.computed(function(){
 				if(!_.$initiator) return; 
 				var id = _.$initiator();
+				var person = db.getPerson(id);
+				return person?person.name:"";
+			}),
+			executorName: ko.computed(function(){
+				if(!_.$executor) return; 
+				var id = _.$executor();
 				var person = db.getPerson(id);
 				return person?person.name:"";
 			})

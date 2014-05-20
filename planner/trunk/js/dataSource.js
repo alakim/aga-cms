@@ -31,6 +31,17 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 				util.log("OK", log);
 				onsave();
 			});
+		},
+		backupData: function(onbackup){
+			var backupUrl = "http://www.back.ru/sss/s.zip";
+			$.post("ws/archive.php", {n:"dataBackup", d:"../data"}, function(res){
+				res = $.parseJSON(res);
+				if(res.error){
+					alert(res.error);
+					return;
+				}
+				onbackup(res.archive);
+			});
 		}
 	};
 });

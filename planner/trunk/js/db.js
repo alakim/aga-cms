@@ -113,7 +113,8 @@
 			}
 			
 			for(var k in localDB.projects){
-				localDB.projects[k].changed = false;
+				var prj = localDB.projects[k];
+				if(prj) prj.changed = false;
 			}
 			
 			save();
@@ -313,11 +314,13 @@
 			return res;
 		},
 		getPersonRefs: function(prsID){
-			var refs = {tasksInitialized:[]};
+			var refs = {tasksInitialized:[], tasksExecuted:[]};
 			for(var k in taskIndex){
 				var task = taskIndex[k];
 				if(task.initiator==prsID)
 					refs.tasksInitialized.push(task.id);
+				if(task.executor==prsID)
+					refs.tasksExecuted.push(task.id);
 			}
 			return refs;
 		},
