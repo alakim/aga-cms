@@ -15,7 +15,10 @@
 			showProjects: function(){prjList.view($(".mainPanel"));},
 			showQueue: function(){queue.view($(".mainPanel"));},
 			showPersons: function(){persons.view($(".mainPanel"));},
-			saveAll: function(){db.saveAll();},
+			saveAll: function(){
+				if(!confirm("Save All Data?"))return;
+				db.saveAll();
+			},
 			clearConsole: function(){$("div.console").html("")},
 			showDB: function(){dbView.view($(".mainPanel"))}
 		});
