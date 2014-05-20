@@ -9,8 +9,9 @@
 				tr(th("Color"), td(input({type:"text", "data-bind":"value:$color"})))
 			),
 			div(
+				input({type:"button", value:"Cancel", "data-bind":"click:close"}), " ",
 				input({type:"button", value:"Save", "data-bind":"click:save"}), " ",
-				input({type:"button", value:"Cancel", "data-bind":"click:close"})
+				input({type:"button", value:"Delete", "data-bind":"click:delProject"})
 			)
 		);
 	}}
@@ -31,6 +32,11 @@
 			},
 			close: function(){
 				require("forms/projectList").view(pnl);
+			},
+			delProject: function(){
+				if(!confirm("Delete this project?"))return;
+				db.deleteProject(_.$id());
+				_.close();
 			}
 		});
 	}

@@ -10,12 +10,15 @@
 							prj.frozen?span({"class":"frozen btProject", prjID:prj.id}, prj.name)
 								:span({"class":"selectable btProject", prjID:prj.id}, prj.name)
 						),
-						div({style:"display:inline;"},
+						div({style:"float:left; display:inline;"},
 							prj.frozen?a({href:"#", "class":"selectable btLoad", style:"padding-left:50px;"}, "load")
 								:markup(
 									prj.changed?a({href:"#", "class":"selectable btSave"}, "save"):null,
 									a({href:"#", "class":"selectable btUnload", style:"padding-left:50px;"}, "unload")
 								)
+						),
+						span({style:"float:left; margin-left:80px;"},
+							a({href:"#", "class":"btEdit", prjID:prj.id}, "edit")
 						)
 					);
 				})
@@ -48,6 +51,9 @@
 				}).end()
 				.find(".btAdd").click(function(){
 					projectEditor.view(pnl);
+				}).end()
+				.find(".btEdit").click(function(){
+					projectEditor.view(pnl, $(this).attr("prjID"));
 				});
 		}
 	};

@@ -51,6 +51,13 @@
 			var obj = $.grep(localDB.registry, function(el, i){return el.id==prjID;});
 			return obj.length?obj[0]:null;
 		},
+		delRegistryItem: function(prjID){
+			var res = [];
+			for(var el,c=localDB.registry,i=0; el=c[i],i<c.length; i++){
+				if(el.id!=prjID) res.push(el);
+			}
+			localDB.registry = res;
+		},
 		saveRegistryItem: function(data){
 			var itm = this.getRegistryItem(data.id);
 			if(!itm) {
@@ -187,6 +194,11 @@
 			var prj = localDB.projects[id];
 			prj.id = id;
 			return prj;
+		},
+		deleteProject: function(id){
+			$JP.set(localDB, ["projects", id], null);
+			this.delRegistryItem(id);
+			indexTasks();
 		},
 		getQueue: function(){
 			var res = [];
