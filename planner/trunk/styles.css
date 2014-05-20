@@ -71,3 +71,10 @@ div.console{
 .key{
 	width:300px;
 }
+
+.dataType{
+	color:#ccc;
+}
+span.dataType{
+	margin-right:15px;
+}

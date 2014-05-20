@@ -1,11 +1,12 @@
-﻿define(["jquery", "html", "knockout", "db", "forms/projectList", "forms/queue", "forms/persons"], function($, $H, ko, db, prjList, queue, persons){
+﻿define(["jquery", "html", "knockout", "db", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView"], function($, $H, ko, db, prjList, queue, persons, dbView){
 	function template(){with($H){
 		return div(ul({"class":"menu"},
 			li({"data-bind":"click:showProjects"}, "Projects"),
 			li({"data-bind":"click:showQueue"}, "Queue"),
 			li({"data-bind":"click:showPersons"}, "Persons"),
 			li({"data-bind":"click:saveAll"}, "Save All"),
-			li({"data-bind":"click:clearConsole"}, "Clear Console")
+			li({"data-bind":"click:clearConsole"}, "Clear Console"),
+			li({"data-bind":"click:showDB"}, "DB View")
 		));
 	}}
 	
@@ -15,7 +16,8 @@
 			showQueue: function(){queue.view($(".mainPanel"));},
 			showPersons: function(){persons.view($(".mainPanel"));},
 			saveAll: function(){db.saveAll();},
-			clearConsole: function(){$("div.console").html("")}
+			clearConsole: function(){$("div.console").html("")},
+			showDB: function(){dbView.view($(".mainPanel"))}
 		});
 	}
 	

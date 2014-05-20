@@ -36,6 +36,9 @@
 	
 	
 	return {
+		getJSON: function(){
+			return JSON.stringify(localDB);
+		},
 		set: function(path, data){
 			$JP.set(localDB, path, data);
 		},
@@ -127,6 +130,7 @@
 				module.loaded = false;
 				dSrc.load(file, module.arrMode, function(data){
 					$JP.set(localDB, targetPath, data);
+					if(prjMode) $JP.set(localDB, [targetPath, "changed"], false);
 					module.loaded = true;
 					if(allLoaded()){
 						indexTasks();
