@@ -48,7 +48,8 @@
 				tr(th("Description"), td(textarea({style:"width:400px; height:150px;", "data-bind":"value:$description"}))),
 				tr(td({colspan:2},
 					input({type:"button", value:"Cancel", "data-bind":"click:cancel"}), " ",
-					input({type:"button", value:"Save", "data-bind":"click:save"})
+					input({type:"button", value:"Save", "data-bind":"click:save"}), " ",
+					input({type:"button", value:"Delete", "data-bind":"click:deleteTask"})
 				))
 			)
 		);
@@ -111,6 +112,11 @@
 				db.saveTask(data);
 				projectView = require("forms/projectView");
 				projectView.view(data.prjID);
+			},
+			deleteTask: function(){
+				if(!confirm("Delete this Task?")) return;
+				db.delTask(_.$prjID(), _.$id());
+				require("forms/projectView").view(data.prjID);
 			}
 		});
 		

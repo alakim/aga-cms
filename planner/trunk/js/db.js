@@ -280,6 +280,14 @@
 			}
 			project.changed = true;
 		},
+		delTask: function(prjID, taskID){
+			removeTask(
+				this.getParent(prjID, taskID), 
+				taskIndex[taskID]
+			);
+			$JP.set(localDB, ["projects", prjID, "changed"], true);
+			indexTasks();
+		},
 		getPersons: function(){
 			var res = {};
 			$.extend(res, localDB.persons);
