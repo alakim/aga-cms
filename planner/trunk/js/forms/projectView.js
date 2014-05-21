@@ -71,10 +71,14 @@
 					span({"class":"menu bt_View", taskID:task.id}, "View"), " ",
 					span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
 				),
-				task.completed?p({"class":"completed"}, "Completed ", task.completed):null,
-				task.initiator?p("Initiator: ", db.getPerson(task.initiator).name):null,
-				task.description?div(task.description):null,
-				task.jobs?templates.jobList(task.jobs):null,
+				task.completed?div(
+					p({"class":"completed"}, "Completed ", task.completed)
+				)
+				:div(
+					task.initiator?p("Initiator: ", db.getPerson(task.initiator).name):null,
+					task.description?div(task.description):null,
+					task.jobs?templates.jobList(task.jobs):null
+				),
 				task.tasks?templates.taskList(task.tasks):null
 			);
 		}}

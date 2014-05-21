@@ -6,6 +6,7 @@
 	function getModelData(model, level){
 		level = level || 0;
 		if(level>3) return;
+		if(typeof(model)=="string") return model.replace(/\t+/g, " ").replace(/ +/g, " ");
 		if(typeof(model)!="object") return model;
 		var res = {};
 		for(var k in model){
@@ -46,6 +47,7 @@
 			return logMsg;
 		}},
 		formatHTML: function(str){
+			if(!str) return;
 			return str.replace(/[\n\r]+/g, "<br/>")
 				.replace(/(http:\/\/(.))+\s+/g, "<a href='$1'>$1</a> ");
 		},
