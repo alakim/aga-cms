@@ -6,21 +6,22 @@
 	<script type="text/javascript" src="core/lib/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="core/cdk.js"></script>
 	<script type="text/javascript">
-		function decode(){
+		function decode(direction){
 			var pwd = $("#fldPwd").val();
 			var val = $("#srcTxt").val();
 			var cdk = new Cdk(pwd);
-			var res = cdk.ec(val, true);
-			$("#out").html(res);
+			var res = cdk.ec(val, direction);
+			$("#out").val(res);
 		}
 	</script>
 </head>
 <body>
 	<h1>Aga Decoder Page</h1>
 	<input type="password" id="fldPwd"/> 
-	<input type="button" value="Decode" onclick="decode()"/>
+	<input type="button" value="Decode" onclick="decode(true)"/>
+	<input type="button" value="Encode" onclick="decode(false)"/>
 	<br/>
 	<textarea id="srcTxt" style="width:800px; height:400px;"></textarea>
-	<pre id="out"></pre>
+	<textarea id="out" style="width:800px; height:400px;"></textarea>
 </body>
 </html>
