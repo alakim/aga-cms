@@ -45,6 +45,10 @@
 			}
 			return logMsg;
 		}},
+		formatHTML: function(str){
+			return str.replace(/[\n\r]+/g, "<br/>")
+				.replace(/(http:\/\/(.))+\s+/g, "<a href='$1'>$1</a> ");
+		},
 		formatDate: function(date){
 			var Y = date.getFullYear(),
 				M = date.getMonth(),

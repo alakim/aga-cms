@@ -17,7 +17,12 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 			$.post("ws/load.php", {path:file}, function(res){
 				if(res==null || res.length==0) res = arrMode?"[]":"{}";
 				else res = decode(res);
-				var data = $.parseJSON(res);
+				try{
+					var data = $.parseJSON(res);
+				}
+				catch(e){
+					console.log("Error parsing JSON ", res);
+				}
 				onload(data);
 				util.log("OK", log);
 			});

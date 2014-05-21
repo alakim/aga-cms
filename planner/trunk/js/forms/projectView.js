@@ -1,4 +1,4 @@
-﻿define(["html", "db", "forms/taskEdit", "forms/resourceEdit"], function($H, db, taskEdit, resourceEdit){
+﻿define(["html", "db", "forms/taskEdit", "forms/taskView", "forms/resourceEdit"], function($H, db, taskEdit, taskView, resourceEdit){
 
 	var templates = {
 		main: function(prj){with($H){
@@ -68,6 +68,7 @@
 				),
 				qPos!=null?span({"class":"queuePos"}, qPos+1, " in queue"):null,
 				div({style:"text-align:right; margin-right:300px;"},
+					span({"class":"menu bt_View", taskID:task.id}, "View"), " ",
 					span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
 				),
 				task.completed?p({"class":"completed"}, "Completed ", task.completed):null,
@@ -91,6 +92,10 @@
 		//console.log("Edit ", taskID, " in ", prjID);
 		taskEdit.view(prjID, $(".mainPanel"), taskID);
 	}
+
+	function viewTask(prjID, taskID){
+		taskView.view(taskID, $(".mainPanel"));
+	}
 	
 	return {
 		view: function(id, pnl){
@@ -98,6 +103,7 @@
 			pnl.html(templates.main(db.getProject(id)));
 			pnl.find(".bt_AddTask").click(function(){addTask(id);});
 			pnl.find(".bt_AddResource").click(function(){addResource(id);});
+			pnl.find(".bt_View").click(function(e){viewTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".bt_Edit").click(function(e){editTask(id, $(e.target).attr("taskID"));});
 		}
 	};
