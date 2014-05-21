@@ -68,28 +68,63 @@
 		}),
 		
 		new shell.Test("Setting Queue Position", function(assert){
-			db.set("queue", ["gss_1", "grossblock_3", "portal_2", "aga_1"]);
+			var srcQueue = ["gss_1", "grossblock_3", "portal_2", "aga_1"];
+			db.set("queue", srcQueue);
+			//console.log(db.get("queue"));
+			assert(db.get("queue"), srcQueue, "Некорректная запись в БД");
 			
 			db.setQueuePosition("gss_1", null);
 			assert(db.getQueuePosition("gss_1"), null);
 			assert(db.getQueue().length, 3);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1"]);
 			
 			assert(db.getQueue().length, 3, "Before position setting");
 			db.setQueuePosition("gss_1", 1);
 			assert(db.getQueuePosition("gss_1"), 1);
 			assert(db.getQueue().length, 4, "After position setting");
+			assert(db.get("queue"), ["grossblock_3", "gss_1", "portal_2", "aga_1"]);
 			
 			db.setQueuePosition("gss_1", 2);
 			assert(db.getQueuePosition("gss_1"), 2);
 			assert(db.getQueue().length, 4);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "gss_1", "aga_1"]);
 			
 			db.setQueuePosition("gss_1", 3);
 			assert(db.getQueuePosition("gss_1"), 3);
 			assert(db.getQueue().length, 4);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1", "gss_1"]);
 			
 			db.setQueuePosition("gss_1", 12);
 			assert(db.getQueuePosition("gss_1"), 3);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1", "gss_1"]);
 		}),
+		new shell.Test("Setting Queue Position 2", function(assert){
+			var srcQueue = ["grossblock_3", "portal_2", "aga_1"];
+			db.set("queue", srcQueue);
+			assert(db.get("queue"), srcQueue, "Некорректная запись в БД");
+			
+			db.setQueuePosition("gss_1", 12);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1", "gss_1"]);
+			db.setQueuePosition("gss_1", null);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1"]);
+			
+			db.setQueuePosition("gss_1", 0);
+			assert(db.get("queue"), ["gss_1", "grossblock_3", "portal_2", "aga_1"]);
+			db.setQueuePosition("gss_1", null);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1"]);
+			
+			db.setQueuePosition("gss_1", 1);
+			assert(db.get("queue"), ["grossblock_3", "gss_1", "portal_2", "aga_1"]);
+			db.setQueuePosition("gss_1", null);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1"]);
+			
+			db.setQueuePosition("gss_1", 2);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "gss_1", "aga_1"]);
+			db.setQueuePosition("gss_1", null);
+			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1"]);
+			
+		}),
+		
 		new shell.Test("Getting Parent", function(assert){
 			assert(db.getParent("gss", "gss_1").name, "ГСС");
 			assert(db.getParent("grossblock", "grossblock_1").id, "grossblock_2");

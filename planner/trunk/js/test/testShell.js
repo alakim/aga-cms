@@ -48,7 +48,17 @@
 		};
 		_.assert = function(val, expected, msg){
 			msg = msg || "";
-			if(val!=expected) _.errors.push($H.format("***{2}*** Expected {0}, but was {1}", expected, val, msg));
+			function writeError(template){
+				_.errors.push($H.format("***{2}*** "+template, expected, val, msg));
+			}
+			if(expected instanceof Array){
+				if(!(val instanceof Array)){writeError("Expected array"); return;}
+				if(val.length!=expected.length){writeError($H.format("Expected array length {0}, but was {1}", expected.length, val.length)); return;}
+				for(var v,e,i=0; v=val[i],e=expected[i],i<expected.length; i++){
+					if(v!=e) writeError($H.format("{2}-th element: expected {0}, but was {1} ", e, v, i));
+				}
+			}
+			else if(val!=expected) writeError("Expected {0}, but was {1}");
 		};
 		_.report = function(err){
 			err = err || "";

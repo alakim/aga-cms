@@ -42,6 +42,9 @@
 		set: function(path, data){
 			$JP.set(localDB, path, data);
 		},
+		get: function(path){
+			return $JP.get(localDB, path);
+		},
 		setRegistry: function(prjID, options){
 			var prj = this.getRegistryItem(prjID);
 			if(prj) $.extend(prj, options);

@@ -2,7 +2,7 @@ define(["jspath", "test/dbData"], function($JP, dbData){
 	var timeout = 300;
 	
 	return {
-		load: function(file, onload){
+		load: function(file, arrMode, onload){
 			setTimeout(function(){
 				var path = file;
 				var data = $JP.get(dbData, path);
