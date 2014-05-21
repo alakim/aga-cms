@@ -120,7 +120,7 @@
 			
 			db.setQueuePosition("gss_1", 2);
 			assert(db.get("queue"), ["grossblock_3", "portal_2", "gss_1", "aga_1"]);
-			db.setQueuePosition("gss_1", null);
+			db.setQueuePosition("gss_1", "");
 			assert(db.get("queue"), ["grossblock_3", "portal_2", "aga_1"]);
 			
 		}),

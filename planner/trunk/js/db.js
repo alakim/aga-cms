@@ -258,7 +258,7 @@
 			localDB.queue = q;
 		},
 		setQueuePosition: function(taskID, pos){
-			if(pos==null)
+			if(pos==null || pos.length==0)
 				this.removeFromQueue(taskID);
 			else if(pos>=localDB.queue.length)
 				localDB.queue.push(taskID);
@@ -293,7 +293,7 @@
 				removeTask(curParent, task);
 				$JP.push(newParent, "tasks", task);
 			}
-			this.setQueuePosition(data.id, data.queuePos==null?null:data.queuePos-1);
+			this.setQueuePosition(data.id, (data.queuePos==null || data.queuePos.length==0)?null:data.queuePos-1);
 			for(var k in data){
 				if(k!="prjID" && k!="parent" && k!="queuePos")
 					task[k] = data[k];
