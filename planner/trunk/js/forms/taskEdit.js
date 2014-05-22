@@ -76,7 +76,7 @@
 			$parent: ko.observable(data?data.parent:null).extend({condition:{condition:$H.format("x|x!='{0}'", taskID), message:"Задача не может быть вложена сама в себя"}}),
 			$id: ko.observable(taskID),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
-			$date: ko.observable(data?data.date:util.formatDate(new Date())).extend({required:"Укажите дату постановки задачи"}),
+			$date: ko.observable(data&&data.date&&data.date.length?data.date:util.formatDate(new Date())).extend({required:"Укажите дату постановки задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$executor: ko.observable(data?data.executor:""),
 			$completed: ko.observable(data?data.completed:""),
