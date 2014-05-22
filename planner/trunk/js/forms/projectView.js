@@ -1,4 +1,4 @@
-﻿define(["html", "db", "forms/taskEdit", "forms/taskView", "forms/resourceEdit"], function($H, db, taskEdit, taskView, resourceEdit){
+﻿define(["html", "db", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView"], function($H, db, taskEdit, taskView, resourceEdit, personView){
 
 	var templates = {
 		main: function(prj){with($H){
@@ -58,24 +58,31 @@
 				)
 			);
 		}},
+		personRef: function(prsID){with($H){
+			return span({"class":"selectable lnkPerson", prsID:prsID},
+				db.getPerson(prsID).name
+			);
+		}},
 		task: function(task){with($H){
 			var qPos = db.getQueuePosition(task.id);
 			return div({"class":"task"},
-				h3(
+				h3(task.completed?{"class":"completed"}:null,
 					task.name, 
 					task.id?span(" (", task.id,")"):null
 					//   ," pos:", db.getTaskPosition(task.id)
 				),
-				qPos!=null?span({"class":"queuePos"}, qPos+1, " in queue"):null,
-				div({style:"text-align:right; margin-right:300px;"},
+				div({"class":"properties"},
+					qPos!=null?span({"class":"queuePos"}, qPos+1, " in queue"):null,
+					task.date?span({"class":"date"}, task.date):null,
+					task.initiator?span(span({"class":"paramName"}, " Initiator: "), templates.personRef(task.initiator)):null,
+					task.executor?span(span({"class":"paramName"}, " Executor: "), templates.personRef(task.executor)):null,
+					task.completed?span({"class":"completed"}, "Completed ", task.completed):null
+				),
+				div({style:"margin:5px;"},
 					span({"class":"menu bt_View", taskID:task.id}, "View"), " ",
 					span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
 				),
-				task.completed?div(
-					p({"class":"completed"}, "Completed ", task.completed)
-				)
-				:div(
-					task.initiator?p("Initiator: ", db.getPerson(task.initiator).name):null,
+				task.completed?null:div(
 					task.description?div(task.description):null,
 					task.jobs?templates.jobList(task.jobs):null
 				),
@@ -100,6 +107,9 @@
 	function viewTask(prjID, taskID){
 		taskView.view(taskID, $(".mainPanel"));
 	}
+	function viewPerson(prsID){
+		personView.view($(".mainPanel"), prsID);
+	}
 	
 	return {
 		view: function(id, pnl){
@@ -109,6 +119,7 @@
 			pnl.find(".bt_AddResource").click(function(){addResource(id);});
 			pnl.find(".bt_View").click(function(e){viewTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".bt_Edit").click(function(e){editTask(id, $(e.target).attr("taskID"));});
+			pnl.find(".lnkPerson").click(function(e){viewPerson($(e.target).attr("prsID"));});
 		}
 	};
 });

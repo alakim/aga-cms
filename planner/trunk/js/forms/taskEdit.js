@@ -16,6 +16,7 @@
 				tr(th("ID"), td(input({type:"text", readonly:true, "data-bind":"value:$id"}))),
 				tr(th("Queue position"), td(input({type:"text", "data-bind":"value:$queuePos"}))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
+				tr(th("Date"), td(input({type:"text", "data-bind":"value:$date"}), util.validMsg("$date"))),
 				tr(th("Initiator"), td(
 					input({type:"text", readonly:true, "data-bind":"value:$initiator"}),
 					input({type:"button", value:"Select", "data-bind":"click:selectInitiator"}),
@@ -75,6 +76,7 @@
 			$parent: ko.observable(data?data.parent:null).extend({condition:{condition:$H.format("x|x!='{0}'", taskID), message:"Задача не может быть вложена сама в себя"}}),
 			$id: ko.observable(taskID),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
+			$date: ko.observable(data?data.date:util.formatDate(new Date())).extend({required:"Укажите дату постановки задачи"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$executor: ko.observable(data?data.executor:""),
 			$completed: ko.observable(data?data.completed:""),

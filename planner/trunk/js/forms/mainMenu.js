@@ -1,11 +1,12 @@
-﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView){
+﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView){
 	function template(){with($H){
 		return div(
 			ul({"class":"menu"},
 				li({"data-bind":"click:showProjects"}, "Projects"),
 				li({"data-bind":"click:showQueue"}, "Queue"),
 				li({"data-bind":"click:showPersons"}, "Persons"),
-				li({"data-bind":"click:showDB"}, "DB View")
+				li({"data-bind":"click:showDB"}, "DB View"),
+				li({"data-bind":"click:showDBJSON"}, "DB JSON View")
 			),
 			ul({"class":"menu"},
 				li({"data-bind":"click:saveAll"}, "Save All"),
@@ -40,7 +41,8 @@
 				});
 			},
 			clearConsole: function(){$("div.console").html("")},
-			showDB: function(){dbView.view($(".mainPanel"))}
+			showDB: function(){dbView.view($(".mainPanel"))},
+			showDBJSON: function(){jsonView.view($(".mainPanel"))}
 		});
 	}
 	

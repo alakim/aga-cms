@@ -12,6 +12,7 @@
 			table(
 				tr(th("ID"), td(data.id)),
 				tr(th("Name"), td(data.name)),
+				tr(th("Date"), td(data.date)),
 				tr(th("Description"), td(util.formatHTML(data.description))),
 				data.initiator?tr(th("Initiator"), td(db.getPerson(data.initiator).name)):null,
 				data.executor?tr(th("Executor"), td(db.getPerson(data.executor).name)):null,

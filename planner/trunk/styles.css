@@ -11,7 +11,9 @@ A:visited{color:black}
 A:hover{color:#cc0000;}
 
 
-
+.paramName{
+	font-weight:bold;
+}
 .validation{
 	font-style: italic;
 	padding-left:10px;
@@ -77,4 +79,20 @@ div.console{
 }
 span.dataType{
 	margin-right:15px;
+}
+
+div.task h3{
+	margin:0 25px 0 0;
+	float:left;
+}
+div.task .properties{
+	margin-top:2px;
+}
+
+h3.completed{
+	color:#ccc;
+}
+.completed{
+	padding-left:10px;
+	color: #840;
 }

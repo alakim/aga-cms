@@ -39,6 +39,10 @@
 		getJSON: function(){
 			return JSON.stringify(localDB);
 		},
+		setJSON: function(jsonCode){
+			var data = $.parseJSON(jsonCode);
+			localDB = data;
+		},
 		set: function(path, data){
 			$JP.set(localDB, path, data);
 		},
