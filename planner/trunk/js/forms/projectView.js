@@ -22,7 +22,7 @@
 		taskList: function(taskList){with($H){
 			if(!taskList || taskList.length==0) return;
 			return div(
-				h4("Tasks"),
+				//h4("Tasks"),
 				div({"class":"taskList"},
 					apply(taskList, function(task, i){
 						return templates.task(task);
