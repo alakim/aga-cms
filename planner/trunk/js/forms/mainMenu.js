@@ -17,6 +17,8 @@
 	}}
 	
 	function backupLinkTemplate(backupUrl){with($H){
+		backupUrl = backupUrl.replace("../", "/plan/");
+		
 		return div(
 			"Load last backup file: ", 
 			a({href:backupUrl}, backupUrl)
