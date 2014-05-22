@@ -43,7 +43,11 @@
 		}},
 		resourceView: function(id, data){with($H){
 			return div(
-				span({style:"font-weight:bold;"}, id, ": "), data.name
+				span({style:"font-weight:bold;"}, id, ": "), data.name, " ",
+				data.type=="site"?a({href:data.url}, data.title)
+					:data.type=="person"?span({"class":"selectable lnkPerson", prsID:""}, "")
+					:null,
+				span({"class":"selectable btEditRes", resID:data.id, style:"padding-left:25px;"}, "Edit")
 			);
 		}},
 		jobList: function(jobList){with($H){
@@ -111,6 +115,10 @@
 		personView.view($(".mainPanel"), prsID);
 	}
 	
+	function editResource(prjID, resID){
+		resourceEdit.view(prjID, resID, $(".mainPanel"));
+	}
+	
 	return {
 		view: function(id, pnl){
 			pnl = pnl || $(".mainPanel");
@@ -120,6 +128,7 @@
 			pnl.find(".bt_View").click(function(e){viewTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".bt_Edit").click(function(e){editTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".lnkPerson").click(function(e){viewPerson($(e.target).attr("prsID"));});
+			pnl.find(".btEditRes").click(function(e){editResource(id, $(e.target).attr("resID"));});
 		}
 	};
 });

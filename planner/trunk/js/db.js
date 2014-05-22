@@ -359,6 +359,9 @@
 				if(!taskIndex[id]) return id;
 			}
 		},
+		getResource: function(prjID, resID){
+			return $JP.get(localDB, ["projects", prjID, "resources", resID]);
+		},
 		saveResource: function(prjID, data){
 			$JP.set(localDB, ["projects", prjID, "resources", data.id], data);
 		}
