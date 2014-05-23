@@ -21,6 +21,9 @@
 		}},
 		taskList: function(taskList){with($H){
 			if(!taskList || taskList.length==0) return;
+			taskList.sort(function(t1, t2){
+				return t1.date==t2.date?0:t1.date>t2.date?1:-1;
+			});
 			return div(
 				//h4("Tasks"),
 				div({"class":"taskList"},
