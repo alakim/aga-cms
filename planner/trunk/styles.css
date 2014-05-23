@@ -87,7 +87,7 @@ div.task h3{
 	float:left;
 }
 div.task .properties{
-	margin-top:2px;
+	margin: 2px 0 3px 0;
 }
 div.task ul{
 	margin:3px 0 0 20px;
