@@ -82,11 +82,16 @@ span.dataType{
 }
 
 div.task h3{
-	margin:0 25px 0 0;
+	margin:0 5px 0 0;
+	padding:0;
 	float:left;
 }
 div.task .properties{
 	margin-top:2px;
+}
+div.task ul{
+	margin:3px 0 0 20px;
+	padding:0;
 }
 
 h3.completed{
