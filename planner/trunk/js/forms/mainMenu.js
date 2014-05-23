@@ -10,6 +10,7 @@
 				li({"data-bind":"click:showDBJSON"}, "DB JSON View")
 			),
 			ul({"class":"menu"},
+				li({"data-bind":"click:saveQueue"}, "Save Queue"),
 				li({"data-bind":"click:saveAll"}, "Save All"),
 				li({"data-bind":"click:backupData"}, "Backup Data"),
 				li({"data-bind":"click:clearConsole"}, "Clear Console")
@@ -36,6 +37,7 @@
 				if(!confirm("Save All Data?"))return;
 				db.saveAll();
 			},
+			saveQueue: function(){db.saveQueue(function(){});},
 			backupData: function(){
 				if(!confirm("Backup data files?"))return;
 				var log = util.log("Creating backup... ");

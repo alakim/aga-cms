@@ -101,6 +101,11 @@
 				onsave();
 			});
 		},
+		saveQueue: function(onsave){
+			dSrc.save("queue", localDB.queue, function(){
+				onsave();
+			});
+		},
 		saveAll: function(){
 			var modules = [
 				{file:"queue", data:localDB.queue},
