@@ -1,10 +1,11 @@
-﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView){
+﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView", "forms/jobReport"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView, jobReport){
 	function template(){with($H){
 		return div(
 			ul({"class":"menu"},
 				li({"data-bind":"click:showProjects"}, "Projects"),
 				li({"data-bind":"click:showQueue"}, "Queue"),
 				li({"data-bind":"click:showPersons"}, "Persons"),
+				li({"data-bind":"click:showJobReport"}, "Job Report"),
 				li({"data-bind":"click:showDB"}, "DB View"),
 				li({"data-bind":"click:showDBJSON"}, "DB JSON View")
 			),
@@ -30,6 +31,7 @@
 			showProjects: function(){prjList.view($(".mainPanel"));},
 			showQueue: function(){queue.view($(".mainPanel"));},
 			showPersons: function(){persons.view($(".mainPanel"));},
+			showJobReport: function(){jobReport.view($(".mainPanel"));},
 			saveAll: function(){
 				if(!confirm("Save All Data?"))return;
 				db.saveAll();
