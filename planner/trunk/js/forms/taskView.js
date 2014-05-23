@@ -20,7 +20,8 @@
 					tr(th("Jobs"), td(
 						apply(data.jobs, function(job, i){
 							return div(
-								job.date, ": ", job.hours, "h"
+								job.date, ": ", job.hours, "h ",
+								job.notes
 							);
 						})
 					))
