@@ -24,7 +24,7 @@
 					apply(coll, function(tID){
 						var task = db.getTask(tID),
 							prj = db.getProject(db.getTaskProject(tID));
-						return li(a({href:"#", "class":"lnkTask", taskID:task.id}, task.name, format(" [{0}]", prj.name)));
+						return li(a({href:"#", "class":"lnkTask", taskID:task.id}, prj.name, "/", task.name));
 					})
 				)
 			):null;
