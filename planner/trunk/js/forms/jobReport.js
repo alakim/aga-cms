@@ -2,10 +2,11 @@
 
 	var templates = {
 		main: function(){with($H){
+			var now = util.formatDate(new Date()).replace(/T.+$/, "");
 			return div({"class":"report"},
 				div(
 					input({type:"button", value:"Display report", "class":"btUpdate"}),
-					" From: ", input({type:"text", "class":"fldFrom"}),
+					" From: ", input({type:"text", "class":"fldFrom", value:now}),
 					" To: ", input({type:"text", "class":"fldTo"})
 				),
 				div({"class":"jobs"})
