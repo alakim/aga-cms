@@ -1,4 +1,4 @@
-﻿define(["html", "db", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView"], function($H, db, taskEdit, taskView, resourceEdit, personView){
+﻿define(["html", "db", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView", "forms/resourceView"], function($H, db, taskEdit, taskView, resourceEdit, personView, resourceView){
 
 	var templates = {
 		main: function(prj){with($H){
@@ -47,8 +47,9 @@
 		resourceView: function(id, data){with($H){
 			return div(
 				span({style:"font-weight:bold;"}, id, ": "), data.name, " ",
-				data.type=="site"?a({href:data.url}, data.title)
-					:data.type=="person"?span({"class":"selectable lnkPerson", prsID:""}, "")
+				data.type=="site"?a({href:data.url, target:"_blank"}, data.url)
+					:data.type=="person"?templates.personRef(id)//a({href:"#", "class":"lnkPerson", prsID:id}, "View")
+					:data.type=="text"?a({href:"#", "class":"btSeeMore", resID:id}, "View")
 					:null,
 				span({"class":"selectable btEditRes", resID:data.id, style:"padding-left:25px;"}, "Edit")
 			);
@@ -126,6 +127,10 @@
 		resourceEdit.view(prjID, resID, $(".mainPanel"));
 	}
 	
+	function viewResource(prjID, resID){
+		resourceView.view(prjID, resID, $(".mainPanel"));
+	}
+	
 	return {
 		view: function(id, pnl){
 			pnl = pnl || $(".mainPanel");
@@ -136,6 +141,7 @@
 			pnl.find(".bt_Edit").click(function(e){editTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".lnkPerson").click(function(e){viewPerson($(e.target).attr("prsID"));});
 			pnl.find(".btEditRes").click(function(e){editResource(id, $(e.target).attr("resID"));});
+			pnl.find(".btSeeMore").click(function(e){viewResource(id, $(e.target).attr("resID"));});
 		}
 	};
 });

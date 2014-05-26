@@ -22,14 +22,17 @@
 		return target;
 	}
 	
-	ko.extenders.uniqueID = function(target, path) {
+	ko.extenders.uniqueID = function(target, options) {
 		target.hasError = ko.observable();
 		target.validationMessage = ko.observable();
+
+		var path = typeof(options)=="string"?options:options.path;
 		
 		var coll = db.getBranch(path);
 	 
 		function validate(newValue) {
 			var valid = (coll==null) || 
+				newValue==options.exclude ||
 				(newValue && newValue.length && coll[newValue]==null);
 			
 			target.hasError(!valid);

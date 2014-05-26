@@ -369,6 +369,11 @@
 		},
 		saveResource: function(prjID, data){
 			$JP.set(localDB, ["projects", prjID, "resources", data.id], data);
+			$JP.set(localDB, ["projects", prjID, "changed"], true);
+		},
+		delResource: function(prjID, resID){
+			$JP.delItem(localDB, ["projects", prjID, "resources", resID]);
+			$JP.set(localDB, ["projects", prjID, "changed"], true);
 		},
 		getJobReport: function(dFrom, dTo){
 			if(dFrom.length==0) dFrom = null;
