@@ -12,15 +12,24 @@
 			);
 		}},
 		jobs: function(data){with($H){
-			return ul(
-				apply(data, function(job){
-					return li(
-						job.date, " ", 
-						a({href:"#", "class":"lnkTask", taskID: job.id}, job.name),
-						" (", job.hours, "h)", 
-						job.notes?span(" - ", job.notes):null
-					);
-				})
+			var total = 0;
+			$.each(data, function(i, job){
+				total+= +job.hours;
+			});
+			return div(
+				ul(
+					apply(data, function(job){
+						var prjID = db.getTaskProject(job.id),
+							prj = db.getProject(prjID);
+						return li(
+							job.date, " ", 
+							a({href:"#", "class":"lnkTask", taskID: job.id}, prj.name, "/", job.name),
+							" (", job.hours, "h)", 
+							job.notes?span(" - ", job.notes):null
+						);
+					})
+				),
+				div("Total ", total, " hours")
 			);
 		}}
 	};
