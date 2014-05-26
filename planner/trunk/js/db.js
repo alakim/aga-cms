@@ -370,18 +370,23 @@
 		saveResource: function(prjID, data){
 			$JP.set(localDB, ["projects", prjID, "resources", data.id], data);
 		},
-		getJobReport: function(){
+		getJobReport: function(dFrom, dTo){
+			if(dFrom.length==0) dFrom = null;
+			if(dTo.length==0) dTo = null;
 			var report = [];
 			for(var id in taskIndex){var task = taskIndex[id];
 				if(!task.jobs) continue;
 				$.each(task.jobs, function(i, job){
-					report.push({
-						id: id,
-						name: task.name,
-						date: job.date,
-						hours: job.hours,
-						notes: job.notes
-					})
+					if((!dFrom || job.date>=dFrom)
+						&& (!dTo || job.date<=dTo)){
+						report.push({
+							id: id,
+							name: task.name,
+							date: job.date,
+							hours: job.hours,
+							notes: job.notes
+						})
+					}
 				});
 			}
 			report.sort(function(t1,t2){
