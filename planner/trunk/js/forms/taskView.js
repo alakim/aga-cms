@@ -3,6 +3,11 @@
 		var prjID = db.getTaskProject(data.id),
 			prj = db.getProject(prjID);
 		
+		var total = 0;
+		$.each(data.jobs, function(i, job){
+			total += job.hours;
+		});
+		
 		return div(
 			h3("Task of Project: ", prj.name),
 			ul({"class":"menu"},
@@ -23,7 +28,8 @@
 								job.date, ": ", job.hours, "h ",
 								job.notes
 							);
-						})
+						}),
+						div("Total ", total, " hours")
 					))
 				):null,
 				data.completed?tr(th("Completed"), td(data.completed)):null
