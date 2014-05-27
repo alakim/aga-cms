@@ -1,5 +1,6 @@
 ﻿define(["jspath", "dataSource"], function($JP, dSrc){
 	var localDB = {};
+	var changes = {};
 	
 	var taskIndex = {},
 		taskProjects = {};
@@ -42,6 +43,7 @@
 		setJSON: function(jsonCode){
 			var data = $.parseJSON(jsonCode);
 			localDB = data;
+			changes = {queue:true, persons:true, registry:true, projectsAll:true};
 		},
 		set: function(path, data){
 			$JP.set(localDB, path, data);
@@ -52,6 +54,7 @@
 		setRegistry: function(prjID, options){
 			var prj = this.getRegistryItem(prjID);
 			if(prj) $.extend(prj, options);
+			changes.registry = true;
 		},
 		getRegistryItem: function(prjID){
 			// console.log(localDB.registry);
@@ -64,6 +67,7 @@
 				if(el.id!=prjID) res.push(el);
 			}
 			localDB.registry = res;
+			changes.registry = true;
 		},
 		saveRegistryItem: function(data){
 			var itm = this.getRegistryItem(data.id);
@@ -76,6 +80,7 @@
 			for(var k in data){
 				if(k!="id") itm[k] = data[k];
 			}
+			changes.registry = true;
 		},
 		loadProject: function(prjID, onload){var _=this;
 			dSrc.load("projects/"+prjID, false, function(data){
@@ -103,8 +108,40 @@
 		},
 		saveQueue: function(onsave){
 			dSrc.save("queue", localDB.queue, function(){
+				changes.queue = false;
 				onsave();
 			});
+		},
+		saveChanged: function(onsave){
+			if(changes.queue && changes.persons && changes.registry && changes.projectsAll)
+				_.saveAll();
+			var modules = [];
+			if(changes.queue) modules.push({file:"queue", data:localDB.queue});
+			if(changes.persons) modules.push({file:"persons", data:localDB.persons});
+			if(changes.registry) modules.push({file:"registry", data:localDB.registry});
+			$.each(localDB.registry, function(i, itm){
+				if(!itm.frozen && (localDB.projects[itm.id].changed || changes.projectsAll))
+					modules.push({file:"projects/"+itm.id, data:localDB.projects[itm.id]});
+			});
+			
+			this.saveModules(modules, function(){
+				changes = {};
+				for(var k in localDB.projects){
+					var prj = localDB.projects[k];
+					if(prj) prj.changed = false;
+				}
+			});
+		},
+		saveModules: function(modules, onsaved){
+			function save(){
+				if(!modules.length){
+					onsaved();
+					return;
+				}
+				var mod = modules.pop();
+				dSrc.save(mod.file, mod.data, save);
+			}
+			save();
 		},
 		saveAll: function(){
 			var modules = [
@@ -117,19 +154,13 @@
 				modules.push({file:"projects/"+itm.id, data:localDB.projects[itm.id]});
 			});
 			
-			function save(){
-				if(!modules.length) return;
-				var mod = modules.pop();
-				// console.log("Saving "+mod.file+" ...");
-				dSrc.save(mod.file, mod.data, save);
-			}
-			
-			for(var k in localDB.projects){
-				var prj = localDB.projects[k];
-				if(prj) prj.changed = false;
-			}
-			
-			save();
+			this.saveModules(modules, function(){
+				changes = {};
+				for(var k in localDB.projects){
+					var prj = localDB.projects[k];
+					if(prj) prj.changed = false;
+				}
+			});
 		},
 		loadData: function(onload){
 			// console.log("Loading Data...")
@@ -216,6 +247,7 @@
 			$JP.set(localDB, ["projects", id], null);
 			this.delRegistryItem(id);
 			indexTasks();
+			changes.registry = true;
 		},
 		getQueue: function(){
 			var res = [];
@@ -265,6 +297,7 @@
 				if(el!=taskID) q.push(el);
 			}
 			localDB.queue = q;
+			changes.queue = true;
 		},
 		setQueuePosition: function(taskID, pos){
 			if(pos==null || pos.length==0)
@@ -280,6 +313,7 @@
 					q2 = [].concat(localDB.queue).splice(pos);
 				localDB.queue = q1.concat([taskID], q2);
 			}
+			changes.queue = true;
 		},
 		saveTask: function(data){
 			//console.log(data);
@@ -349,6 +383,7 @@
 				if(k!="id")
 					person[k] = data[k];
 			}
+			changes.persons = true;
 		},
 		deletePerson: function(prsID){
 			var persons = {};
@@ -357,6 +392,7 @@
 					persons[k] = localDB.persons[k];
 			}
 			localDB.persons = persons;
+			changes.persons = true;
 		},
 		newTaskID: function(prjID){
 			for(var i=1; true; i++){
