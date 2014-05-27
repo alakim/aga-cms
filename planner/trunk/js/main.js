@@ -24,8 +24,31 @@ requirejs(["jquery", "html", "forms/mainMenu", "forms/common", "db"], function($
 		
 		var mainPnl = $(".mainPanel");
 		
+		var keyField = {
+			build: function(){
+				$("div.pnlKey").parent().prepend($H.input({type:"button", value:"&gt;", "class":"btOpenKey"}));
+				$("div.pnlKey").hide();
+				$(".btOpenKey").css({float:"left"}).click(function(){
+					if($(this).attr("value")=="<")
+						keyField.close();
+					else
+						keyField.open();
+				});
+			},
+			open: function(){
+				$("div.pnlKey").show();
+				$(".btOpenKey").attr("value", "<");
+			},
+			close: function(){
+				$("div.pnlKey").hide();
+				$(".btOpenKey").attr("value", ">");
+			}
+		}
+		$(keyField.build);
+		
 		$(".btInit").click(function(){
 			common.wait(mainPnl);
+			keyField.close();
 			db.loadData(function(){
 				mainPnl.html("");
 			});
