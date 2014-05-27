@@ -48,7 +48,7 @@
 			return div(
 				span({style:"font-weight:bold;"}, id, ": "), data.name, " ",
 				data.type=="site"?a({href:data.url, target:"_blank"}, data.url)
-					:data.type=="person"?templates.personRef(id)//a({href:"#", "class":"lnkPerson", prsID:id}, "View")
+					:data.type=="person"?templates.personRef(data.personID)//a({href:"#", "class":"lnkPerson", prsID:id}, "View")
 					:data.type=="text"?a({href:"#", "class":"btSeeMore", resID:id}, "View")
 					:null,
 				span({"class":"selectable btEditRes", resID:data.id, style:"padding-left:25px;"}, "Edit")
@@ -67,8 +67,9 @@
 			);
 		}},
 		personRef: function(prsID){with($H){
+			var person = db.getPerson(prsID);
 			return span({"class":"selectable lnkPerson", prsID:prsID},
-				db.getPerson(prsID).name
+				person?person.name:prsID
 			);
 		}},
 		task: function(task){with($H){

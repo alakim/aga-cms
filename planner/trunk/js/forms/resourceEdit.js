@@ -52,7 +52,7 @@
 			$description: ko.observable(data?data.description:""),
 			$url: ko.observable(data?data.url:""),
 			// $title: ko.observable(data?data.title:""),
-			$personID: ko.observable(data?data.id:"")
+			$personID: ko.observable(data?data.personID:"")
 		});
 		
 		$.extend(_,{
