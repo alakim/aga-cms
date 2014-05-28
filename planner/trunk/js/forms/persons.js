@@ -1,9 +1,16 @@
 ﻿define(["html", "db", "forms/personView", "forms/personEdit"], function($H, db, personView, editor){
 	function template(data){with($H){
+		var list = [];
+		for(var k in data){
+			list.push(data[k]);
+		}
+		list.sort(function(p1, p2){
+			return p1.name==p2.name?0:p1.name>p2.name?1:-1;
+		});
 		return div(
 			h2("Persons List"),
 			ol(
-				apply(data, function(prs){
+				apply(list, function(prs){
 					var refCount = getRefCount(prs.id);
 					return li(
 						a({href:"#", "class":"selectable btView", prsID:prs.id}, prs.name),

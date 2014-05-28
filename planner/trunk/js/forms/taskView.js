@@ -49,7 +49,7 @@
 							task.completed?{"class":"completed"}:null,
 							task.name
 						), "  | ", a({href:"#", "class":"lnkTask", taskID:task.id}, "View"), " | ",
-						task.tasks?templates.taksList(task.tasks):null
+						task.tasks?templates.taskList(task.tasks):null
 					);
 				})
 			);
