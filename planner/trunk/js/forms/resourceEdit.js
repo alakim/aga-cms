@@ -1,7 +1,8 @@
-﻿define(["html", "knockout", "db", "util", "validation"], function($H, ko, db, util, validation){
+﻿define(["html", "knockout", "db", "util", "validation", "forms/personSelector"], function($H, ko, db, util, validation, personSelector){
 	var templates = {
 		main: function(data){with($H){
 			return div(
+				div({id:"personSelector", "class":"hidden panel"}),
 				h2("Resource Editor"),
 				table({border:0, cellpadding:3, cellspacing:0},
 					tr(th("ID"), td(templates.idField(data))),
@@ -10,7 +11,11 @@
 					tr(th("Description"), td(textarea({"data-bind":"value:$description"}))),
 					tr({"data-bind":"visible:siteMode"}, th("URL"), td(input({type:"text", "data-bind":"value:$url"}))),
 					// tr({"data-bind":"visible:siteMode"}, th("Title"), td(input({type:"text", "data-bind":"value:$title"}))),
-					tr({"data-bind":"visible:personMode"}, th("Person ID"), td(input({type:"text", "data-bind":"value:$personID"}))),
+					tr({"data-bind":"visible:personMode"}, th("Person ID"), td(
+						input({type:"text", "data-bind":"value:$personID"}),
+						input({type:"button", "data-bind":"click:selectPerson", value:"Select"}), " ",
+						span({"data-bind":"text:personName"})
+					)),
 					
 					tr(
 						td({colspan:2},
@@ -59,6 +64,15 @@
 			siteMode: ko.computed(function(){return _.$type()=="site";}),
 			personMode: ko.computed(function(){return _.$type()=="person";}),
 			textMode: ko.computed(function(){return _.$type()=="text";}),
+			personName: ko.computed(function(){
+				var prs = db.getPerson(_.$personID());
+				return prs?prs.name:"";
+			}),
+			selectPerson: function(){
+				personSelector.view(function(id){
+					_.$personID(id);
+				});
+			},
 			save: function(){
 				if(!validation.validate(_)) return;
 				// var d = util.getModelData(this);
