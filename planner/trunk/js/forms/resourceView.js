@@ -7,7 +7,7 @@
 					tr(th("ID"), td(data.id)),
 					tr(th("Type"), td(data.type)),
 					tr(th("Name"), td(data.name)),
-					tr(th("Description"), td(data.description)),
+					tr(th("Description"), td(util.formatHTML(data.description))),
 					data.type=="site"?tr(th("URL"), td(a({href:data.url}, data.url)))
 						:data.type=="person"?tr(th("Person"), td(templates.personName(data.personID)))
 						:null,
