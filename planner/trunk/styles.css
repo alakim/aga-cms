@@ -94,7 +94,7 @@ div.task ul{
 	padding:0;
 }
 
-h3.completed{
+h3.completed, span.completed{
 	color:#ccc;
 }
 .completed{
