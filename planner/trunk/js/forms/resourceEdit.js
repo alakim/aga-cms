@@ -8,6 +8,7 @@
 					tr(th("ID"), td(templates.idField(data))),
 					tr(th("Type"), td(templates.typeField(data))),
 					tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
+					tr(th("Priority"), td(input({type:"text", "data-bind":"value:$priority"}), util.validMsg("$priority"))),
 					tr(th("Description"), td(textarea({"data-bind":"value:$description"}))),
 					tr({"data-bind":"visible:siteMode"}, th("URL"), td(input({type:"text", "data-bind":"value:$url"}))),
 					// tr({"data-bind":"visible:siteMode"}, th("Title"), td(input({type:"text", "data-bind":"value:$title"}))),
@@ -54,6 +55,7 @@
 			$id: ko.observable(data?data.id:"").extend({uniqueID:data?{path:path, exclude:data.id}:path}),
 			$type: ko.observable(data?data.type:"").extend({required:"Выберите тип ресурса"}),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название ресурса"}),
+			$priority: ko.observable(data && data.priority!=null?data.priority:0).extend({required:{type:"number", message:"Введите число"}}),
 			$description: ko.observable(data?data.description:""),
 			$url: ko.observable(data?data.url:""),
 			// $title: ko.observable(data?data.title:""),
@@ -80,6 +82,7 @@
 					id: _.$id(),
 					type: _.$type(),
 					name: _.$name(),
+					priority: +_.$priority(),
 					description: _.$description()
 				};
 				if(d.type=="site") d.url = _.$url();

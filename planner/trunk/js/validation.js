@@ -77,6 +77,9 @@
 			else if(valid && options.equalsField){
 				valid = newValue==options.equalsField();
 			}
+			else  if(valid && options.type=="number"){
+				valid = (+newValue).toString()==newValue;
+			}
 			else {
 				if(valid && options.regex)
 					valid = (newValue+"").match(options.regex)!=null;

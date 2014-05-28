@@ -35,11 +35,19 @@
 		}},
 		resources: function(resList){with($H){
 			if(!resList) return;
+			var list = [];
+			for(var k in resList){
+				var res = resList[k];
+				list.push({priority:res.priority||0, item:res, id:k});
+			}
+			list.sort(function(i1, i2){
+				return i1.priority==i2.priority?0:i1.priority<i2.priority?1:-1;
+			});
 			return div(
 				h4("Resources"),
 				div({"class":"resourceList"},
-					apply(resList, function(res, resID){
-						return div(templates.resourceView(resID, res));
+					apply(list, function(itm){
+						return div(templates.resourceView(itm.id, itm.item));
 					})
 				)
 			);
