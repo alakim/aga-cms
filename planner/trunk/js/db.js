@@ -363,13 +363,22 @@
 			return res;
 		},
 		getPersonRefs: function(prsID){
-			var refs = {tasksInitialized:[], tasksExecuted:[]};
+			var refs = {tasksInitialized:[], tasksExecuted:[], resources:[]};
 			for(var k in taskIndex){
 				var task = taskIndex[k];
 				if(task.initiator==prsID)
 					refs.tasksInitialized.push(task.id);
 				if(task.executor==prsID)
 					refs.tasksExecuted.push(task.id);
+			}
+			for(var prjID in localDB.projects){
+				var prj = localDB.projects[prjID];
+				if(!prj.resources) continue;
+				for(var resID in prj.resources){
+					var res = prj.resources[resID];
+					if(res.type=="person" && res.personID==prsID)
+						refs.resources.push(prjID+"/"+resID);
+				}
 			}
 			return refs;
 		},

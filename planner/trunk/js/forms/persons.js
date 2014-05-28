@@ -29,7 +29,8 @@
 	function getRefCount(prsID){
 		var refs = db.getPersonRefs(prsID);
 		return refs.tasksInitialized.length
-			+refs.tasksExecuted.length;
+			+refs.tasksExecuted.length
+			+refs.resources.length;
 	}
 	
 	return {

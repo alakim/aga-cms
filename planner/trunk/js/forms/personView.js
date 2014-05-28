@@ -14,7 +14,20 @@
 					a({href:"#", "class":"btEdit"}, "Edit")
 				),
 				templates.taskList(refs.tasksInitialized, "Initiating Tasks"),
-				templates.taskList(refs.tasksExecuted, "Executing Tasks")
+				templates.taskList(refs.tasksExecuted, "Executing Tasks"),
+				templates.resourcesRefs(refs.resources)
+			);
+		}},
+		resourcesRefs: function(coll){with($H){
+			return div(
+				h3("Resource of projects"),
+				ul(
+					apply(coll, function(ref){
+						ref = ref.split("/");
+						var prj = db.getProject(ref[0]);
+						return li(a({href:"#", "class":"lnkProject", prjID:prj.id}, prj.name));
+					})
+				)
 			);
 		}},
 		taskList: function(coll, title){with($H){
@@ -48,6 +61,10 @@
 				}).end()
 				.find("a.btEdit").click(function(){
 					editor.view(pnl, prsID);
+				}).end()
+				.find("a.lnkProject").click(function(){
+					var prjID = $(this).attr("prjID");
+					require("forms/projectView").view(prjID, pnl);
 				});
 		}
 	};
