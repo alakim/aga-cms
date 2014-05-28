@@ -1,4 +1,4 @@
-﻿define(["jspath", "dataSource"], function($JP, dSrc){
+﻿define(["jspath", "dataSource", "util"], function($JP, dSrc, util){
 	var localDB = {};
 	var changes = {};
 	
@@ -123,7 +123,10 @@
 				if(!itm.frozen && (localDB.projects[itm.id].changed || changes.projectsAll))
 					modules.push({file:"projects/"+itm.id, data:localDB.projects[itm.id]});
 			});
-			
+			if(!modules.length){
+				util.log("No changes");
+				return;
+			}
 			this.saveModules(modules, function(){
 				changes = {};
 				for(var k in localDB.projects){
