@@ -373,7 +373,7 @@
 			}
 			for(var prjID in localDB.projects){
 				var prj = localDB.projects[prjID];
-				if(!prj.resources) continue;
+				if(!prj || !prj.resources) continue;
 				for(var resID in prj.resources){
 					var res = prj.resources[resID];
 					if(res.type=="person" && res.personID==prsID)
