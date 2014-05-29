@@ -242,6 +242,7 @@
 			return res;
 		},
 		getProject: function(id){
+			if(!id) return;
 			var prj = localDB.projects[id];
 			prj.id = id;
 			return prj;
@@ -256,9 +257,8 @@
 			var res = [];
 			for(var taskID,i=0; taskID=localDB.queue[i],i<localDB.queue.length; i++){
 				var task = taskIndex[taskID];
-				// if(!task) console.log("missing task "+taskID);
-				if(task)
-					res.push({name:task.name, id:taskID});
+				// if(task) res.push({name:task.name, id:taskID});
+				res.push({name:task?task.name:null, id:taskID});
 			}
 			return res;
 		},

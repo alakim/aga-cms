@@ -4,8 +4,12 @@
 			h2("Queue"),
 			ol(
 				apply(data, function(itm){
-					var prj = db.getProject(db.getTaskProject(itm.id));
-					return li(a({href:"#"+itm.id}, itm.name, format(" [{0}]", prj.name)));
+					var prjID = db.getTaskProject(itm.id),
+						prj = db.getProject(prjID);
+					return li(
+						prj?a({href:"#"+itm.id}, itm.name, format(" [{0}]", prj.name))
+							:span({style:"color:#ccc;"}, itm.id)
+					);
 				})
 			)
 		);
