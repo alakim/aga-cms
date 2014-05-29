@@ -44,7 +44,10 @@ requirejs(["jquery", "html", "forms/mainMenu", "forms/common", "db"], function($
 				$(".btOpenKey").attr("value", ">");
 			}
 		}
-		$(keyField.build);
+		$(function(){
+			$(".mainPanel").html("");
+			keyField.build();
+		});
 		
 		$(".btInit").click(function(){
 			common.wait(mainPnl);

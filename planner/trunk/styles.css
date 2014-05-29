@@ -101,3 +101,10 @@ h3.completed, span.completed{
 	padding-left:10px;
 	color: #840;
 }
+.resourceList{
+	margin-bottom:10px;
+}
+.resourceList h3{
+	margin-bottom: 3px;
+}
+

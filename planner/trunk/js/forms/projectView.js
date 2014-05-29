@@ -44,8 +44,8 @@
 				return i1.priority==i2.priority?0:i1.priority<i2.priority?1:-1;
 			});
 			return div(
-				h4("Resources"),
 				div({"class":"resourceList"},
+					h3("Resources"),
 					apply(list, function(itm){
 						return div(templates.resourceView(itm.id, itm.item));
 					})
@@ -54,12 +54,13 @@
 		}},
 		resourceView: function(id, data){with($H){
 			return div(
-				span({style:"font-weight:bold;"}, id, ": "), data.name, " ",
+				span({style:"font-weight:bold;"}, data.name), " ",
+				span({style:"color:#ccc;"}, "[",id,"]"), ": ",
 				data.type=="site"?a({href:data.url, target:"_blank"}, data.url)
-					:data.type=="person"?templates.personRef(data.personID)//a({href:"#", "class":"lnkPerson", prsID:id}, "View")
+					:data.type=="person"?templates.personRef(data.personID)
 					:data.type=="text"?a({href:"#", "class":"btSeeMore", resID:id}, "View")
 					:null,
-				span({"class":"selectable btEditRes", resID:data.id, style:"padding-left:25px;"}, "Edit")
+				a({href:"#", "class":"btEditRes", resID:data.id, style:"padding-left:25px;"}, "Edit")
 			);
 		}},
 		jobList: function(jobList){with($H){
@@ -76,7 +77,7 @@
 		}},
 		personRef: function(prsID){with($H){
 			var person = db.getPerson(prsID);
-			return span({"class":"selectable lnkPerson", prsID:prsID},
+			return a({href:"#", "class":"lnkPerson", prsID:prsID},
 				person?person.name:prsID
 			);
 		}},
