@@ -1,11 +1,19 @@
 ﻿define(["jquery", "html", "knockout", "db"], function($, $H, ko, db){
 	
 	function template(persons){with($H){
+		var list = [];
+		for(var id in persons){
+			var pers = persons[id];
+			list.push({id:id, name:pers.name});
+		}
+		list.sort(function(p1, p2){
+			return p1.name==p2.name?0:p1.name>p2.name?1:-1;
+		});
 		return div(
 			h2("Person Selector"),
 			ul(
 				li(span({"class":"selectable", "data-bind":"click:select", persID:""}, "[ NONE ]")),
-				apply(persons, function(pers){
+				apply(list, function(pers){
 					return li(span({"class":"selectable", "data-bind":"click:select", persID:pers.id},
 						pers.name,
 						format(" ({0})", pers.id)
