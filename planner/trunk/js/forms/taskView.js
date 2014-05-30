@@ -20,8 +20,8 @@
 					tr(th("Name"), td(data.name)),
 					tr(th("Date"), td(data.date)),
 					tr(th("Description"), td(util.formatHTML(data.description))),
-					data.initiator?tr(th("Initiator"), td(db.getPerson(data.initiator).name)):null,
-					data.executor?tr(th("Executor"), td(db.getPerson(data.executor).name)):null,
+					data.initiator?tr(th("Initiator"), td(templates.personRef(data.initiator))):null,
+					data.executor?tr(th("Executor"), td(templates.personRef(data.executor))):null,
 					data.jobs && data.jobs.length?(
 						tr(th("Jobs"), td(
 							apply(data.jobs, function(job, i){
@@ -53,6 +53,12 @@
 					);
 				})
 			);
+		}},
+		personRef: function(persID){with($H){
+			var pers = db.getPerson(persID);
+			return span(
+				a({href:"#", "class":"lnkPerson", persID:persID}, pers.name)
+			);
 		}}
 	};
 	
@@ -73,6 +79,11 @@
 		require("forms/projectView").view(prjID, $(".mainPanel"));
 	}
 	
+	function viewPerson(e){
+		var persID = $(e.target).attr("persID");
+		require("forms/personView").view($(".mainPanel"), persID);
+	}
+	
 	var mainPanel;
 	
 	var viewer = {
@@ -83,6 +94,7 @@
 			pnl.find(".bt_Edit").click(editTask);
 			pnl.find(".bt_ViewProject").click(viewProject);
 			pnl.find(".lnkTask").click(viewTask);
+			pnl.find(".lnkPerson").click(viewPerson);
 		}
 	};
 	return viewer;
