@@ -85,8 +85,13 @@
 		},
 		loadProject: function(prjID, onload){var _=this;
 			dSrc.load("projects/"+prjID, false, function(data){
+				var regItm = _.getRegistryItem(prjID);
 				if(!data.name){
-					data.name = _.getRegistryItem(prjID).name;
+					data.name = regItm.name;
+				}
+				else if(data.name!=regItm.name){
+					regItm.name = data.name;
+					changes.registry = true;
 				}
 				$JP.set(localDB, ["projects", prjID], data);
 				localDB.projects[prjID].changed = false;
@@ -447,6 +452,16 @@
 				return t1.date==t2.date?0:t1.date<t2.date?-1:1;
 			});
 			return report;
+		},
+		getProjectProperties: function(prjID){
+			var prj = this.getProject(prjID);
+			return {id:prjID, name:prj.name, description:prj.description};
+		},
+		saveProjectProperties: function(data){
+			var prj = this.getProject(data.id);
+			prj.name = data.name;
+			prj.description = data.description;
+			prj.changed = true;
 		}
 	};
 });

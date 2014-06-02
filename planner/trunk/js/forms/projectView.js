@@ -1,4 +1,4 @@
-﻿define(["html", "db", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView", "forms/resourceView"], function($H, db, taskEdit, taskView, resourceEdit, personView, resourceView){
+﻿define(["html", "db", "util", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView", "forms/resourceView", "forms/projectPropEditor"], function($H, db, util, taskEdit, taskView, resourceEdit, personView, resourceView, projectPropEditor){
 
 	var templates = {
 		main: function(prj){with($H){
@@ -8,6 +8,7 @@
 					prj.color?{style:"color:"+prj.color}:null,
 					prj.name, " (", prj.id,")"
 				),
+				prj.description?div(util.formatHTML(prj.description)):null,
 				templates.menu(prj),
 				templates.resources(prj.resources),
 				templates.taskList(prj.tasks)
@@ -16,7 +17,8 @@
 		menu: function(prj){with($H){
 			return ul({"class":"menu"},
 				li({"class":"bt_AddTask"}, "Add Task"),
-				li({"class":"bt_AddResource"}, "Add Resource")
+				li({"class":"bt_AddResource"}, "Add Resource"),
+				li({"class":"bt_EditProperties"}, "Edit Properties")
 			);
 		}},
 		taskList: function(taskList){with($H){
@@ -141,12 +143,17 @@
 		resourceView.view(prjID, resID, $(".mainPanel"));
 	}
 	
+	function editProperties(prjID){
+		projectPropEditor.view($(".mainPanel"), prjID);
+	}
+	
 	return {
 		view: function(id, pnl){
 			pnl = pnl || $(".mainPanel");
 			pnl.html(templates.main(db.getProject(id)));
 			pnl.find(".bt_AddTask").click(function(){addTask(id);});
 			pnl.find(".bt_AddResource").click(function(){addResource(id);});
+			pnl.find(".bt_EditProperties").click(function(){editProperties(id);});
 			pnl.find(".bt_View").click(function(e){viewTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".bt_Edit").click(function(e){editTask(id, $(e.target).attr("taskID"));});
 			pnl.find(".lnkPerson").click(function(e){viewPerson($(e.target).attr("prsID"));});
