@@ -478,8 +478,14 @@
 				if(!list) return;
 				$.each(list, function(i, task){
 					var ddl = $JP.get(localDB, ["deadlines", task.id]);
+					//console.log(ddl, task.id, task.deadline);
+					check(task.tasks);
 					if(!ddl && !task.deadline) return;
-					if(!ddl || ddl.date!=task.deadline){
+					if(!task.deadline){
+						$JP.remove(localDB, ["deadlines", task.id]);
+						changes.deadlines = true;
+					}
+					else if(!ddl || ddl.date!=task.deadline){
 						$JP.set(localDB, ["deadlines", task.id], {
 							date: task.deadline,
 							name: task.name,
@@ -487,7 +493,6 @@
 						});
 						changes.deadlines = true;
 					}
-					check(task.tasks);
 				});
 			}
 			
