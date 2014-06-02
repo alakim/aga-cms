@@ -10,6 +10,7 @@
 		taskProjects = {};
 		function indexTaskList(prjID, tasks){
 			$.each(tasks, function(i, t){
+				if(taskIndex[t.id]) util.log("Duplicating task id '"+t.id+"' detected!");
 				taskIndex[t.id] = t;
 				taskProjects[t.id] = prjID;
 				if(t.tasks) indexTaskList(prjID, t.tasks);
