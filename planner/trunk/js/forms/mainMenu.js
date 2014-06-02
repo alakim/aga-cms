@@ -1,9 +1,10 @@
-﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView", "forms/jobReport"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView, jobReport){
+﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView", "forms/jobReport", "forms/deadlines"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView, jobReport, deadlinesView){
 	function template(){with($H){
 		return div(
 			ul({"class":"menu"},
 				li({"data-bind":"click:showProjects"}, "Projects"),
 				li({"data-bind":"click:showQueue"}, "Queue"),
+				li({"data-bind":"click:showDeadlines"}, "Deadlines"),
 				li({"data-bind":"click:showPersons"}, "Persons"),
 				li({"data-bind":"click:showJobReport"}, "Job Report"),
 				li({"data-bind":"click:showDB"}, "DB View"),
@@ -34,6 +35,7 @@
 			showQueue: function(){queue.view($(".mainPanel"));},
 			showPersons: function(){persons.view($(".mainPanel"));},
 			showJobReport: function(){jobReport.view($(".mainPanel"));},
+			showDeadlines: function(){deadlinesView.view($(".mainPanel"));},
 			saveAll: function(){
 				if(!confirm("Save All Data?"))return;
 				db.saveAll();

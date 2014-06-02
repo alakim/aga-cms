@@ -44,7 +44,7 @@
 		setJSON: function(jsonCode){
 			var data = $.parseJSON(jsonCode);
 			localDB = data;
-			changes = {queue:true, persons:true, registry:true, projectsAll:true};
+			changes = {queue:true, persons:true, registry:true, projectsAll:true, deadlines:true};
 		},
 		set: function(path, data){
 			$JP.set(localDB, path, data);
@@ -97,6 +97,7 @@
 				localDB.projects[prjID].changed = false;
 				_.setRegistry(prjID, {frozen: false});
 				indexTasks();
+				_.checkDeadlines(prjID);
 				onload();
 			});
 		},
@@ -125,6 +126,7 @@
 			if(changes.queue) modules.push({file:"queue", data:localDB.queue});
 			if(changes.persons) modules.push({file:"persons", data:localDB.persons});
 			if(changes.registry) modules.push({file:"registry", data:localDB.registry});
+			if(changes.deadlines) modules.push({file:"deadlines", data:localDB.deadlines});
 			$.each(localDB.registry, function(i, itm){
 				if(!itm.frozen && (localDB.projects[itm.id].changed || changes.projectsAll))
 					modules.push({file:"projects/"+itm.id, data:localDB.projects[itm.id]});
@@ -156,7 +158,8 @@
 			var modules = [
 				{file:"queue", data:localDB.queue},
 				{file:"persons", data:localDB.persons},
-				{file:"registry", data:localDB.registry}
+				{file:"registry", data:localDB.registry},
+				{file:"deadlines", data:localDB.deadlines}
 			];
 			$.each(localDB.registry, function(i, itm){
 				if(itm.frozen) return;
@@ -171,12 +174,13 @@
 				}
 			});
 		},
-		loadData: function(onload){
+		loadData: function(onload){var _=this;
 			// console.log("Loading Data...")
 			var modules = [
 				{file:"queue", arrMode:true},
 				{file:"persons"},
-				{file:"registry", arrMode:true}
+				{file:"registry", arrMode:true},
+				{file:"deadlines"}
 			];
 			
 			function allLoaded(){
@@ -199,6 +203,10 @@
 					if(allLoaded()){
 						indexTasks();
 						if(prjMode){
+							$.each(localDB.registry, function(i, el){
+								if(!el.frozen)
+									_.checkDeadlines(el.id);
+							});
 							onload();
 							// console.log("Data Loaded!")
 						}
@@ -351,6 +359,7 @@
 					task[k] = data[k];
 			}
 			project.changed = true;
+			this.checkDeadlines(data.prjID);
 		},
 		delTask: function(prjID, taskID){
 			removeTask(
@@ -462,6 +471,30 @@
 			prj.name = data.name;
 			prj.description = data.description;
 			prj.changed = true;
+		},
+		checkDeadlines: function(prjID){
+			var prj = this.getProject(prjID);
+			function check(list){
+				if(!list) return;
+				$.each(list, function(i, task){
+					var ddl = $JP.get(localDB, ["deadlines", task.id]);
+					if(!ddl && !task.deadline) return;
+					if(!ddl || ddl.date!=task.deadline){
+						$JP.set(localDB, ["deadlines", task.id], {
+							date: task.deadline,
+							name: task.name,
+							prj: prjID
+						});
+						changes.deadlines = true;
+					}
+					check(task.tasks);
+				});
+			}
+			
+			check(prj.tasks);
+		},
+		getDeadlines: function(){
+			return $JP.get(localDB, "deadlines");
 		}
 	};
 });
