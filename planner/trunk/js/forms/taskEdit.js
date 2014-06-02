@@ -17,6 +17,7 @@
 				tr(th("Queue position"), td(input({type:"text", "data-bind":"value:$queuePos"}))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
 				tr(th("Date"), td(input({type:"text", "data-bind":"value:$date"}), util.validMsg("$date"))),
+				tr(th("Deadline"), td(input({type:"text", "data-bind":"value:$deadline"}), util.validMsg("$deadline"))),
 				tr(th("Initiator"), td(
 					input({type:"text", readonly:true, "data-bind":"value:$initiator"}),
 					input({type:"button", value:"Select", "data-bind":"click:selectInitiator"}),
@@ -77,6 +78,7 @@
 			$id: ko.observable(taskID),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название задачи"}),
 			$date: ko.observable(data&&data.date&&data.date.length?data.date:util.formatDate(new Date())).extend({required:"Укажите дату постановки задачи"}),
+			$deadline: ko.observable(data?data.deadline:"").extend({checkType:"date"}),
 			$initiator: ko.observable(data?data.initiator:""),
 			$executor: ko.observable(data?data.executor:""),
 			$completed: ko.observable(data?data.completed:""),

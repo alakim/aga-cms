@@ -99,6 +99,29 @@
 		return target;
 	};
 	
+	ko.extenders.checkType = function(target, options) {
+		var dataType = typeof(options)=="string"?options:options.type;
+		var overrideMessage = options.message || "Type '"+dataType+"' required";
+		
+		target.hasError = ko.observable();
+		target.validationMessage = ko.observable();
+	 
+		function validate(newValue) {
+			var valid = true;
+			if(dataType=="date") valid = !newValue || !newValue.length || newValue.match(/^\d\d\d\d-\d\d-\d\d(T\d\d:\d\d)?$/i);
+			
+			//console.log(dataType, newValue, valid);
+			target.hasError(!valid);
+			target.validationMessage(valid ? "" : overrideMessage);
+		}
+	 
+		validate(target());
+	 
+		target.subscribe(validate);
+	
+		return target;
+	};
+	
 	
 	function getMessages(model, level){
 		level = level || 0;

@@ -19,6 +19,7 @@
 					tr(th("ID"), td(data.id)),
 					tr(th("Name"), td(data.name)),
 					tr(th("Date"), td(data.date)),
+					data.deadline?tr(th({"class":"deadline"}, "Deadline"), td({"class":"deadline"}, data.deadline)):null,
 					tr(th("Description"), td(util.formatHTML(data.description))),
 					data.initiator?tr(th("Initiator"), td(templates.personRef(data.initiator))):null,
 					data.executor?tr(th("Executor"), td(templates.personRef(data.executor))):null,

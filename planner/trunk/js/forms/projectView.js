@@ -100,7 +100,8 @@
 					task.date?span({"class":"date"}, task.date):null,
 					task.initiator?span(span({"class":"paramName"}, " Initiator: "), templates.personRef(task.initiator)):null,
 					task.executor?span(span({"class":"paramName"}, " Executor: "), templates.personRef(task.executor)):null,
-					task.completed?span({"class":"completed"}, "Completed ", task.completed):null
+					task.completed?span({"class":"completed"}, " Completed ", task.completed):null,
+					task.deadline?span({"class":"deadline "}, span({"class":"paramName"}, " Deadline: "), task.deadline):null
 				),
 				// div({style:"margin:5px;"},
 					// span({"class":"menu bt_View", taskID:task.id}, "View"), " ",
