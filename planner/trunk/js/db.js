@@ -500,6 +500,20 @@
 		},
 		getDeadlines: function(){
 			return $JP.get(localDB, "deadlines");
+		},
+		getPath: function(taskID){
+			var path = [],
+				task = this.getTask(taskID),
+				prj = this.getProject(this.getTaskProject(taskID));
+			
+			while(task){
+				path.push({id:task.id, name:task.name});
+				task = this.getTask(task.parent);
+			}
+			path.push({id:prj.id, name:prj.name});
+			
+			
+			return path.reverse();
 		}
 	};
 });

@@ -11,6 +11,7 @@
 			
 			return div(
 				h3("Task of Project: ", prj.name),
+				templates.path(db.getPath(data.id), data.id),
 				ul({"class":"menu"},
 					li({"class":"bt_ViewProject", taskID:data.id}, "View Project"),
 					li({"class":"bt_Edit", taskID:data.id}, "Edit Task")
@@ -60,6 +61,20 @@
 			return span(
 				a({href:"#", "class":"lnkPerson", persID:persID}, pers.name)
 			);
+		}},
+		path: function(path, curTaskID){with($H){
+			return div({"class":"path"},
+				apply(path, function(step, i){
+					return markup(
+						i>0?"/":null,
+						step.id==curTaskID?span(step.name)
+							:a({href:"#"}, 
+								i==0?{prjID:step.id}:{taskID:step.id},
+								step.name
+							)
+					);
+				})
+			);
 		}}
 	};
 	
@@ -85,6 +100,15 @@
 		require("forms/personView").view($(".mainPanel"), persID);
 	}
 	
+	function followPath(e){
+		var prjID = $(e.target).attr("prjID"),
+			taskID = $(e.target).attr("taskID");
+		if(prjID)
+			require("forms/projectView").view(prjID, $(".mainPanel"));
+		else if(taskID)
+			viewer.view(taskID, $(".mainPanel"));
+	}
+	
 	var mainPanel;
 	
 	var viewer = {
@@ -96,6 +120,7 @@
 			pnl.find(".bt_ViewProject").click(viewProject);
 			pnl.find(".lnkTask").click(viewTask);
 			pnl.find(".lnkPerson").click(viewPerson);
+			pnl.find(".path a").click(followPath)
 		}
 	};
 	return viewer;
