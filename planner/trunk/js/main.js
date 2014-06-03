@@ -3,6 +3,7 @@
     paths: {
 		jquery: "lib/jquery-1.11.0.min",
 		html:"lib/html",
+		jcss:"lib/jcss",
 		jspath:"lib/jspath",
 		jsflow:"lib/jsflow",
 		cdk:"lib/cdk",

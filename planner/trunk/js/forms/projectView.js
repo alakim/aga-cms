@@ -1,8 +1,8 @@
-﻿define(["html", "db", "util", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView", "forms/resourceView", "forms/projectPropEditor"], function($H, db, util, taskEdit, taskView, resourceEdit, personView, resourceView, projectPropEditor){
+﻿define(["jquery", "html", "jcss", "db", "util", "forms/taskEdit", "forms/taskView", "forms/resourceEdit", "forms/personView", "forms/resourceView", "forms/projectPropEditor"], function($, $H, $CSS, db, util, taskEdit, taskView, resourceEdit, personView, resourceView, projectPropEditor){
 
 	var templates = {
 		main: function(prj){with($H){
-			return div(
+			return div({"class":"projectView"},
 				h2(
 					"Project ",
 					prj.color?{style:"color:"+prj.color}:null,
@@ -13,6 +13,37 @@
 				templates.resources(prj.resources),
 				templates.taskList(prj.tasks)
 			);
+		}},
+		styles: function(){with($CSS){
+			return stylesheet([
+				inside(".projectView", [
+					rule(".task .taskList", [
+						marginL(25)
+					]),
+					rule("div.task", [
+						border("1px solid #aaa"),
+						padding(5), margin(2)
+					]),
+					inside("div.task", [
+						rule("h3", [
+							margin(0), marginR(5),
+							padding(0),
+							fSize("100%"),
+							floatL()
+						]),
+						rule(".properties", [
+							margin(0), marginT(2), marginB(3)
+						]),
+						rule("ul", [
+							margin(0), marginT(3), marginL(20),
+							padding(0)
+						])
+					]),
+					rule(".resourceList", marginB(10)),
+					rule(".resourceList h3", marginB(3)),
+					rule(".completed", paddingL(10))
+				])
+			]);
 		}},
 		menu: function(prj){with($H){
 			return ul({"class":"menu"},
@@ -103,10 +134,6 @@
 					task.completed?span({"class":"completed"}, " Completed ", task.completed):null,
 					task.deadline?span({"class":"deadline "}, span({"class":"paramName"}, " Deadline: "), task.deadline):null
 				),
-				// div({style:"margin:5px;"},
-					// span({"class":"menu bt_View", taskID:task.id}, "View"), " ",
-					// span({"class":"menu bt_Edit", taskID:task.id}, "Edit")
-				// ),
 				task.completed?null:div(
 					task.description?div(task.description):null,
 					task.jobs?templates.jobList(task.jobs):null
@@ -115,6 +142,13 @@
 			);
 		}}
 	};
+	
+	function buildStyles(){
+		var styleID = "projectViewCSS";
+		if($("#"+styleID).length) return;
+		var css = templates.styles();
+		$(css).attr({id:styleID});
+	}
 	
 	function addTask(prjID){
 		taskEdit.view(prjID, $(".mainPanel"));
@@ -150,6 +184,7 @@
 	
 	return {
 		view: function(id, pnl){
+			buildStyles();
 			pnl = pnl || $(".mainPanel");
 			pnl.html(templates.main(db.getProject(id)));
 			pnl.find(".bt_AddTask").click(function(){addTask(id);});

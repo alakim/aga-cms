@@ -35,19 +35,6 @@ A:hover{color:#cc0000;}
 	margin-left:10px;
 }
 
-div.taskList{
-	margin-left: 15px;
-	border-left: 3px solid #88a;
-	padding-left: 5px;
-}
-
-div.task{
-	border: 1px solid #aaa;
-	padding: 5px;
-	margin: 2px;
-	margin-left: 20px;
-}
-
 div.panel{
 	margin: 5px;
 	padding: 5px;
@@ -81,32 +68,13 @@ span.dataType{
 	margin-right:15px;
 }
 
-div.task h3{
-	margin:0 5px 0 0;
-	padding:0;
-	float:left;
-}
-div.task .properties{
-	margin: 2px 0 3px 0;
-}
-div.task ul{
-	margin:3px 0 0 20px;
-	padding:0;
-}
-
 h3.completed, span.completed{
 	color:#ccc;
 }
 .completed{
-	padding-left:10px;
 	color: #840;
 }
-.resourceList{
-	margin-bottom:10px;
-}
-.resourceList h3{
-	margin-bottom: 3px;
-}
+
 .deadline{
 	color:#f00;
 }
