@@ -66,7 +66,7 @@
 			return div({"class":"path"},
 				apply(path, function(step, i){
 					return markup(
-						i>0?"/":null,
+						i>0?" / ":null,
 						step.id==curTaskID?span(step.name)
 							:a({href:"#"}, 
 								i==0?{prjID:step.id}:{taskID:step.id},

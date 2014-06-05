@@ -3,17 +3,20 @@
 	var changes = {};
 	
 	var taskIndex = {},
+		taskParents = {},
 		taskProjects = {};
 		
 	function indexTasks(){
 		taskIndex = {};
+		taskParents = {};
 		taskProjects = {};
-		function indexTaskList(prjID, tasks){
+		function indexTaskList(prjID, tasks, parentID){
 			$.each(tasks, function(i, t){
 				if(taskIndex[t.id]) util.log("Duplicating task id '"+t.id+"' detected!");
 				taskIndex[t.id] = t;
 				taskProjects[t.id] = prjID;
-				if(t.tasks) indexTaskList(prjID, t.tasks);
+				if(parentID) taskParents[t.id] = parentID;
+				if(t.tasks) indexTaskList(prjID, t.tasks, t.id);
 			});
 		}
 		for(var k in localDB.projects){
@@ -508,7 +511,7 @@
 			
 			while(task){
 				path.push({id:task.id, name:task.name});
-				task = this.getTask(task.parent);
+				task = this.getTask(taskParents[task.id]);
 			}
 			path.push({id:prj.id, name:prj.name});
 			
