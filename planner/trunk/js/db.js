@@ -27,7 +27,6 @@
 	}
 	
 	
-	
 	function removeTask(parent, task){
 		var res = [];
 		var tasks = parent.tasks;
@@ -37,6 +36,24 @@
 		}
 		parent.tasks = res;
 		return task;
+	}
+	
+	function removeFromQueue(id){
+		var coll = localDB.queue,
+			res = [];
+		for(var elID,i=0; elID=coll[i],i<coll.length; i++){
+			if(id!=elID) res.push(elID);
+		}
+		localDB.queue = res;
+	}
+	
+	function removeFromDeadlines(id){
+		var res = {};
+		for(var elID in localDB.deadlines){
+			if(elID!=id)
+				res[elID] = localDB.deadlines[elID];
+		}
+		localDB.deadlines = res;
 	}
 	
 	
@@ -371,6 +388,8 @@
 			);
 			$JP.set(localDB, ["projects", prjID, "changed"], true);
 			indexTasks();
+			removeFromQueue(taskID);
+			removeFromDeadlines(taskID);
 		},
 		getPersons: function(){
 			var res = {};
