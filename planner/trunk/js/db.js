@@ -269,6 +269,8 @@
 					id: el.id,
 					color: el.color,
 					name: el.name,
+					group: el.group,
+					priority: el.priority,
 					frozen: el.frozen,
 					changed: el.frozen || (localDB.projects[el.id] && localDB.projects[el.id].changed)
 				});

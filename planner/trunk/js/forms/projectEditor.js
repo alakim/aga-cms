@@ -6,6 +6,8 @@
 			table({border:0, cellpadding:3, cellspacing:0},
 				tr(th("ID"), td(input({type:"text", "data-bind":"value:$id"}), util.validMsg("$id"))),
 				tr(th("Name"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
+				tr(th("Priority"), td(input({type:"text", "data-bind":"value:$priority"}))),
+				tr(th("Group"), td(input({type:"text", "data-bind":"value:$group"}))),
 				tr(th("Color"), td(input({type:"text", "data-bind":"value:$color"})))
 			),
 			div(
@@ -21,6 +23,8 @@
 			$id: ko.observable(data?data.id:"").extend({uniqueID:"registry"}),
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите название проекта"}),
 			$color: ko.observable(data?data.color:""),
+			$group: ko.observable(data?data.group:""),
+			$priority: ko.observable(data?data.priority:""),
 			$frozen: !data
 		});
 		$.extend(_,{
