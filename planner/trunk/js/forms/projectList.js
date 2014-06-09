@@ -19,7 +19,7 @@
 			h2("Projects List"),
 			apply(groups, function(grp){
 				return div(
-					div(grp),
+					div({"class":"groupName"}, grp),
 					ul(
 						apply(grpProjects[grp], function(prj){
 							return li(
