@@ -85,8 +85,9 @@
 		}},
 		task: function(task){with($H){
 			var qPos = db.getQueuePosition(task.id);
+			var hdrCls = "taskNm"+(task.completed?" completed":"");
 			return div({"class":"task"},
-				h3(task.completed?{"class":"completed"}:null,
+				div({"class":hdrCls},
 					task.name, 
 					task.id?span(" (", task.id,")"):null
 					//   ," pos:", db.getTaskPosition(task.id)
