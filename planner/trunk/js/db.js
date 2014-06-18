@@ -496,7 +496,7 @@
 			prj.description = data.description;
 			prj.changed = true;
 		},
-		checkDeadlines: function(prjID){
+		checkDeadlines: function(prjID){var _=this;
 			var prj = this.getProject(prjID);
 			function check(list){
 				if(!list) return;
@@ -513,6 +513,7 @@
 						$JP.set(localDB, ["deadlines", task.id], {
 							date: task.deadline,
 							name: task.name,
+							path: _.getPathString(task.id),
 							prj: prjID
 						});
 						changes.deadlines = true;
@@ -524,6 +525,13 @@
 		},
 		getDeadlines: function(){
 			return $JP.get(localDB, "deadlines");
+		},
+		getPathString: function(taskID){
+			var path = this.getPath(taskID);
+			for(var i=0; i<path.length; i++){
+				path[i] = path[i].name;
+			}
+			return path.join(" / ");
 		},
 		getPath: function(taskID){
 			var path = [],

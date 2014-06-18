@@ -6,6 +6,7 @@
 				id:k,
 				date: el.date,
 				name: el.name,
+				path: el.path,
 				prj: el.prj
 			});
 		}
@@ -21,8 +22,8 @@
 					return li(
 						!ddl.id?span({style:"color:#f00;"}, "==========",ddl.date, "==========")
 							:!prj? span(ddl.date, " ", ddl.name)
-							:prj.frozen? span(ddl.date, " ", prj.name, "/", ddl.name)
-							:a({href:"#", "class":"lnkTask", taskID:ddl.id}, ddl.date, " ", prj.name, "/", ddl.name)
+							:prj.frozen? span(ddl.date, " ", ddl.path || (prj.name+"/"+ddl.name))
+							:a({href:"#", "class":"lnkTask", taskID:ddl.id}, ddl.date, " ", ddl.path || (prj.name+"/"+ddl.name))
 					)
 				})
 			)
