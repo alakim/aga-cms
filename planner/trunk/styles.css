@@ -1,6 +1,8 @@
 ﻿body{
 	font-family: Arial, Verdana, Tahoma, Sans-serif;
+	margin:3px;
 }
+th, td{border:1px solid #ddd;}
 IMG{border:0;}
 P{margin:0;}
 A{text-decoration:none;color:black;}
@@ -66,7 +68,7 @@ div.console{
 }
 
 .dataType{
-	color:#ccc;
+	color:#aaa;
 }
 span.dataType{
 	margin-right:15px;
