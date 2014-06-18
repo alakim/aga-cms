@@ -7,7 +7,8 @@
 				p(span(hdrStyle, "ID: "), data.id),
 				p(span(hdrStyle, "ФИО: "), data.name),
 				templates.optionalField(data, "Phone", "phone"),
-				templates.optionalField(data, "E-Mail", "email"),
+				templates.optionalField(data, "E-Mail", "email", "mailto:"),
+				templates.optionalField(data, "Web Site", "site", "http://"),
 				templates.optionalField(data, "Address", "address"),
 				templates.optionalField(data, "Description", "description"),
 				div({"class":"menu"},
@@ -42,9 +43,10 @@
 				)
 			):null;
 		}},
-		optionalField: function(data, title, name){with($H){
+		optionalField: function(data, title, name, linkPrefix){with($H){
+			linkPrefix = linkPrefix || false;
 			var val = data[name];
-			return val&&val.length?p(span({style:"font-weight:bold;"}, title+": "), val):null;
+			return val&&val.length?p(span({style:"font-weight:bold;"}, title+": "), linkPrefix?a({href:linkPrefix+val}, val):val):null;
 		}}
 	};
 	

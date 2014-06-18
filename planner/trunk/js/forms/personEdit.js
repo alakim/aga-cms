@@ -7,6 +7,7 @@
 				tr(th("ФИО"), td(input({type:"text", "data-bind":"value:$name"}), util.validMsg("$name"))),
 				tr(th("Phone"), td(input({type:"text", "data-bind":"value:$phone"}))),
 				tr(th("E-Mail"), td(input({type:"text", "data-bind":"value:$email"}))),
+				tr(th("Web Site"), td(input({type:"text", "data-bind":"value:$site"}))),
 				tr(th("Address"), td(input({type:"text", "data-bind":"value:$address"}))),
 				tr(th("Description"), td(textarea({"data-bind":"value:$description", style:"width:350px; height:180px;"}))),
 				tr(
@@ -38,6 +39,7 @@
 			$name: ko.observable(data?data.name:"").extend({required:"Укажите ФИО"}),
 			$phone: ko.observable(data?data.phone:""),
 			$email: ko.observable(data?data.email:""),
+			$site: ko.observable(data?data.site:""),
 			$address: ko.observable(data?data.address:""),
 			$description: ko.observable(data?data.description:"")
 		});
