@@ -43,10 +43,29 @@
 		}}
 	};
 	
+	function toggle(lbl, tbl){tbl=$(tbl);
+		if(tbl.css("display")=="none"){
+			lbl.find(".more").hide();
+			tbl.show();
+		}
+		else{
+			if(!lbl.find(".more").length){
+				lbl.append($H.span({"class":"more"}, " [...]"))
+			}
+			lbl.find(".more").show();
+			tbl.hide();
+		}
+	}
+	
 	
 	return {
 		view: function(pnl){var _=this;
 			pnl.html(templates.main(db.getJSON()));
+			pnl.find(".dataType").each(function(i, el){el=$(el);
+				var tbl = el.parent().find("table");
+				if(!tbl.length) return;
+				el.click(function(){toggle($(this), tbl);}).css({cursor:"pointer"});
+			});
 		}
 	};
 });
