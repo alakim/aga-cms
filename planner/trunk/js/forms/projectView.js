@@ -84,6 +84,13 @@
 			);
 		}},
 		task: function(task){with($H){
+			if(db.completedTask(task.id))
+				return div(!task.parent?{"class":"task"}:null,
+					div({"class":"taskNm completed"}, task.name), 
+					"| ", span({"class":"menu bt_View", taskID:task.id}, "View"), " | ",
+					span({"class":"completed"}, " Completed ", task.completed)
+				);
+				
 			var qPos = db.getQueuePosition(task.id);
 			var hdrCls = "taskNm"+(task.completed?" completed":"");
 			return div({"class":"task"},

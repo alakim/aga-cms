@@ -546,6 +546,17 @@
 			
 			
 			return path.reverse();
+		},
+		completedTask: function(taskID){
+			function completed(task){
+				if(!task.completed) return false;
+				if(!task.tasks || !task.tasks.length) return true;
+				for(var t,c=task.tasks,i=0; t=c[i],i<c.length; i++){
+					if(!completed(t)) return false;
+				}
+				return true;
+			}
+			return completed(taskIndex[taskID]);
 		}
 	};
 });
