@@ -34,7 +34,7 @@
 				)),
 				tr(th("Jobs"), td(
 					// input({type:"text", "data-bind":"value:$jobs"})
-					div("count: ", span({"data-bind":"text:$jobs().length"})),
+					// div("count: ", span({"data-bind":"text:$jobs().length"})),
 					div({"data-bind":"foreach:{data:$jobs, as:'job'}"},
 						div(
 							input({type:"text", "data-bind":"value:job.$date"}), ": ",
