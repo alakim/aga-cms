@@ -9,6 +9,12 @@
 				total += job.hours;
 			});
 			
+			if(data.resources && data.resources.length){
+				data.resources = data.resources.sort(function(r1, r2){
+					return r1.priority==r2.priority?0:r1.priority>r2.priority?-1:1;
+				});
+			}
+			
 			return div(
 				h3("Task of Project: ", prj.name),
 				templates.path(db.getPath(data.id), data.id),
@@ -33,6 +39,22 @@
 								);
 							}),
 							div("Total ", total, " hours")
+						))
+					):null,
+					data.resources && data.resources.length?(
+						tr(th("Resources"), td(
+							apply(data.resources, function(res, i){
+								return div(
+									span({style:"font-weight:bold;", title:"priority:"+res.priority}, res.name), ": ",
+									res.type=="text"?span(res.value)
+										:res.type=="hlink"?a({href:res.value, target:"_blank"}, res.value)
+										:res.type=="reslink"?span(
+											//span("Project resource ", a({href:"#"}, res.value))
+											templates.projectResource(prj, res.value)
+										)
+										:null
+								);
+							})
 						))
 					):null,
 					data.completed?tr(th("Completed"), td(data.completed)):null
@@ -75,7 +97,17 @@
 					);
 				})
 			);
+		}},
+		projectResource:function(prj, resID){with($H){
+			var res = prj.resources[resID];
+			return span(
+				res.type=="site"?a({href:res.url, target:"_blank"}, res.url)
+					:res.type=="person"?templates.personRef(res.personID)
+					:res.type=="text"?span(res.description)
+					:null
+			);
 		}}
+
 	};
 	
 	function editTask(e){

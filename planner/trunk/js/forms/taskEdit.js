@@ -45,11 +45,41 @@
 					),
 					
 					
-					input({type:"button", value:"Add", "data-bind":"click:addJob"}),
-					div({style:"margin-left:80px; border:1px solid #ddd; padding:3px;"},
+					input({type:"button", value:"Add", "class":"btAddJob", "data-bind":"click:addJobOpen"}),
+					div({"class":"pnlAddJob", style:"display:none; margin-left:80px; border:1px solid #ddd; padding:3px; background-color:#ff0;"},
+						input({type:"button", value:"OK", "data-bind":"click:addJob"}), " ",
 						"date:",input({type:"text", "data-bind":"value:newJobDate"}),
 						" hours:",input({type:"text", "data-bind":"value:newJobHours"}),
 						" notes:",input({type:"text", "data-bind":"value:newJobNotes"})
+					)
+				)),
+				tr(th("Resources"), td(
+					div({"data-bind":"foreach:{data:$resources, as:'res'}"},
+						div(
+							input({type:"text", "data-bind":"value:res.$priority"}), " ",
+							input({type:"text", "data-bind":"value:res.$name"}), " ",
+							"type:",select({"data-bind":"value:res.$type"},
+								option({value:"reslink"}, "Project resource link"),
+								option({value:"hlink"}, "Hyperlink"),
+								option({value:"text"}, "Text")
+							), " ",
+							input({type:"text", "data-bind":"value:res.$value"}), " ",
+							input({type:"button", "data-bind":"click: $parent.deleteRes", value:"Delete"})
+						)
+					),
+					
+					
+					input({type:"button", value:"Add", "class":"btAddRes", "data-bind":"click:addResOpen"}),
+					div({"class":"pnlAddRes", style:"display:none; margin-left:80px; border:1px solid #ddd; padding:3px; background-color:#ff0;"},
+						input({type:"button", value:"OK", "data-bind":"click:addRes"}), " ",
+						"priority:",input({type:"text", "data-bind":"value:newResPriority"}), " ",
+						"name:",input({type:"text", "data-bind":"value:newResName"}), " ",
+						"type:",select({"data-bind":"value:newResType"},
+							option({value:"reslink"}, "Project resource link"),
+							option({value:"hlink"}, "Hyperlink"),
+							option({value:"text"}, "Text")
+						), " ",
+						"value:",input({type:"text", "data-bind":"value:newResValue"})
 					)
 				)),
 				tr(th("Description"), td(textarea({style:"width:400px; height:150px;", "data-bind":"value:$description"}))),
@@ -71,6 +101,13 @@
 			}
 		}
 		
+		var resources = [];
+		if(data&&data.resources){
+			for(var el,i=0; el=data.resources[i],i<data.resources.length; i++){
+				resources.push({$name:el.name, $priority:el.priority, $type:el.type, $value:el.value});
+			}
+		}
+		
 		var queuePos = db.getQueuePosition(data.id);
 		$.extend(_, {
 			$prjID: ko.observable(data?data.prjID:null),
@@ -83,10 +120,15 @@
 			$executor: ko.observable(data?data.executor:""),
 			$completed: ko.observable(data?data.completed:""),
 			$jobs: ko.observableArray(jobs),
+			$resources: ko.observableArray(resources),
 			$description: ko.observable(data?data.description:""),
 			$queuePos: ko.observable(queuePos==null?"":queuePos+1),
 			setCompleted: function(){
 				_.$completed(util.formatDate(new Date()));
+			},
+			addJobOpen: function(){
+				$(".pnlAddJob").show();
+				$(".btAddJob").hide();
 			},
 			addJob: function(){
 				var job = {
@@ -98,9 +140,33 @@
 				_.newJobDate(util.formatDate(new Date()));
 				_.newJobHours(1);
 				_.newJobNotes("");
+				$(".pnlAddJob").hide();
+				$(".btAddJob").show();
 			},
 			deleteJob: function(job){
 				_.$jobs.remove(job);
+			},
+			addResOpen: function(){
+				$(".pnlAddRes").show();
+				$(".btAddRes").hide();
+			},
+			addRes: function(){
+				var res = {
+					$name: _.newResName(),
+					$priority: _.newResPriority(),
+					$type: _.newResType(),
+					$value: _.newResValue()
+				};
+				_.$resources.push(res);
+				_.newResName("");
+				_.newResPriority(0);
+				_.newResType("reslink");
+				_.newResValue("");
+				$(".pnlAddRes").hide();
+				$(".btAddRes").show();
+			},
+			deleteRes: function(res){
+				_.$resources.remove(res);
 			},
 			selectParent: function(){
 				taskSelector.view(data.prjID, function(id){
@@ -140,6 +206,13 @@
 			newJobDate: ko.observable(util.formatDate(new Date())),
 			newJobHours: ko.observable(1),
 			newJobNotes: ko.observable("")
+		});
+		
+		$.extend(_,{
+			newResName: ko.observable(""),
+			newResPriority: ko.observable(0),
+			newResType: ko.observable("reslink"),
+			newResValue: ko.observable("")
 		});
 		
 		$.extend(_,{
