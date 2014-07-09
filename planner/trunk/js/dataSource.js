@@ -32,6 +32,7 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 			cdk = new Cdk($(".key").val());
 			var log = util.log("saving "+path+" ...");
 			var json = JSON.stringify(data);
+			json = json.replace(/\s*\t+\s*/g, " ");
 			$.post("ws/save.php", {path:path, data:encode(json)}, function(res){
 				util.log("OK", log);
 				onsave();
