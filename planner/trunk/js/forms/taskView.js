@@ -11,7 +11,9 @@
 			
 			if(data.resources && data.resources.length){
 				data.resources = data.resources.sort(function(r1, r2){
-					return r1.priority==r2.priority?0:r1.priority>r2.priority?-1:1;
+					var p1 = +r1.priority,
+						p2 = +r2.priority;
+					return p1==p2?0:p1>p2?-1:1;
 				});
 			}
 			
