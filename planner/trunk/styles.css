@@ -116,3 +116,6 @@ div.taskNm.completed, span.completed{
 	padding:0;
 }
 
+.personsList .free{
+	display:none;
+}

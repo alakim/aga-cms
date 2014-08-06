@@ -1,4 +1,5 @@
 ﻿define(["html", "db", "forms/personView", "forms/personEdit"], function($H, db, personView, editor){
+	
 	function template(data){with($H){
 		var list = [];
 		for(var k in data){
@@ -9,10 +10,11 @@
 		});
 		return div(
 			h2("Persons List"),
-			ol(
+			div("View All ", input({type:"checkbox", "class":"cbViewAll"})),
+			ol({"class":"personsList"},
 				apply(list, function(prs){
 					var refCount = getRefCount(prs.id);
-					return li(
+					return li(refCount?{"class":"referred"}:{"class":"free"},
 						a({href:"#", "class":"selectable btView", prsID:prs.id}, prs.name),
 						format(" [{0}]", prs.id),
 						refCount?span({style:"font-style:italic; color:#ccc;"}, format(" referred by {0} items", refCount))
@@ -48,6 +50,11 @@
 				}).end()
 				.find(".btAdd").click(function(){
 					editor.view(pnl);
+				}).end()
+				.find(".cbViewAll").click(function(){
+					var viewAllMode = $(this)[0].checked;
+					if(viewAllMode) $(".personsList .free").show();
+					else $(".personsList .free").hide();
 				});
 		}
 	};
