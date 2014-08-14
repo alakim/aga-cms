@@ -46,15 +46,17 @@
 					data.resources && data.resources.length?(
 						tr(th("Resources"), td(
 							apply(data.resources, function(res, i){
-								return div(
-									span({style:"font-weight:bold;", title:"priority:"+res.priority}, res.name), ": ",
-									res.type=="text"?span(res.value)
+								return table({border:0, width:"100%"},
+									td({width:60, valign:"top", style:"font-weight:bold;", title:"priority:"+res.priority}, res.name), 
+									td({valign:"top"},
+									res.type=="text"?div(util.formatHTML(res.value))
 										:res.type=="hlink"?a({href:res.value, target:"_blank"}, res.value)
 										:res.type=="reslink"?span(
 											//span("Project resource ", a({href:"#"}, res.value))
 											templates.projectResource(prj, res.value)
 										)
 										:null
+									)
 								);
 							})
 						))

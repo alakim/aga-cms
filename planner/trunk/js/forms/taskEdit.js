@@ -53,7 +53,7 @@
 						" notes:",input({type:"text", "data-bind":"value:newJobNotes"})
 					)
 				)),
-				tr(th("Resources"), td(
+				tr(th("Resources"), td({valign:"top"},
 					div({"data-bind":"foreach:{data:$resources, as:'res'}"},
 						div(
 							input({type:"text", "data-bind":"value:res.$priority"}), " ",
@@ -63,7 +63,8 @@
 								option({value:"hlink"}, "Hyperlink"),
 								option({value:"text"}, "Text")
 							), " ",
-							input({type:"text", "data-bind":"value:res.$value"}), " ",
+							//input({type:"text", "data-bind":"value:res.$value"}), " ",
+							textarea({style:"height:25px;", "data-bind":"value:res.$value"}), " ",
 							input({type:"button", "data-bind":"click: $parent.deleteRes", value:"Delete"})
 						)
 					),
@@ -79,7 +80,7 @@
 							option({value:"hlink"}, "Hyperlink"),
 							option({value:"text"}, "Text")
 						), " ",
-						"value:",input({type:"text", "data-bind":"value:newResValue"})
+						"value:", textarea({"data-bind":"value:newResValue", style:"height:25px;"})
 					)
 				)),
 				tr(th("Description"), td(textarea({style:"width:400px; height:150px;", "data-bind":"value:$description"}))),
