@@ -1,6 +1,7 @@
 define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 	
 	var cdk;
+	var tooLargeFileSize = 150000;
 	
 	function encode(val){
 		return cdk.ec(val);
@@ -14,7 +15,10 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 		load: function(file, arrMode, onload){
 			cdk = new Cdk($(".key").val());
 			var log = util.log("loading " + file + " ...");
-			$.post("ws/load.php", {path:file}, function(res){
+			$.post("ws/load.php", {path:file}, function(resp){
+				resp = $.parseJSON(resp);
+				var res = resp.data;
+				
 				if(res==null || res.length==0) res = arrMode?"[]":"{}";
 				else res = decode(res);
 				try{
@@ -24,7 +28,8 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 					console.log("Error parsing JSON ", res);
 				}
 				onload(data);
-				util.log("OK", log);
+				resp.size = "<span style='"+(resp.size>tooLargeFileSize?"color:red;":"")+"'>"+resp.size+" bytes</span>";
+				util.log(resp.size+": OK", log);
 			});
 
 		},
