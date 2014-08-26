@@ -46,7 +46,7 @@
 		optionalField: function(data, title, name, linkPrefix){with($H){
 			linkPrefix = linkPrefix || false;
 			var val = data[name];
-			return val&&val.length?p(span({style:"font-weight:bold;"}, title+": "), linkPrefix?a({href:linkPrefix+val}, val):val):null;
+			return val&&val.length?p(span({style:"font-weight:bold;"}, title+": "), linkPrefix?a({href:(val.match(new RegExp("^"+linkPrefix))?"":linkPrefix)+val, target:"_blank"}, val):val):null;
 		}}
 	};
 	
