@@ -16,7 +16,12 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 			cdk = new Cdk($(".key").val());
 			var log = util.log("loading " + file + " ...");
 			$.post("ws/load.php", {path:file}, function(resp){
-				resp = $.parseJSON(resp);
+				try{
+					resp = $.parseJSON(resp);
+				}
+				catch(e){
+					util.logError("Error parsing file "+file, log);
+				}
 				var res = resp.data;
 				
 				if(res==null || res.length==0) res = arrMode?"[]":"{}";
@@ -25,7 +30,9 @@ define(["jspath", "cdk", "util"], function($JP, Cdk, util){
 					var data = $.parseJSON(res);
 				}
 				catch(e){
-					console.log("Error parsing JSON ", res);
+					util.logError("Error parsing JSON data in "+file, log);
+					onload();
+					return;
 				}
 				onload(data);
 				resp.size = "<span style='"+(resp.size>tooLargeFileSize?"color:red;":"")+"'>"+resp.size+" bytes</span>";

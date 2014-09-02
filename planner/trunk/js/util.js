@@ -46,6 +46,9 @@
 			}
 			return logMsg;
 		}},
+		logError: function(msg, logMsg){
+			this.log($H.span({style:"color:red;"}, msg), logMsg);
+		},
 		formatHTML: function(str){
 			if(!str) return;
 			return str.replace(/[\n\r]+/g, "<br/>")
