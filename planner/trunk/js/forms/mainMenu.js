@@ -1,4 +1,4 @@
-﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView", "forms/jobReport", "forms/deadlines"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView, jobReport, deadlinesView){
+﻿define(["jquery", "html", "knockout", "db", "dataSource", "util", "forms/projectList", "forms/queue", "forms/persons", "forms/dbView", "forms/jsonView", "forms/jobReport", "forms/deadlines", "forms/search"], function($, $H, ko, db, dSrc, util, prjList, queue, persons, dbView, jsonView, jobReport, deadlinesView, search){
 	function template(){with($H){
 		return div(
 			ul({"class":"menu"},
@@ -7,6 +7,7 @@
 				li({"data-bind":"click:showDeadlines"}, "Deadlines"),
 				li({"data-bind":"click:showPersons"}, "Persons"),
 				li({"data-bind":"click:showJobReport"}, "Job Report"),
+				li({"data-bind":"click:showSearch"}, "Search"),
 				li({"data-bind":"click:showDB"}, "DB View"),
 				li({"data-bind":"click:showDBJSON"}, "DB JSON View")
 			),
@@ -35,6 +36,7 @@
 			showQueue: function(){queue.view($(".mainPanel"));},
 			showPersons: function(){persons.view($(".mainPanel"));},
 			showJobReport: function(){jobReport.view($(".mainPanel"));},
+			showSearch: function(){search.view($(".mainPanel"));},
 			showDeadlines: function(){deadlinesView.view($(".mainPanel"));},
 			saveAll: function(){
 				if(!confirm("Save All Data?"))return;

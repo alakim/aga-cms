@@ -557,6 +557,16 @@
 				return true;
 			}
 			return completed(taskIndex[taskID]);
+		},
+		search: function(searchString){
+			var res = [],
+				re = new RegExp(searchString, "i");
+			for(var id in taskIndex){
+				var tsk = taskIndex[id];
+				if(tsk.name.match(re))
+					res.push(tsk);
+			}
+			return res;
 		}
 	};
 });
