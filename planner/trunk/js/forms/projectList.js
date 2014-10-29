@@ -17,6 +17,10 @@
 		groups.sort();
 		return div(
 			h2("Projects List"),
+			div(
+				input({type:"checkbox", "class":"cbShowAll"}), 
+				"Show all projects"
+			),
 			apply(groups, function(grp){
 				return div(
 					div({"class":"groupName"}, grp),
@@ -75,6 +79,13 @@
 				}).end()
 				.find(".btEdit").click(function(){
 					projectEditor.view(pnl, $(this).attr("prjID"));
+				});
+				pnl.find(".frozen").parent().parent().hide();
+				pnl.find(".cbShowAll").change(function(){
+					var show = $(this)[0].checked,
+						coll = pnl.find(".frozen").parent().parent();
+					
+					if(show) coll.show(); else coll.hide();
 				});
 		}
 	};
